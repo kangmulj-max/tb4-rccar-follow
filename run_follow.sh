@@ -13,8 +13,8 @@ echo "model: $MODEL  node: ${NODE:-v3}"
 cd "$TB4SIM/logs" 2>/dev/null || { mkdir -p "$TB4SIM/logs"; cd "$TB4SIM/logs"; }
 if [ "${NODE:-v3}" = v3safe ]; then
   exec python "$TB4SIM/scripts/follow_object_node_v3_safe.py" --ros-args \
-    -p model:="$MODEL" -p ns:=/robot1 -p use_sim_time:=true \
-    -r /tf:=/robot1/tf -r /tf_static:=/robot1/tf_static "$@"
+    -p model:="$MODEL" -p ns:=/robot1 -p use_sim_time:=true -p image_transport:=raw \
+    -r /tf:=/robot1/tf -r /tf_static:=/robot1/tf_static "$@"   # 시뮬은 raw 토픽만 브리지됨 (실기 기본값은 compressed, S13)
 fi
 exec python "$TB4SIM/scripts/follow_object_node_v3.py" --ros-args \
   -p model:="$MODEL" -p ns:=/robot1 -p target:=car \

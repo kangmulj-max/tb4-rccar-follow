@@ -48,7 +48,7 @@ from rclpy.duration import Duration             # ROS 시간 간격 (TF 조회 �
 from rclpy.signals import SignalHandlerOptions  # S9 rclpy 의 기본 Ctrl+C 처리기를 끄기 위해
 from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy   # S12 센서 구독 QoS
 # 「기초」 메시지 타입 = 토픽으로 주고받는 데이터 구조 (C 의 struct 와 비슷)
-from sensor_msgs.msg import Image, LaserScan, CameraInfo   # 카메라 영상, 라이다 스캔, 카메라 내부 파라미터
+from sensor_msgs.msg import Image, CompressedImage, LaserScan, CameraInfo   # 카메라 영상(원본·압축), 라이다 스캔, 카메라 내부 파라미터
 from geometry_msgs.msg import Twist, PointStamped          # 속도 명령(선속도·각속도), 좌표계가 붙은 3D 점
 from std_msgs.msg import String                             # S11 상태 퍼블리시용 문자열
 from cv_bridge import CvBridge                  # ROS Image ↔ OpenCV(numpy) 영상 변환기
@@ -106,8 +106,11 @@ class FollowObjectNode(Node):
         p('reid_app_w', 0.5)         # 재식별 점수 중 '색 비슷함' 가중치
         p('reid_accept', 0.6)        # 이 점수 이상이면 같은 RC카로 인정
         p('reid_pos_radius', 0.3)    # 화면 크기 대비 이 거리 이상 떨어지면 위치 점수 0
-        p('search_max_s', 6.0)       # SEARCH 최대 시간 [s]. 넘으면 포기하고 IDLE
-        p('search_ang', 0.5)         # SEARCH 회전 속도 [rad/s]
+        # S15 실기 261003: 원본 0.5 rad/s × 6 s = 172° 라 뒤(180°)를 보기 전에 포기 (포기한 탐색 27 회 중 13 회가 165~174°),
+        #     LOP 방향에서 멈춰 기다리다 시간 초과도 다수 → 0.8 rad/s × 10 s (≈ 1 바퀴 + LOP 확인) + LOP 확인 후 계속 회전
+        p('search_max_s', 10.0)      # SEARCH 최대 시간 [s]. 넘으면 포기하고 IDLE (원본 6.0)
+        p('search_ang', 0.8)         # SEARCH 회전 속도 [rad/s] (원본 0.5, max_ang 1.0 이하)
+        p('search_wait_s', 0.7)      # S15 LOP 방향을 보고 이 시간 동안 없으면 같은 방향으로 계속 회전 (한 바퀴 훑기)
         p('odom_frame', 'odom')      # 마지막 관측 위치(LOP)를 저장할 고정 좌표계
 
         # ---- 안전 -----------------------------------------------------------------------------------
@@ -130,6 +133,15 @@ class FollowObjectNode(Node):
         p('cam_timeout', 1.0)        # S8 카메라가 이 시간[s] 이상 끊기면 정지
         p('sensor_qos', 'best_effort')   # S12 'best_effort'(기본: 어떤 발행자와도 연결) 또는 'reliable'
         p('image_queue', 2)          # S12 영상 구독 큐 깊이 (작을수록 최신 프레임만 처리)
+        # S13 'compressed'(기본): RGB 는 .../compressed (jpeg), depth 는 .../compressedDepth (png) 를 받아 노트북에서 디코드.
+        #     실기 261003: Wi-Fi 로 raw(RGB 1.4 MB + depth 1 MB/프레임)를 구독하면 로봇 oakd 가 밀려 RGB 가 15~20 s 늦게
+        #     도착 → RGB·depth 시각이 안 맞아 동기화 콜백이 한 번도 안 불림. compressed 는 10 Hz, 지연 0.05~0.14 s.
+        p('image_transport', 'compressed')   # 'compressed' 또는 'raw'
+        # S14 근거리·오검출 보호 (실기 261003 줄자 실측: 카메라 0.70 m 정상 (+4 cm), 0.45 m 는 차 아래가 잘려 지붕만 보이고
+        #     depth 가 지붕을 읽어 +23 cm, 클래스도 dummy 로 바뀜 → min_dist 가 걸리지 않음. 벽 TV 를 car 로 오검출 → 7 m)
+        p('ground_only', True)       # 박스 아래 끝이 지평선(cy) 위인 검출은 버림 — 바닥 위 RC카만 (벽 TV 등 제외)
+        p('cut_bottom_px', 4)        # 박스 아래 끝이 화면 하단에서 이 픽셀 이내면 '잘림' → 거리 불신 → 전·후진 0
+        p('min_fresh', 3)            # 유효 거리가 이 개수 이상 쌓여야 중앙값 사용 (재획득 직후 튐 1 프레임 무시)
         # TF 를 못 읽을 때 쓰는 라이다 장착값 — 실기 스냅샷 tf_static: base_link → rplidar_link (x=−0.04, yaw=+90°)
         p('lidar_x', -0.04); p('lidar_y', 0.0); p('lidar_yaw_deg', 90.0)
 
@@ -156,6 +168,8 @@ class FollowObjectNode(Node):
         self.t_prev = time.time()        # 직전 명령 시각
         self.enable_prev = False         # enable 이 true→false 로 바뀌는 순간을 잡기 위해
         self.last_bearing = 0.0          # 마지막 방위 (LOP 를 못 구할 때 SEARCH 방향)
+        self.search_phase = 'turn'       # S15 SEARCH 단계: turn(LOP 로 회전) → wait(LOP 확인) → sweep(같은 방향 계속 회전)
+        self.search_dir = 1.0; self.search_t = 0.0
         self.last_frame = 0.0            # S8 마지막 카메라 프레임 처리 시각
         self.cam_lost_logged = False     # S8 같은 경고를 반복해서 찍지 않기 위해
         self.lidar_T = None; self.cam_T = None   # 센서 → base_link 변환 (회전행렬, 이동벡터) 캐시
@@ -168,8 +182,13 @@ class FollowObjectNode(Node):
         rel = ReliabilityPolicy.BEST_EFFORT if self.P('sensor_qos') == 'best_effort' else ReliabilityPolicy.RELIABLE
         img_qos = QoSProfile(depth=int(self.P('image_queue')), reliability=rel, history=HistoryPolicy.KEEP_LAST)
         scan_qos = QoSProfile(depth=5, reliability=rel, history=HistoryPolicy.KEEP_LAST)
-        rgb = Subscriber(self, Image, f'{self.ns}/oakd/rgb/image_raw', qos_profile=img_qos)
-        dep = Subscriber(self, Image, f'{self.ns}/oakd/stereo/image_raw', qos_profile=img_qos)
+        self.compressed = self.P('image_transport') == 'compressed'   # S13
+        if self.compressed:
+            rgb = Subscriber(self, CompressedImage, f'{self.ns}/oakd/rgb/image_raw/compressed', qos_profile=img_qos)
+            dep = Subscriber(self, CompressedImage, f'{self.ns}/oakd/stereo/image_raw/compressedDepth', qos_profile=img_qos)
+        else:
+            rgb = Subscriber(self, Image, f'{self.ns}/oakd/rgb/image_raw', qos_profile=img_qos)
+            dep = Subscriber(self, Image, f'{self.ns}/oakd/stereo/image_raw', qos_profile=img_qos)
         self.sync = ApproximateTimeSynchronizer([rgb, dep], 5, 0.1)   # 쌍 맞추기 대기열 5, 허용 오차 0.1 s
         self.sync.registerCallback(self.cb)
         # 「기초」 create_subscription(타입, 토픽, 콜백, QoS): 메시지가 오면 콜백 실행
@@ -185,7 +204,8 @@ class FollowObjectNode(Node):
         # 「기초」 타이머: 0.1 s 마다 watchdog() 호출 (영상이 안 와도 돌아가야 하는 일: 정지, SEARCH 회전)
         self.create_timer(0.1, self.watchdog)
         self.get_logger().info(f"v3_safe target='{self.P('target')}' cmd→{topic} enable={self.P('enable')} "
-                               f"sensor_qos={self.P('sensor_qos')} image_queue={self.P('image_queue')}")
+                               f"sensor_qos={self.P('sensor_qos')} image_queue={self.P('image_queue')} "
+                               f"image_transport={self.P('image_transport')}")
 
     def P(self, n):
         """파라미터 현재값 읽기 (ros2 param set 으로 바뀐 값이 즉시 반영됨)"""
@@ -196,6 +216,8 @@ class FollowObjectNode(Node):
         if s != self.state:
             self.get_logger().info(f'{self.state} -> {s}')
             self.state = s; self.state_since = time.time()
+            if s == SEARCH:              # S15 탐색 시작: 차가 사라진 쪽(마지막 방위 부호)으로 돈다
+                self.search_phase = 'turn'; self.search_dir = math.copysign(1.0, self.last_bearing or 1.0)
 
     # =================================================================================================
     #  센서 보조
@@ -408,8 +430,14 @@ class FollowObjectNode(Node):
     # =================================================================================================
     def cb(self, rgb_msg, dep_msg):
         self.last_frame = time.time(); self.cam_lost_logged = False      # S8 카메라 살아 있음
-        rgb = self.bridge.imgmsg_to_cv2(rgb_msg, 'bgr8')                  # ROS Image → numpy (H×W×3, BGR 순서)
-        depth = self.bridge.imgmsg_to_cv2(dep_msg, 'passthrough')         # depth 는 변환 없이 (uint16 mm 또는 float32 m)
+        if self.compressed:   # S13 jpeg → BGR, compressedDepth = 12 바이트 헤더 + 16 비트 PNG (uint16 mm)
+            rgb = cv2.imdecode(np.frombuffer(rgb_msg.data, np.uint8), cv2.IMREAD_COLOR)
+            depth = cv2.imdecode(np.frombuffer(bytes(dep_msg.data[12:]), np.uint8), cv2.IMREAD_UNCHANGED)
+            if rgb is None or depth is None:
+                return                                                    # 디코드 실패 프레임은 건너뜀 (S8 타임아웃이 감시)
+        else:
+            rgb = self.bridge.imgmsg_to_cv2(rgb_msg, 'bgr8')              # ROS Image → numpy (H×W×3, BGR 순서)
+            depth = self.bridge.imgmsg_to_cv2(dep_msg, 'passthrough')     # depth 는 변환 없이 (uint16 mm 또는 float32 m)
         if depth.shape[:2] != rgb.shape[:2]:                              # 해상도가 다르면 depth 를 RGB 크기에 맞춤
             depth = cv2.resize(depth, (rgb.shape[1], rgb.shape[0]), interpolation=cv2.INTER_NEAREST)  # 깊이값 섞이지 않게 최근접
         H, W = rgb.shape[:2]
@@ -427,6 +455,8 @@ class FollowObjectNode(Node):
                 if self.model.names[int(b.cls[0])] != self.P('target'):
                     continue                                         # 타깃 클래스(car)만
                 x1, y1, x2, y2 = map(int, b.xyxy[0])                # 박스 좌상단·우하단 픽셀
+                if self.P('ground_only') and y2 < (self.K[3] if self.K else H / 2):
+                    continue                                         # S14 지평선 위 = 바닥 물체가 아님 (벽 TV 오검출)
                 cands.append({'id': int(b.id[0]), 'box': (x1, y1, x2, y2), 'area': (x2 - x1) * (y2 - y1),
                               'conf': float(b.conf[0]),
                               'center': ((x1 + x2) / 2 / W, (y1 + y2) / 2 / H)})   # 화면 크기로 나눠 0~1
@@ -476,7 +506,10 @@ class FollowObjectNode(Node):
                 if self.depth_miss >= self.P('depth_miss_max'):
                     self.dist_hist.clear()
             fresh = [dd for tt, dd in self.dist_hist if now - tt < self.P('depth_max_age')]   # 오래된 값 제외
-            d = float(np.median(fresh)) if fresh else None
+            d = float(np.median(fresh)) if len(fresh) >= self.P('min_fresh') else None      # S14 1~2 개로는 안 믿음
+            cut = y2 >= H - self.P('cut_bottom_px')                      # S14 차 아래가 화면 밖 → depth 가 지붕을 읽음
+            if cut:
+                d = None
             self.d_now = d
             # 방위: 핀홀 모델 b = −atan((u − cx)/fx). 화면 중앙보다 왼쪽(u<cx) → b>0 (ROS 규약: 왼쪽 회전 +)
             # 「주의」 실기 RGB 는 렌즈 왜곡이 강하지만 보정하지 않음 → 화면 가장자리일수록 방위 오차
@@ -485,7 +518,10 @@ class FollowObjectNode(Node):
             self.last_bearing = bearing
             self.update_lop(u, v, d, rgb_msg.header)
             cmd = self.servo(-bearing, d)                                # servo 는 '오른쪽 +' 오차를 받음
-            txt += f'id{self.lock_id} d={d:.2f}m b={math.degrees(bearing):+.1f}deg ' if d else f'id{self.lock_id} d=n/a({self.depth_miss}) '
+            if cut:
+                self.block_reason = (self.block_reason + ',cut').strip(',')   # 상태 토픽·디버그 화면에 표시
+            txt += f'id{self.lock_id} d={d:.2f}m b={math.degrees(bearing):+.1f}deg ' if d else \
+                f'id{self.lock_id} d=n/a({"cut" if cut else self.depth_miss}) '
             if self.P('debug_image'):
                 cv2.circle(rgb, (u, v), 5, (0, 0, 255), -1)              # 거리 읽은 점 표시
         elif self.state == REID:
@@ -540,13 +576,21 @@ class FollowObjectNode(Node):
             if time.time() - self.state_since > self.P('search_max_s'):   # 시간 초과 → 포기
                 self.lock_id = None; self.lock_hist = None; self.lop = None
                 self.set_state(IDLE); self.send(0.0, 0.0); return
-            b = self.bearing_to_lop()
-            if b is None:
-                b = self.last_bearing
-            if abs(b) < math.radians(8):
-                self.send(0.0, 0.0)                                     # LOP 를 보고 있으면 정지 대기
-            else:
-                self.send(0.0, math.copysign(self.P('search_ang'), b))  # LOP 쪽으로 제자리 회전
+            ang = self.P('search_ang')
+            if self.search_phase == 'turn':                             # 1) LOP 쪽으로 제자리 회전
+                b = self.bearing_to_lop()
+                if b is None:
+                    b = self.last_bearing
+                if abs(b) < math.radians(8):
+                    self.search_phase = 'wait'; self.search_t = time.time(); self.send(0.0, 0.0)
+                else:
+                    self.search_dir = math.copysign(1.0, b); self.send(0.0, self.search_dir * ang)
+            elif self.search_phase == 'wait':                           # 2) LOP 를 잠깐 확인 (원본은 여기서 시간 초과까지 대기)
+                self.send(0.0, 0.0)
+                if time.time() - self.search_t > self.P('search_wait_s'):
+                    self.search_phase = 'sweep'
+            else:                                                       # 3) S15 없으면 같은 방향으로 계속 → 뒤까지 한 바퀴
+                self.send(0.0, self.search_dir * ang)
         else:
             self.send(0.0, 0.0)                                         # IDLE: 정지
 
