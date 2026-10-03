@@ -38,7 +38,7 @@
 | approach | RC카가 로봇 쪽으로 돌진, 뒤 0.5 m 기둥 | 충돌 (후진 −0.26 m/s, 뒤 기둥 12 회) | 충돌 (후진 −0.1 m/s 후 정지, RC카가 밀어 1~2 회) |
 | shutdown | 주행 중 Ctrl+C | 정지 (베이스 타임아웃) | 정지 (노드가 정지 명령 전송) |
 
-\* v3 + 12n 의 pole 은 12n 이 정지한 RC카를 못 잡아 출발하지 않았기 때문 (안전해서가 아님).
+\* v3 + 12n 의 pole·depthstop 은 12n 이 정지한 RC카를 못 잡아 출발하지 않았기 때문 (안전해서가 아님).
 v3 기본값(lidar_offset 0°) 그대로의 pole: 17 초 동안 반복 충돌 — 영상 `compare/v3default_offset0_vs_safe_pole_y11.mp4`.
 
 ## 4. 원본 v3 결함 요약 (상세 `docs/CODE_REVIEW_GUIDE.md` 3-1)
