@@ -3,7 +3,8 @@
 set -e
 cd "$(dirname "$0")"
 ROOT=$PWD
-DL=/mnt/c/Users/kangm/Downloads
+# 가중치·원본 노드를 찾을 곳: 1) 이 폴더(weights/, scripts/)에 이미 있으면 그대로 2) TB4_DL 3) WSL 의 Windows 다운로드 폴더
+DL=${TB4_DL:-$(ls -d /mnt/c/Users/*/Downloads 2>/dev/null | head -1)}
 
 # --- 1) turtlebot4_description 오버레이 (OAK-D 시뮬 카메라를 실기와 맞춤) ---
 #  실기: 704x704, fx=fy=564.65 → HFOV = 2*atan(352/564.65) = 1.1152 rad, 10 Hz
@@ -28,8 +29,10 @@ grep -q 'gazebo="none"' "$L" && echo "[ok] gz rplidar sensor disabled (sim_rplid
 
 # --- 2) YOLO 가중치 / v3 노드 복사 ---
 mkdir -p weights scripts
-cp -u "$DL/yolo11n_amr_best.pt" "$DL/yolo12n_amr_best.pt" weights/
-cp -u "$DL/follow_object_node_v3.py" scripts/
+for f in yolo11n_amr_best.pt yolo12n_amr_best.pt; do
+  [ -f "weights/$f" ] || cp -v "$DL/$f" weights/ 2>/dev/null || echo "[warn] weights/$f 없음 — 직접 넣을 것"
+done
+[ -f scripts/follow_object_node_v3.py ] || cp -v "$DL/follow_object_node_v3.py" scripts/
 echo "[ok] weights: $(ls weights | tr '\n' ' ')"
 
 # --- 3) YOLO venv 확인 ---

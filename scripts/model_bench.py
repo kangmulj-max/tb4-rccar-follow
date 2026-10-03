@@ -21,7 +21,7 @@ os.makedirs(OUT, exist_ok=True)
 
 
 def dataset_yaml():
-    if not os.path.isdir(DS): zipfile.ZipFile('/mnt/c/Users/kangm/Downloads/amr_dataset.zip').extractall(DS)
+    if not os.path.isdir(DS): zipfile.ZipFile(next(p for p in (os.environ.get('TB4_DATASET_ZIP', ''), f'{ROOT}/data/amr_dataset.zip', '/mnt/c/Users/kangm/Downloads/amr_dataset.zip') if p and os.path.exists(p))).extractall(DS)
     y = f'{DS}/data_abs.yaml'
     open(y, 'w').write(f"path: {DS}\ntrain: train/images\nval: valid/images\ntest: test/images\nnc: 2\nnames: ['car', 'dummy']\n")
     return y

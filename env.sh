@@ -12,8 +12,11 @@ unset ROS_AUTOMATIC_DISCOVERY_RANGE ROS_LOCALHOST_ONLY ROS_STATIC_PEERS
 export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
 unset ROS_DISCOVERY_SERVER FASTRTPS_DEFAULT_PROFILES_FILE FASTDDS_BUILTIN_TRANSPORTS
 # WSL 기본 OpenGL 은 llvmpipe(CPU) → 카메라 ~1 Hz. d3d12 로 RTX GPU 렌더링 강제
-export GALLIUM_DRIVER=d3d12
-export MESA_D3D12_DEFAULT_ADAPTER_NAME=NVIDIA
+# (WSL 일 때만: /dev/dxg 존재. 일반 Ubuntu 에서는 설정하면 렌더링이 깨질 수 있음)
+if [ -e /dev/dxg ]; then
+  export GALLIUM_DRIVER=d3d12
+  export MESA_D3D12_DEFAULT_ADAPTER_NAME=NVIDIA
+fi
 # ultralytics 의 패키지 자동 설치 끔: ONNX 내보내기 때 onnx 계열을 설치하며 numpy 를 2.x 로 올려
 # cv_bridge(numpy 1.x 빌드)가 깨지는 것을 이 세션에서 확인함. 필요한 패키지는 직접 설치할 것
 export YOLO_AUTOINSTALL=False
