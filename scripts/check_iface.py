@@ -3,6 +3,8 @@
 import time
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import QoSProfile, ReliabilityPolicy
+SENSOR_QOS = QoSProfile(depth=5, reliability=ReliabilityPolicy.BEST_EFFORT)   # best-effort 구독: reliable·best-effort 발행자 모두와 연결
 from sensor_msgs.msg import Image, CameraInfo, LaserScan
 from tf2_msgs.msg import TFMessage
 
@@ -14,7 +16,7 @@ CHECK = [('/robot1/oakd/rgb/image_raw', Image), ('/robot1/oakd/stereo/image_raw'
 def main():
     rclpy.init(); n = Node('check_iface'); got = {t: [] for t, _ in CHECK}
     for t, ty in CHECK:
-        n.create_subscription(ty, t, lambda m, t=t: got[t].append((time.time(), m)), 10)
+        n.create_subscription(ty, t, lambda m, t=t: got[t].append((time.time(), m)), SENSOR_QOS)
     t0 = time.time()
     while time.time() - t0 < 8.0: rclpy.spin_once(n, timeout_sec=0.05)
     for t, _ in CHECK:

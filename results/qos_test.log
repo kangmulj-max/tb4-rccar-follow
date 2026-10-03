@@ -1,0 +1,16 @@
+## A) 발행 reliable
+[ok] /robot1/oakd/rgb/image_raw: 6.0 Hz 704x704 bgr8 frame=oakd_rgb_camera_optical_frame
+[ok] /robot1/oakd/stereo/image_raw: 5.4 Hz 704x704 16UC1 frame=oakd_rgb_camera_optical_frame
+[ok] /robot1/oakd/rgb/camera_info: 8.0 Hz fx=564.45 cx=352.00 cy=352.00 704x704 frame=oakd_rgb_camera_optical_frame
+[ok] /robot1/oakd/stereo/camera_info: 8.0 Hz fx=564.45 cx=352.00 cy=352.00 704x704 frame=oakd_rgb_camera_optical_frame
+[ok] /robot1/scan: 8.6 Hz n=640 amin=-3.142
+== 4) 라이다 방향 (로봇 정면 0.5 m 에 상자를 두고 실행: '정면' 값이 ~0.5 여야 함)
+   정면 (  +0°): 4.01 m
+   → car@conf>=0.4: YES
+   → car@conf>=0.4: YES
+qos_rel_v3safe max_cmd_lin 0.15 state_time {'IDLE': 4.1, 'TRACKING': 58.9, 'REID': 5.2} events {}
+## B) 발행 best_effort (실기 드라이버가 이렇게 낼 경우)
+qos_be_v3safe max_cmd_lin 0.155 state_time {'IDLE': 5.3, 'TRACKING': 58.5, 'REID': 4.3} events {'MOVE_WITHOUT_CAMERA': 19, 'REVERSE': 2}
+qos_be_v3 max_cmd_lin 0.0 state_time {'IDLE': 68.2} events {}
+[INFO] [1790998621.132488925] [follow_object_node]: camera_info ok
+## done

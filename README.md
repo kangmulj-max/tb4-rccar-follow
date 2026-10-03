@@ -10,6 +10,8 @@ TurtleBot4(robot1)가 움직이는 검은 RC카를 YOLO 로 찾아 1 m 거리로
 | `docs/CODE_REVIEW_GUIDE.md` | 기초 개념부터 구조, 결함(B)·환경 오류(E)·측정 정정(M) 목록, 리뷰 체크리스트 |
 | `docs/FOLLOW_NODE_EXPLAINED.md` | 추종 원리 단계별 설명, 문헌 대조, 참고문헌 |
 | `docs/YOLO_COMPARISON.md` | yolo11n vs yolo12n 공식 자료 ↔ 실측 대조, 다른 모델 추가 절차 |
+| `docs/REAL_CODE_STRUCTURE.md` | 실기용 코드 구조와 실기 실행 순서 |
+| `docs/REAL_NODES.md` | 실기 구성 노드 해설 (로봇·노트북, 네트워크, EStop) |
 | `real/README.md` | 실기 시도 기록 절차 |
 
 ## 노드
@@ -17,7 +19,10 @@ TurtleBot4(robot1)가 움직이는 검은 RC카를 YOLO 로 찾아 1 m 거리로
 |---|---|
 | `scripts/follow_object_node_v3.py` | 원본 (수정 금지) |
 | `scripts/follow_object_node_v3_annotated.py` | 원본 + 리뷰 주석. `python3 scripts/check_annotated_identical.py` 로 코드 동일 검증 |
-| `scripts/follow_object_node_v3_safe.py` | 안전 수정본 (S1~S11), 한 줄씩 주석 |
+| `scripts/follow_object_node_v3_safe.py` | 안전 수정본 (S1~S12), 한 줄씩 주석 |
+
+## 실기 (robot1)
+로봇 ROS 환경을 source 한 터미널에서: `bash real/preflight.sh` (점검) → `bash real/run_real.sh 12` (노드) → `bash real/record_real.sh <시도ID>` (기록). 상세 `docs/REAL_CODE_STRUCTURE.md`, `real/README.md`.
 
 ## 설치 (WSL Ubuntu 24.04 / ROS 2 Jazzy)
 ```bash

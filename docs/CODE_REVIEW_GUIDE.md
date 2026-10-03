@@ -53,6 +53,7 @@ IDLE(대기) → TRACKING(추종) → REID(잠깐 놓침, 재식별 시도) → 
 | `scripts/follow_object_node_v3.py` | 원본 노드 (수정 금지) | ✓ |
 | `scripts/follow_object_node_v3_annotated.py` | 원본 + 리뷰 주석 (코드 동일, `check_annotated_identical.py` 로 검증) | 읽기용 |
 | `scripts/follow_object_node_v3_safe.py` | 안전 수정본 S1~S11, 한 줄씩 주석 | ✓ |
+| `real/preflight.sh`, `real/run_real.sh` | 실기 출발 전 점검, 실기 노드 실행 | ✓ |
 | `real/record_real.sh`, `real/real_recorder.py` | 실기 시도 기록 (bag + 영상 + 텔레메트리) | ✓ |
 | `scripts/check_iface.py`, `lidar_check.py`, `detect_test.py` | 토픽·라이다 방향·YOLO 1프레임 점검 | ✓ |
 | `launch/follow_sim.launch.py`, `run_sim.sh`, `env.sh` | 가즈보 시뮬 (robot1, 스냅샷 카메라 사양) | 시뮬 |
@@ -85,7 +86,8 @@ IDLE(대기) → TRACKING(추종) → REID(잠깐 놓침, 재식별 시도) → 
 | B10 | 카메라 끊겨도 노드가 정지 안 함 (베이스 타임아웃 의존) | 시뮬 camdrop | S8 |
 | B11 | `track(conf=0.4)` 로 ByteTrack 저점수 연결이 꺼짐 (ultralytics 권장과 다름). id 끊김의 원인이라는 가설은 **시뮬에서 확인 안 됨** — S10 적용 후에도 TRACKING→REID 횟수 비슷 (79~117 vs 86~100) | ultralytics 코드 `engine/model.py`, 매트릭스 | S10 (권장 방식에 맞춤, 효과는 실기 bag 으로 재확인) |
 | B12 | 라이다 평면(0.193 m)보다 낮은 물체 미검출 (RC카 자체 포함) | 실기 TF 높이, 시뮬 lowbox | S4 (depth 장애물) |
-| B13 | 비례 제어라 이동 타깃을 `v/0.6` 만큼 뒤처져 따라감, 0.3 m/s 초과 타깃은 추종 불가 | 식 | 미수정 (설계 선택 — 9장 제안) |
+| B13 | 비례 제어라 이동 타깃을 `v/0.6` 만큼 뒤처져 따라감, 0.3 m/s 초과 타깃은 추종 불가 | 식 | 미수정 (설계 선택 — 6장 제안) |
+| B14 | 센서 구독이 reliable·큐 10 (기본값): 로봇이 best-effort 로 내면 영상 0 개, 노트북이 느리면 최대 ~1 s 묵은 프레임 | QoS 규칙, 시뮬 `scripts/test_qos.sh` | S12 (best-effort, 영상 큐 2) |
 
 ### 3-2. v3_safe 자체의 한계·남은 위험
 - S4 depth 장애물: 시뮬 depth 는 잡음이 없다. **실기에서 바닥 반사·잡음으로 헛정지 가능** → `obs_min_h`, `obs_min_pts` 실측 튜닝.

@@ -7,6 +7,8 @@
 import math, time
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import QoSProfile, ReliabilityPolicy
+SENSOR_QOS = QoSProfile(depth=5, reliability=ReliabilityPolicy.BEST_EFFORT)   # best-effort 구독: reliable·best-effort 발행자 모두와 연결
 from sensor_msgs.msg import LaserScan
 
 
@@ -19,7 +21,7 @@ def front_min(msg, offset_deg, half_deg=20):        # follow_object_node_v3.cb_s
 
 
 rclpy.init(); n = Node('lidar_check'); box = []
-n.create_subscription(LaserScan, '/robot1/scan', lambda m: box.append(m), 5)
+n.create_subscription(LaserScan, '/robot1/scan', lambda m: box.append(m), SENSOR_QOS)
 t = time.time()
 while not box and time.time() - t < 10: rclpy.spin_once(n, timeout_sec=0.1)
 m = box[-1]

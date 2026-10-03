@@ -14,6 +14,7 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image, CameraInfo
 from geometry_msgs.msg import Twist, TwistStamped
+from rclpy.qos import QoSProfile, ReliabilityPolicy
 
 FRAME = 'oakd_rgb_camera_optical_frame'
 
@@ -25,8 +26,11 @@ class Adapter(Node):
         # 실험용: false 로 바꾸면 depth 를 전부 0(무효)으로 내보냄 — 검은 무광 차체에서 스테레오 depth 가
         # 안 나오는 실기 상황 재현.  ros2 param set /tb4_real_iface_adapter depth_valid false
         self.declare_parameter('depth_valid', True)
-        self.pub_rgb = self.create_publisher(Image, f'{ns}/oakd/rgb/image_raw', 5)
-        self.pub_dep = self.create_publisher(Image, f'{ns}/oakd/stereo/image_raw', 5)
+        # 실기 드라이버가 best-effort 로 낼 경우를 재현하기 위한 옵션 (기본 reliable)
+        q = self.declare_parameter('pub_qos', 'reliable').value
+        qos = QoSProfile(depth=5, reliability=ReliabilityPolicy.BEST_EFFORT if q == 'best_effort' else ReliabilityPolicy.RELIABLE)
+        self.pub_rgb = self.create_publisher(Image, f'{ns}/oakd/rgb/image_raw', qos)
+        self.pub_dep = self.create_publisher(Image, f'{ns}/oakd/stereo/image_raw', qos)
         self.pub_ci_rgb = self.create_publisher(CameraInfo, f'{ns}/oakd/rgb/camera_info', 5)
         self.pub_ci_st = self.create_publisher(CameraInfo, f'{ns}/oakd/stereo/camera_info', 5)
         self.pub_cmd = self.create_publisher(TwistStamped, f'{ns}/cmd_vel', 5)

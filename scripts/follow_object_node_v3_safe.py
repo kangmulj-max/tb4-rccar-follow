@@ -24,6 +24,8 @@
 #   S10 ByteTrack 에는 저신뢰(≥0.1) 박스까지 넘기고, '새 타깃 선택·재식별'에만 conf(0.4) 적용
 #       (원본: conf=0.4 를 track() 에 넘겨 ByteTrack 의 저점수 2차 연결이 꺼짐 → 잦은 id 끊김)
 #   S11 상태/거리/정지사유를 {ns}/follow/state (JSON 문자열)로 퍼블리시 — 실험 기록·디버깅용
+#   S12 센서 구독을 best-effort + 짧은 큐로: 로봇이 best-effort 로 보내도 받고(reliable 구독은 못 받음),
+#       노트북이 느려도 오래된 프레임이 쌓이지 않게 (영상 큐 2, 원본은 기본 10 → 최대 ~1 s 지연 가능)
 #
 #  실행: python3 follow_object_node_v3_safe.py --ros-args -p model:=best.pt -p ns:=/robot1
 #        (TF 가 네임스페이스 안이면 -r /tf:=/robot1/tf -r /tf_static:=/robot1/tf_static 추가)
@@ -44,6 +46,7 @@ import rclpy        # 「기초」 ROS 2 의 파이썬 클라이언트 라이브
 from rclpy.node import Node                     # 모든 ROS 2 노드의 부모 클래스
 from rclpy.duration import Duration             # ROS 시간 간격 (TF 조회 대기시간에 사용)
 from rclpy.signals import SignalHandlerOptions  # S9 rclpy 의 기본 Ctrl+C 처리기를 끄기 위해
+from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy   # S12 센서 구독 QoS
 # 「기초」 메시지 타입 = 토픽으로 주고받는 데이터 구조 (C 의 struct 와 비슷)
 from sensor_msgs.msg import Image, LaserScan, CameraInfo   # 카메라 영상, 라이다 스캔, 카메라 내부 파라미터
 from geometry_msgs.msg import Twist, PointStamped          # 속도 명령(선속도·각속도), 좌표계가 붙은 3D 점
@@ -125,6 +128,8 @@ class FollowObjectNode(Node):
         p('obs_min_pts', 12)         # S4 이만큼 점이 모여야 장애물로 인정 (잡음 1~2 점 무시)
         p('obs_step', 4)             # S4 depth 를 4 픽셀 간격으로 띄엄띄엄 사용 (계산량 1/16)
         p('cam_timeout', 1.0)        # S8 카메라가 이 시간[s] 이상 끊기면 정지
+        p('sensor_qos', 'best_effort')   # S12 'best_effort'(기본: 어떤 발행자와도 연결) 또는 'reliable'
+        p('image_queue', 2)          # S12 영상 구독 큐 깊이 (작을수록 최신 프레임만 처리)
         # TF 를 못 읽을 때 쓰는 라이다 장착값 — 실기 스냅샷 tf_static: base_link → rplidar_link (x=−0.04, yaw=+90°)
         p('lidar_x', -0.04); p('lidar_y', 0.0); p('lidar_yaw_deg', 90.0)
 
@@ -158,13 +163,18 @@ class FollowObjectNode(Node):
 
         # ---- 구독 ------------------------------------------------------------------------------------
         # 「기초」 RGB 와 depth 는 별도 토픽 → ApproximateTimeSynchronizer 가 타임스탬프 차이 0.1 s 이내인 쌍을 찾아 cb() 호출
-        rgb = Subscriber(self, Image, f'{self.ns}/oakd/rgb/image_raw')
-        dep = Subscriber(self, Image, f'{self.ns}/oakd/stereo/image_raw')
-        self.sync = ApproximateTimeSynchronizer([rgb, dep], 5, 0.1)   # 큐 5 개, 허용 오차 0.1 s
+        # S12 「기초」 QoS: 발행자가 reliable 이면 best-effort 구독도 연결되지만, 발행자가 best-effort 인데 구독이 reliable 이면
+        #     연결이 안 돼 메시지가 0 개 온다. 센서는 최신값이 중요하므로 best-effort + 짧은 큐가 표준 (ROS 'sensor data' QoS)
+        rel = ReliabilityPolicy.BEST_EFFORT if self.P('sensor_qos') == 'best_effort' else ReliabilityPolicy.RELIABLE
+        img_qos = QoSProfile(depth=int(self.P('image_queue')), reliability=rel, history=HistoryPolicy.KEEP_LAST)
+        scan_qos = QoSProfile(depth=5, reliability=rel, history=HistoryPolicy.KEEP_LAST)
+        rgb = Subscriber(self, Image, f'{self.ns}/oakd/rgb/image_raw', qos_profile=img_qos)
+        dep = Subscriber(self, Image, f'{self.ns}/oakd/stereo/image_raw', qos_profile=img_qos)
+        self.sync = ApproximateTimeSynchronizer([rgb, dep], 5, 0.1)   # 쌍 맞추기 대기열 5, 허용 오차 0.1 s
         self.sync.registerCallback(self.cb)
-        # 「기초」 create_subscription(타입, 토픽, 콜백, 큐깊이): 메시지가 오면 콜백 실행
-        self.create_subscription(CameraInfo, f'{self.ns}/oakd/rgb/camera_info', self.cb_info, 1)
-        self.create_subscription(LaserScan, f'{self.ns}/scan', self.cb_scan, 5)
+        # 「기초」 create_subscription(타입, 토픽, 콜백, QoS): 메시지가 오면 콜백 실행
+        self.create_subscription(CameraInfo, f'{self.ns}/oakd/rgb/camera_info', self.cb_info, scan_qos)
+        self.create_subscription(LaserScan, f'{self.ns}/scan', self.cb_scan, scan_qos)
 
         # ---- 발행 ------------------------------------------------------------------------------------
         topic = self.get_parameter('cmd_topic').value or f'{self.ns}/cmd_vel_unstamped'
@@ -174,7 +184,8 @@ class FollowObjectNode(Node):
 
         # 「기초」 타이머: 0.1 s 마다 watchdog() 호출 (영상이 안 와도 돌아가야 하는 일: 정지, SEARCH 회전)
         self.create_timer(0.1, self.watchdog)
-        self.get_logger().info(f"v3_safe target='{self.P('target')}' cmd→{topic} enable={self.P('enable')}")
+        self.get_logger().info(f"v3_safe target='{self.P('target')}' cmd→{topic} enable={self.P('enable')} "
+                               f"sensor_qos={self.P('sensor_qos')} image_queue={self.P('image_queue')}")
 
     def P(self, n):
         """파라미터 현재값 읽기 (ros2 param set 으로 바뀐 값이 즉시 반영됨)"""
