@@ -24,7 +24,7 @@ timeout 5 ros2 topic list -t > "$OUT/topics.txt" 2>/dev/null
 TOPICS=( $NS/oakd/rgb/image_raw/compressed $NS/oakd/stereo/image_raw/compressedDepth
          $NS/oakd/rgb/camera_info $NS/oakd/stereo/camera_info $NS/scan $NS/odom $NS/imu
          $NS/tf $NS/tf_static $NS/cmd_vel $NS/cmd_vel_unstamped $NS/battery_state
-         $NS/hazard_detection $NS/wheel_status $NS/dock_status /rosout )
+         $NS/hazard_detection $NS/wheel_status $NS/dock_status $NS/follow/state /rosout )   # follow/state: 노드 d·vcar·block (S16)
 [ "${BAG_RAW:-0}" = 1 ] && TOPICS+=( $NS/oakd/rgb/image_raw $NS/oakd/stereo/image_raw )
 
 PIDS=()

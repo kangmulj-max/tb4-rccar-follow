@@ -4,6 +4,7 @@
 #   bash real/run_real.sh 11 -p max_lin:=0.2      추가 파라미터
 #   NS=/robot2 bash real/run_real.sh 12           다른 로봇
 # 사전: 로봇과 같은 ROS 환경을 source (ROS_DOMAIN_ID=1, 디스커버리 서버 등). 먼저 bash real/preflight.sh 권장.
+# FX=0 bash real/run_real.sh 12 → camera_info 의 fx 사용 (기본 909: robot1 실측, docs/REAL_TRIAL_261003.md 4.6)
 # 시작은 enable=false (계산·디버그 영상만). 주행: ros2 param set /follow_object_node enable true
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 V=${1:-12}; shift || true
@@ -19,5 +20,6 @@ export YOLO_AUTOINSTALL=False                                 # numpy 2.x 자동
 mkdir -p ~/tb4_real_logs; cd ~/tb4_real_logs
 exec python3 "$HERE/scripts/follow_object_node_v3_safe.py" --ros-args \
   -p model:="$MODEL" -p ns:="$NS" -p max_lin:=0.1 \
+  -p fx_override:=$(printf %.1f "${FX:-909}") \
   -r /tf:="$NS/tf" -r /tf_static:="$NS/tf_static" \
   "$@"

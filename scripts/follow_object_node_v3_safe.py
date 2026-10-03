@@ -49,6 +49,7 @@ from rclpy.signals import SignalHandlerOptions  # S9 rclpy 의 기본 Ctrl+C 처
 from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy   # S12 센서 구독 QoS
 # 「기초」 메시지 타입 = 토픽으로 주고받는 데이터 구조 (C 의 struct 와 비슷)
 from sensor_msgs.msg import Image, CompressedImage, LaserScan, CameraInfo   # 카메라 영상(원본·압축), 라이다 스캔, 카메라 내부 파라미터
+from nav_msgs.msg import Odometry                         # S16 로봇 실제 속도 (차 속도 추정)
 from geometry_msgs.msg import Twist, PointStamped          # 속도 명령(선속도·각속도), 좌표계가 붙은 3D 점
 from std_msgs.msg import String                             # S11 상태 퍼블리시용 문자열
 from cv_bridge import CvBridge                  # ROS Image ↔ OpenCV(numpy) 영상 변환기
@@ -93,7 +94,16 @@ class FollowObjectNode(Node):
         p('target_dist', 1.0)        # 유지할 거리 [m] (카메라 → RC카 표면, depth 측정값 기준)
         p('lambda_ang', 1.2)         # 회전 이득 λ_ang: 방위 오차 1 rad 당 1.2 rad/s
         p('lambda_lin', 0.6)         # 전진 이득 λ_lin: 거리 오차 1 m 당 0.6 m/s
-        p('bearing_dead_deg', 4.0)   # 방위 데드밴드: ±4° 이내 오차는 무시 (떨림 방지)
+        p('bearing_dead_deg', 5.0)   # 방위 데드밴드: 회전 중 이 안으로 들어오면 회전 멈춤 (원본 4°)
+        # S17 회전 히스테리시스: 실기 Create3 는 제자리 회전 명령 0.02~0.25 rad/s 를 모두 ~0.26 rad/s 로 실행 (T085·A 공통)
+        #     → 비례 제어가 계전기(relay)처럼 동작해 정지한 차 앞에서 ±15° 좌우 진동 (261003-A 115~172 s, 부호 반전 36 회/52 s).
+        #     0.26 rad/s × 지연 ~0.3 s ≈ 4.5° 넘침 → 5° 에서 멈추고 8° 를 넘어야 다시 돌기 시작.
+        p('bearing_start_deg', 8.0)  # 정지 중 이 각도를 넘으면 회전 시작
+        p('ang_min', 0.0)            # 회전할 때 최소 각속도 [rad/s] (0 = 끔. 0.25 로 강제하면 시뮬상 오히려 나빠짐)
+        # S18 카메라 초점거리 덮어쓰기 [px] (0 = camera_info 사용). 실기 robot1 의 camera_info fx=fy=564.65 는 704×704 영상과 안 맞음:
+        #     차 정지 + 로봇 회전 구간에서 방위 = −1.71·yaw (기대 −1.06, 잔차 0.2°), 라이다 스캔 매칭·IMU 로 odom 회전은 정확 확인
+        #     → 실제 fx ≈ 564.65·1.71/1.06 ≈ 909 (수평 FOV ~42°, 1080p 정사각 크롭과 일치). 방위·depth 장애물·LOP 역투영에 모두 쓰임.
+        p('fx_override', 0.0)
         p('dist_dead', 0.1)          # 거리 데드밴드: ±0.1 m 이내 오차는 무시
         p('max_lin', 0.3)            # 최대 전진 속도 [m/s] (Create3 상한 ~0.306 m/s 와 비슷)
         p('max_ang', 1.0)            # 최대 회전 속도 [rad/s]
@@ -119,7 +129,7 @@ class FollowObjectNode(Node):
         p('lidar_stale', 1.0)        # 라이다가 이 시간[s] 이상 안 오면 '모름' → 전·후진 금지
         p('base_frame', 'base_link') # 로봇 몸체 좌표계 (x 앞, y 왼쪽, z 위, 원점은 바닥)
         p('robot_radius', 0.171)     # TB4 반지름 [m] (지름 0.342 m)
-        p('corridor_margin', 0.05)   # S3 통로 반폭 = 반지름 + 0.05 m
+        p('corridor_margin', 0.02)   # S3/S17 원형 몸체 여유 [m] (원본 직선 앞면 + 0.05 → 원형 + 0.02)
         p('stop_base', 0.12)         # S3 정지거리 = stop_base + stop_gain × 속도 (범퍼 앞 기준) 「주의」 실기에서 실측 보정
         p('stop_gain', 0.6)          #    0.3 m/s → 0.30 m, 0.1 m/s → 0.18 m
         p('rear_stop', 0.35)         # S6 후방 통로가 이 거리[m]보다 가까우면 후진 금지
@@ -142,6 +152,9 @@ class FollowObjectNode(Node):
         p('ground_only', True)       # 박스 아래 끝이 지평선(cy) 위인 검출은 버림 — 바닥 위 RC카만 (벽 TV 등 제외)
         p('cut_bottom_px', 4)        # 박스 아래 끝이 화면 하단에서 이 픽셀 이내면 '잘림' → 거리 불신 → 전·후진 0
         p('min_fresh', 3)            # 유효 거리가 이 개수 이상 쌓여야 중앙값 사용 (재획득 직후 튐 1 프레임 무시)
+        # S16 거리 제어 안정화 (실기 T085: 멈춤-출발 0.23 회/s, 후진 20 % — 목표가 가까울수록 증가)
+        p('dist_dead_cont', True)    # 거리 데드밴드를 방위처럼 연속으로 (False = 원본 계단)
+        p('ff_gain', 0.0)            # 차 속도 피드포워드 이득 (0 = 끔, 실험값 0.5~1.0)
         # TF 를 못 읽을 때 쓰는 라이다 장착값 — 실기 스냅샷 tf_static: base_link → rplidar_link (x=−0.04, yaw=+90°)
         p('lidar_x', -0.04); p('lidar_y', 0.0); p('lidar_yaw_deg', 90.0)
 
@@ -164,6 +177,8 @@ class FollowObjectNode(Node):
         self.front_clear = float('inf'); self.rear_clear = float('inf')   # S3 범퍼 기준 전·후방 통로 여유 [m]
         self.depth_obs = float('inf')    # S4 depth 로 본 통로 안 장애물까지 여유 [m]
         self.d_now = None                # S2 지금 쓸 수 있는 '신선한' 거리 (없으면 None)
+        self.v_car = None                # S16 추정한 차의 지름 방향 속도 (없으면 None)
+        self.turning = False             # S17 방위 히스테리시스 상태
         self.cmd_prev = Twist()          # 직전에 보낸 명령 (가감속 제한 계산용)
         self.t_prev = time.time()        # 직전 명령 시각
         self.enable_prev = False         # enable 이 true→false 로 바뀌는 순간을 잡기 위해
@@ -194,6 +209,8 @@ class FollowObjectNode(Node):
         # 「기초」 create_subscription(타입, 토픽, 콜백, QoS): 메시지가 오면 콜백 실행
         self.create_subscription(CameraInfo, f'{self.ns}/oakd/rgb/camera_info', self.cb_info, scan_qos)
         self.create_subscription(LaserScan, f'{self.ns}/scan', self.cb_scan, scan_qos)
+        self.odom_v = None; self.odom_t = 0.0   # S16 명령이 아닌 실제 속도 (가감속·오버슈트 반영)
+        self.create_subscription(Odometry, f'{self.ns}/odom', self.cb_odom, scan_qos)
 
         # ---- 발행 ------------------------------------------------------------------------------------
         topic = self.get_parameter('cmd_topic').value or f'{self.ns}/cmd_vel_unstamped'
@@ -238,7 +255,13 @@ class FollowObjectNode(Node):
         「기초」 핀홀 카메라: 3D 점 (X,Y,Z) 가 화면 u = fx·X/Z + cx, v = fy·Y/Z + cy 에 찍힌다."""
         if self.K is None:
             self.K = (m.k[0], m.k[4], m.k[2], m.k[5])   # fx, fy, cx, cy
-            self.get_logger().info('camera_info ok')
+            fo = self.P('fx_override')
+            if fo > 0:                                   # S18 cx, cy 는 그대로 (중앙 크롭이라 주점 동일)
+                self.K = (fo, fo, m.k[2], m.k[5])
+            self.get_logger().info(f'camera_info ok fx={self.K[0]:.1f} (camera_info {m.k[0]:.1f})')
+
+    def cb_odom(self, m):
+        self.odom_v = m.twist.twist.linear.x; self.odom_t = time.time()
 
     def stop_dist(self):
         """S3 현재 속도에서의 정지거리 [m] (범퍼 앞 기준). 빠를수록 멀리서 멈춰야 함."""
@@ -265,14 +288,17 @@ class FollowObjectNode(Node):
         # 극좌표(r, a) → 라이다 직교좌표 (r cos a, r sin a) → 회전 R·이동 t 로 base_link 좌표
         pts = R[:2, :2] @ np.vstack([r[ok] * np.cos(a[ok]), r[ok] * np.sin(a[ok])]) + t[:2, None]
         x, y = pts
-        half = self.P('robot_radius') + self.P('corridor_margin')   # 통로 반폭
         rr = self.P('robot_radius')
-        inside = np.abs(y) < half                     # 로봇이 지나갈 폭 안의 점만
-        f = x[inside & (x > 0)] - rr                  # 앞쪽 점: 범퍼(앞쪽 원 둘레)까지의 거리로 환산
-        b = -x[inside & (x < 0)] - rr                 # 뒤쪽 점
-        # -0.05 보다 작은 값은 로봇 몸체 안쪽(자기 부품 반사 등)이라 제외
-        self.front_clear = float(f[f > -0.05].min()) if np.any(f > -0.05) else float('inf')
-        self.rear_clear = float(b[b > -0.05].min()) if np.any(b > -0.05) else float('inf')
+        ri = rr + self.P('corridor_margin')           # S17 여유를 더한 원형 몸체 반지름
+        # S17 원형 몸체 기하: 점 (x, y) 에 닿기까지 앞(뒤)으로 갈 수 있는 거리 = |x| − √(ri² − y²)  (|y| < ri 일 때만 닿음)
+        #     원본 S3 은 앞면을 x = rr 직선으로 봐서, 로봇 '옆' 벽(x 0.12~0.17, |y| 0.19~0.22)을 앞쪽 −0.02 로 계산해 전진을 막았다
+        #     (실기 261003-A: 벽 옆에서 전진 막힘 96 % → 원형 + 2 cm 60 %). 몸체 반지름 −3 cm 안쪽 점은 자기 부품 반사로 제외.
+        inside = (np.abs(y) < ri) & (np.hypot(x, y) > rr - 0.03)
+        reach = np.sqrt(np.maximum(0.0, ri * ri - y * y))
+        f = x[inside & (x > 0)] - reach[inside & (x > 0)]    # 앞쪽 점
+        b = -x[inside & (x < 0)] - reach[inside & (x < 0)]   # 뒤쪽 점
+        self.front_clear = float(f.min()) if f.size else float('inf')
+        self.rear_clear = float(b.min()) if b.size else float('inf')
         self.scan_time = time.time()
         # 카메라 콜백(~7 Hz)을 기다리지 않고 스캔이 올 때마다 바로 정지 판정 (원본은 카메라 주기에서만 판정)
         if self.P('enable') and self.cmd_prev.linear.x > 0 and self.front_clear < self.stop_dist():
@@ -314,9 +340,9 @@ class FollowObjectNode(Node):
         P = np.vstack([(u - cx) * Z / fx, (v - cy) * Z / fy, Z])
         R, t = self.cam_T
         x, y, z = R @ P + t[:, None]                       # base_link 좌표 (z = 바닥 위 높이)
-        half = self.P('robot_radius') + self.P('corridor_margin')
-        sel = (np.abs(y) < half) & (z > self.P('obs_min_h')) & (z < self.P('obs_max_h')) & (x > 0)
-        f = np.sort(x[sel] - self.P('robot_radius'))       # 범퍼까지 거리, 가까운 순
+        ri = self.P('robot_radius') + self.P('corridor_margin')
+        sel = (np.abs(y) < ri) & (z > self.P('obs_min_h')) & (z < self.P('obs_max_h')) & (x > 0)
+        f = np.sort(x[sel] - np.sqrt(ri * ri - y[sel] ** 2))   # S17 원형 몸체까지 갈 수 있는 거리, 가까운 순
         n = self.P('obs_min_pts')
         return float(f[n - 1]) if f.size >= n else float('inf')   # n 번째로 가까운 점 = 잡음 몇 점은 무시
 
@@ -416,14 +442,39 @@ class FollowObjectNode(Node):
         「이론」 비례 제어의 한계: RC카가 일정 속도 v 로 멀어지면 정상상태 거리 = target_dist + v/λ_lin
                   (0.15 m/s → 1.25 m). 0.3 m/s(max_lin) 보다 빠르면 거리가 계속 벌어진다."""
         dead = math.radians(self.P('bearing_dead_deg'))
-        e_b = 0.0 if abs(bearing) < dead else bearing - math.copysign(dead, bearing)   # 데드밴드만큼 빼서 연속적으로
+        # S17 히스테리시스: 돌고 있으면 dead 안에서 멈춤, 멈춰 있으면 bearing_start 를 넘어야 시작
+        if self.turning and abs(bearing) < dead:
+            self.turning = False
+        elif not self.turning and abs(bearing) > math.radians(self.P('bearing_start_deg')):
+            self.turning = True
+        e_b = bearing - math.copysign(dead, bearing) if self.turning else 0.0   # 데드밴드만큼 빼서 연속적으로
         ang = -self.P('lambda_ang') * e_b
+        if self.turning and 0.0 < abs(ang) < self.P('ang_min'):
+            ang = math.copysign(self.P('ang_min'), ang)   # 어차피 Create3 가 ~0.26 으로 돌므로 명시 (예측 가능하게)
         lin = 0.0
         if d is not None:                        # S2 거리를 모르면 전·후진 0 (회전은 계속해서 타깃을 화면 중앙에)
             e_d = d - self.P('target_dist')
-            if abs(e_d) > self.P('dist_dead'):
+            dd = self.P('dist_dead')
+            if abs(e_d) > dd:
+                if self.P('dist_dead_cont'):     # S16 방위와 같이 데드밴드만큼 빼서 연속 (원본: 경계에서 0 → λ·0.1 = 0.06 m/s 계단)
+                    e_d -= math.copysign(dd, e_d)
                 lin = self.P('lambda_lin') * e_d     # 멀면 +(전진), 가까우면 −(후진, send() 에서 후방 확인)
+            # S16 피드포워드: 차의 지름 방향 속도를 미리 더해 비례 제어의 정상상태 지연(v/λ)과 멈춤-출발 반복을 줄임
+            if self.P('ff_gain') > 0 and self.v_car is not None:
+                lin += self.P('ff_gain') * self.v_car
         return self.send(lin, ang)
+
+    def estimate_v_car(self, now):
+        """S16 차의 지름 방향 속도 [m/s] (멀어지면 +). 최근 신선한 거리들의 직선 기울기 d' + 로봇 자신의 전진 속도.
+        「이론」 등속 모델 — 칼만 예측 [R10] 의 가장 단순한 형태. 표본 3 개·0.2 s 미만이면 None.
+        로봇 속도는 odom 실측 (0.5 s 이상 끊기면 직전 명령으로 대체)."""
+        pts = [(tt, dd) for tt, dd in self.dist_hist if now - tt < self.P('depth_max_age')]
+        if len(pts) < 3 or pts[-1][0] - pts[0][0] < 0.2:
+            return None
+        tt = np.array([p[0] for p in pts]); dd = np.array([p[1] for p in pts])
+        slope = float(np.polyfit(tt - tt[0], dd, 1)[0])
+        v_robot = self.odom_v if (self.odom_v is not None and now - self.odom_t < 0.5) else self.cmd_prev.linear.x
+        return float(np.clip(slope + v_robot, -0.5, 0.5))   # 추정 범위 (명령은 send() 에서 max_lin 으로 다시 자름)
 
     # =================================================================================================
     #  메인 콜백 — RGB·depth 한 쌍이 올 때마다 (약 7~10 Hz)
@@ -511,6 +562,7 @@ class FollowObjectNode(Node):
             if cut:
                 d = None
             self.d_now = d
+            self.v_car = self.estimate_v_car(now) if d is not None else None   # S16
             # 방위: 핀홀 모델 b = −atan((u − cx)/fx). 화면 중앙보다 왼쪽(u<cx) → b>0 (ROS 규약: 왼쪽 회전 +)
             # 「주의」 실기 RGB 는 렌즈 왜곡이 강하지만 보정하지 않음 → 화면 가장자리일수록 방위 오차
             fx, cx = (self.K[0], self.K[2]) if self.K else (W / 2 / math.tan(math.radians(32)), W / 2)   # camera_info 전엔 FOV 64° 가정
@@ -525,12 +577,12 @@ class FollowObjectNode(Node):
             if self.P('debug_image'):
                 cv2.circle(rgb, (u, v), 5, (0, 0, 255), -1)              # 거리 읽은 점 표시
         elif self.state == REID:
-            self.d_now = None
+            self.d_now = None; self.v_car = None
             # REID 중에는 직전 선속도를 반으로 줄이며 회전은 유지 (관성처럼 잠깐 이어감) — S7: send() 의 안전 게이트 통과
             cmd = self.send(self.cmd_prev.linear.x * 0.5, self.cmd_prev.angular.z)
             txt += f'reid {self.reid_count} '
         else:
-            self.d_now = None; cmd = self.cmd_prev                       # IDLE/SEARCH 명령은 watchdog 담당
+            self.d_now = None; self.v_car = None; cmd = self.cmd_prev                       # IDLE/SEARCH 명령은 watchdog 담당
 
         # ---- 6) 디버그 영상 + 상태 토픽 ----------------------------------------------------------------
         if self.P('debug_image'):
@@ -550,7 +602,8 @@ class FollowObjectNode(Node):
              'lin': round(cmd.linear.x, 3), 'ang': round(cmd.angular.z, 3), 'block': self.block_reason,
              'front': None if math.isinf(self.front_clear) else round(self.front_clear, 3),
              'rear': None if math.isinf(self.rear_clear) else round(self.rear_clear, 3),
-             'depth_obs': None if math.isinf(self.depth_obs) else round(self.depth_obs, 3), 'enable': bool(self.P('enable'))}
+             'depth_obs': None if math.isinf(self.depth_obs) else round(self.depth_obs, 3), 'enable': bool(self.P('enable')),
+             'vcar': None if self.v_car is None else round(self.v_car, 3)}
         self.pub_state.publish(String(data=json.dumps(s)))
 
     # =================================================================================================
