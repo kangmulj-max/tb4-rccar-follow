@@ -32,7 +32,7 @@ watchdog 10 Hz: enable 해제 시 정지, SEARCH 에서 마지막 관측 방향�
 ### 2-1. 검출 + 추적 (168행)
 `self.model.track(rgb, conf=0.4, persist=True, tracker='bytetrack.yaml')`
 - YOLO 가 박스를 내고, Ultralytics 내장 ByteTrack 이 프레임 사이에 같은 물체에 같은 `id` 를 붙인다 (`persist=True` 로 상태 유지).
-- **확인된 문제**: 설치된 ultralytics 8.4.171 은 `track()` 의 기본 conf 를 0.1 로 두고 주석에 "trackers need low-confidence input" 이라고 적고 있다 (`engine/model.py`). ByteTrack 의 핵심은 점수 0.1~0.25 의 낮은 박스로 2차 연결을 하는 것인데 (`track_low_thresh 0.1`, `track_high_thresh 0.25`), v3 는 `conf=0.4` 를 넘겨 0.4 미만 박스를 추적기 전에 버린다. 그래서 2차 연결이 사실상 꺼지고, 점수가 잠깐 떨어지는 프레임마다 트랙이 끊겨 새 id 가 생긴다. 시뮬에서 본 잦은 TRACKING→REID 전환의 유력한 원인 (검증 필요: `conf:=0.1` 로 추적하고 타깃 선택만 0.4 로 거르는 변형과 비교).
+- **확인된 문제**: 설치된 ultralytics 8.4.171 은 `track()` 의 기본 conf 를 0.1 로 두고 주석에 "trackers need low-confidence input" 이라고 적고 있다 (`engine/model.py`). ByteTrack 의 핵심은 점수 0.1~0.25 의 낮은 박스로 2차 연결을 하는 것인데 (`track_low_thresh 0.1`, `track_high_thresh 0.25`), v3 는 `conf=0.4` 를 넘겨 0.4 미만 박스를 추적기 전에 버린다. 그래서 2차 연결이 사실상 꺼진다. 처음에는 이것이 잦은 TRACKING→REID 전환의 원인이라고 추정했으나, v3_safe(S10: 추적 0.1, 타깃 선택 0.4)로 매트릭스를 돌려 보니 전환 횟수가 줄지 않았다 → **원인이 아니었거나 시뮬에서는 드러나지 않음**. ultralytics 권장 방식에 맞춘 수정으로 유지하고, 실기 bag 으로 다시 확인할 것.
 - 그 밖의 ByteTrack 설정 (ultralytics 기본): `new_track_thresh 0.25`, `track_buffer 30` 프레임 (약 7 Hz 에서 ~4 s 동안 잃은 트랙 보관), `match_thresh 0.8`, `fuse_score True`.
 
 ### 2-2. 후보 만들기 (170–176행)

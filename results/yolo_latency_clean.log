@@ -1,0 +1,40 @@
+
+##### yolo11n  (layers, params, gradients, GFLOPs) = None
+Ultralytics 8.4.171 🚀 Python-3.12.3 torch-2.6.0+cu124 CUDA:0 (NVIDIA GeForce RTX 3060, 12288MiB)
+YOLO11n summary (fused): 100 layers, 2,582,542 parameters, 0 gradients, 6.4 GFLOPs
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 2621.5±1196.8 MB/s, size: 34.6 KB)
+[K[34m[1mval: [0mScanning /home/kangm/tb4_follow_sim/dataset/valid/labels.cache... 23 images, 0 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 23/23 9.6Mit/s 0.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 50% ━━━━━━────── 1/2 1.5it/s 0.2s<0.7s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 2/2 7.7it/s 0.3s
+                   all         23         28      0.991          1      0.995      0.971
+Speed: 0.7ms preprocess, 4.6ms inference, 0.0ms loss, 0.6ms postprocess per image
+  [val] mAP50=0.995 mAP50-95=0.971  per-class (P, R, AP50): {'car': (0.991, 1.0, 0.995), 'dummy': (0.991, 1.0, 0.995)}
+Ultralytics 8.4.171 🚀 Python-3.12.3 torch-2.6.0+cu124 CUDA:0 (NVIDIA GeForce RTX 3060, 12288MiB)
+YOLO11n summary (fused): 100 layers, 2,582,542 parameters, 0 gradients, 6.4 GFLOPs
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 2889.1±669.0 MB/s, size: 41.7 KB)
+[K[34m[1mval: [0mScanning /home/kangm/tb4_follow_sim/dataset/test/labels.cache... 12 images, 0 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 12/12 5.6Mit/s 0.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 1/1 10.1it/s 0.1s
+                   all         12         16      0.992          1      0.995      0.905
+Speed: 0.2ms preprocess, 3.6ms inference, 0.0ms loss, 1.0ms postprocess per image
+  [test] mAP50=0.995 mAP50-95=0.905  per-class (P, R, AP50): {'car': (0.989, 1.0, 0.995), 'dummy': (0.995, 1.0, 0.995)}
+  latency cuda:0: 7.8 ms/frame (704x704 → imgsz 640)
+  latency cpu: 26.3 ms/frame (704x704 → imgsz 640)
+
+##### yolo12n  (layers, params, gradients, GFLOPs) = None
+Ultralytics 8.4.171 🚀 Python-3.12.3 torch-2.6.0+cu124 CUDA:0 (NVIDIA GeForce RTX 3060, 12288MiB)
+YOLOv12n summary (fused): 159 layers, 2,557,118 parameters, 0 gradients, 7.3 GFLOPs
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 3958.6±849.4 MB/s, size: 38.0 KB)
+[K[34m[1mval: [0mScanning /home/kangm/tb4_follow_sim/dataset/valid/labels.cache... 23 images, 0 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 23/23 16.1Mit/s 0.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 50% ━━━━━━────── 1/2 1.4it/s 0.2s<0.7s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 2/2 7.8it/s 0.3s
+                   all         23         28      0.955      0.995      0.995       0.95
+Speed: 0.3ms preprocess, 3.8ms inference, 0.0ms loss, 0.7ms postprocess per image
+  [val] mAP50=0.995 mAP50-95=0.950  per-class (P, R, AP50): {'car': (1.0, 0.99, 0.995), 'dummy': (0.911, 1.0, 0.995)}
+Ultralytics 8.4.171 🚀 Python-3.12.3 torch-2.6.0+cu124 CUDA:0 (NVIDIA GeForce RTX 3060, 12288MiB)
+YOLOv12n summary (fused): 159 layers, 2,557,118 parameters, 0 gradients, 7.3 GFLOPs
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 4564.3±1297.3 MB/s, size: 42.1 KB)
+[K[34m[1mval: [0mScanning /home/kangm/tb4_follow_sim/dataset/test/labels.cache... 12 images, 0 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 12/12 6.3Mit/s 0.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 1/1 11.5it/s 0.1s
+                   all         12         16      0.983          1      0.995      0.903
+Speed: 0.2ms preprocess, 3.8ms inference, 0.0ms loss, 0.6ms postprocess per image
+  [test] mAP50=0.995 mAP50-95=0.903  per-class (P, R, AP50): {'car': (0.999, 1.0, 0.995), 'dummy': (0.966, 1.0, 0.995)}
+  latency cuda:0: 11.2 ms/frame (704x704 → imgsz 640)
+  latency cpu: 34.8 ms/frame (704x704 → imgsz 640)
