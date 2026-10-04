@@ -58,6 +58,7 @@ IDLE(대기) → TRACKING(추종) → REID(잠깐 놓침, 재식별 시도) → 
 | `scripts/follow_object_node_v3_safe_annotated.py` | 같은 코드의 **주석본** (리뷰·수정은 여기서) | 읽기용 |
 | `scripts/make_lean.py` | 주석본 → 실행본 생성 (주석 제거, docstring 첫 줄만) | 둘 다 |
 | `scripts/collect_runs.py` | 모든 실험 회차를 `results/all_runs.csv` 한 표로 모음 | 시뮬 |
+| `scripts/test_node_offline.py` | Gazebo 없이 노드 기능 시험 33 개 (`ROS_DOMAIN_ID=77` 등 다른 도메인에서) | 둘 다 |
 | `real/preflight.sh`, `real/run_real.sh` | 실기 출발 전 점검, 실기 노드 실행 | ✓ |
 | `real/record_real.sh`, `real/real_recorder.py` | 실기 시도 기록 (bag + 영상 + 텔레메트리) | ✓ |
 | `scripts/check_iface.py`, `lidar_check.py`, `detect_test.py` | 토픽·라이다 방향·YOLO 1프레임 점검 | ✓ |
@@ -93,7 +94,7 @@ IDLE(대기) → TRACKING(추종) → REID(잠깐 놓침, 재식별 시도) → 
 | B12 | 라이다 평면(0.193 m)보다 낮은 물체 미검출 (RC카 자체 포함) | 실기 TF 높이, 시뮬 lowbox | S4 (depth 장애물) |
 | B13 | 비례 제어라 이동 타깃을 `v/0.6` 만큼 뒤처져 따라감, 0.3 m/s 초과 타깃은 추종 불가 | 식 | 미수정 (설계 선택 — 6장 제안) |
 | B14 | 센서 구독이 reliable·큐 10 (기본값): 로봇이 best-effort 로 내면 영상 0 개, 노트북이 느리면 최대 ~1 s 묵은 프레임 | QoS 규칙, 시뮬 `scripts/test_qos.sh` | S12 (best-effort, 영상 큐 2) |
-| B15 | (v3_safe 자체) 센서 장착 TF 를 첫 메시지에서 못 읽으면 기본값을 **영구 캐시** → 나중에 TF 가 와도 무시. 기본값이 실기와 같아 지금까지는 영향 없었음 | 코드 검토 (2026-10-04) | R1 (TF 성공 시에만 캐시) |
+| B15 | (v3_safe 자체) 센서 장착 TF 를 첫 메시지에서 못 읽으면 기본값을 **영구 캐시** → 나중에 TF 가 와도 무시. 3·4 차 회차 v3_safe 실행 중 9 회 발생 (기본값이 실기와 같아 결과 영향은 없었음) | 코드 검토, 노드 로그 (2026-10-04) | R1 (TF 성공 시에만 캐시, 리팩터 검증 10 회 중 5 회에서 기본값 → 실제 TF 전환 확인) |
 
 ### 3-1-1. R1 정리 (2026-10-04) — 뼈대·동작 유지, 중복 제거
 | 정리 | 내용 |

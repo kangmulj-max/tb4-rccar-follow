@@ -29,12 +29,16 @@ TurtleBot4(robot1)가 YOLO 로 움직이는 RC카를 찾아 약 1 m 거리로 �
 | `launch/`, `worlds/`, `run_sim.sh`, `experiment.sh`, `run_batch2.sh` | 시뮬 환경과 시나리오 자동 실험 |
 | `weights/` | 이번에 시험한 YOLO 가중치 3 종 (`yolo{8,11,12}n_amr_best.pt`, 같은 데이터·같은 학습 조건) |
 
-코드 동일 확인:
+코드 동일 확인 / Gazebo 없이 기능 시험:
 ```bash
 python3 scripts/check_annotated_identical.py                     # 원본 v3 ↔ 주석본
 python3 scripts/check_annotated_identical.py --ignore-docstrings \
   scripts/follow_object_node_v3_safe.py scripts/follow_object_node_v3_safe_annotated.py   # 실행본 ↔ 주석본
+cd scripts && ROS_DOMAIN_ID=77 python3 test_node_offline.py      # 기능 시험 33 개 (실제 노드 + 정답을 아는 입력)
 ```
+`test_node_offline.py` 는 실제 노드를 만들어(YOLO 포함) 라이다 통로·즉시 정지·후진 검사·거리 무효·낮은 장애물·재식별·카메라 끊김·종료 정지·상태 토픽,
+그리고 데이터셋 사진 1 장으로 검출→추적→추종까지 확인한다. 로봇·시뮬과 섞이지 않게 다른 ROS_DOMAIN_ID 에서 돌릴 것.
+2026-10-04 결과: 33/33 통과, 코드 87 % 실행 (나머지 13 % 는 TF·재식별·종료 처리 등 ROS 실제 입력이 필요한 경로로, Gazebo 실행 로그에서 동작 확인).
 
 ## 실행 (Ubuntu 24.04 / ROS 2 Jazzy / Gazebo Harmonic)
 ```bash
