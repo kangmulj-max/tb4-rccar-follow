@@ -21,6 +21,7 @@
    - Windows: `w32tm /resync` (관리자), `w32tm /query /status`
 2. 시도마다 **시작할 때 표시판 마커(ID 3)를 웹캠과 로봇 카메라에 함께 1 초** 보여 준다.
    → 웹캠 `frames.csv` 의 `aruco_ids` 와 로봇 bag 에서 ID 3 이 처음 보인 시각의 차이 = 두 시계 차이 (확인용).
+3. `WEBCAM=1` 로 기록했다면 시험 뒤 `python3 scripts/webcam_clock_offset.py ~/tb4_real_logs/<ID>/bag` 로 시계 차이를 bag 만으로 추정 (Olson 2010). 근거·한계: `docs/WEBCAM_AMR_COMM_PAPERS.md`
 
 ## 3. 시도 1회 절차
 | 순서 | AMR PC | 웹캠 PC |
