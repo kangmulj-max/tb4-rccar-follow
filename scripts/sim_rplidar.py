@@ -14,7 +14,8 @@ from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 from tf2_msgs.msg import TFMessage
 
-N, AMIN, RMIN, RMAX = 640, -math.pi, 0.164, 12.0
+# 10/4 실물 bag(slam_raw_run1): 720 샘플(0.5°), 0.15~12 m, 7.63 Hz. (10/2 스냅샷 기준 640 샘플·0.164 m 에서 변경)
+N, AMIN, RMIN, RMAX = 720, -math.pi, 0.15, 12.0
 INC = 2 * math.pi / N
 
 
@@ -45,8 +46,9 @@ class SimLidar(Node):
     def __init__(self):
         super().__init__('sim_rplidar')
         world = self.declare_parameter('world', os.path.expanduser('~/tb4_follow_sim/worlds/follow_arena.sdf')).value
-        self.rate = self.declare_parameter('rate', 10.0).value          # 실기 RPLIDAR A1 ~ 7-10 Hz
-        self.noise = self.declare_parameter('noise', 0.01).value
+        self.rate = self.declare_parameter('rate', 7.6).value           # 10/4 실물 bag 7.63 Hz
+        self.noise = self.declare_parameter('noise', 0.0).value          # 일정 잡음 [m] (이전 기본 0.01)
+        self.noise_k = self.declare_parameter('noise_k', 0.0025).value    # 거리 비례 잡음 σ = k·r. 10/4 실물 bag 정지 구간: 중앙값 0.7 / 2.2 / 7.2 mm (≤1 / 1-2 / 2-3.5 m)
         self.models = load_world(world)
         self.lidar = None                                               # (x, y, yaw, z) world
         self.pub = self.create_publisher(LaserScan, '/robot1/scan', 5)
@@ -95,7 +97,8 @@ class SimLidar(Node):
                 tmax = np.minimum(np.maximum(t1x, t2x), np.maximum(t1y, t2y))
                 hit = (tmax >= np.maximum(tmin, 0)) & (tmin > 0)
                 r = np.where(hit, np.minimum(r, tmin), r)
-        r = r + np.random.normal(0, self.noise, N)
+        sd = self.noise + self.noise_k * np.where(np.isfinite(r), r, 0.0)
+        r = r + np.random.normal(0.0, 1.0, N) * sd
         r = np.where((r < RMIN) | (r > RMAX) | ~np.isfinite(r), np.inf, r)
         msg = LaserScan(); msg.header.stamp = self.get_clock().now().to_msg(); msg.header.frame_id = 'rplidar_link'
         msg.angle_min, msg.angle_max, msg.angle_increment = AMIN, AMIN + INC * (N - 1), INC

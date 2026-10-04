@@ -1,0 +1,25 @@
+[
+ {
+  "obj": "A",
+  "kind": "removed",
+  "x": -1.25,
+  "y": 0.4,
+  "low": false
+ },
+ {
+  "obj": "B",
+  "kind": "moved",
+  "x": -0.9,
+  "y": -1.5,
+  "from_x": -0.85,
+  "from_y": -0.75,
+  "low": false
+ },
+ {
+  "obj": "E",
+  "kind": "added",
+  "x": -3.3,
+  "y": 0.45,
+  "low": false
+ }
+]
