@@ -1,0 +1,38 @@
+# 실물 SLAM 지도로 만든 가즈보 월드 (2026-10-04)
+
+> 10/4 현장에서 만든 실물 SLAM 지도 `arena_1004_run1` (slam_toolbox 실시간, 955 s, 경로 18.8 m, 지도 점프 0 회) 를
+> 가즈보 월드 `follow_arena_slam1004` 로 바꿨다. **좌표 = 지도 좌표 그대로**라 같은 지도 yaml 로 시뮬에서 AMCL·Nav2 를 쓸 수 있다.
+
+## 만든 것
+| 파일 | 내용 |
+|---|---|
+| `scripts/make_slam_world.py` | 지도(pgm + yaml) → 월드. 막힌 칸을 벽 상자로 (행 단위로 잇고 세로로 합쳐 256 개), 1 칸짜리 잡음 제거 |
+| `worlds/follow_arena_slam1004.sdf` | 기본 월드(바닥·조명·RC카·방해물·탑뷰 카메라)에서 8 × 6 m 펜스만 지도 벽(높이 0.5 m)으로 교체. 월드 이름은 `follow_arena` 그대로 → 기존 실험 스크립트 동작 |
+| `worlds/maps/arena_1004_run1.{pgm,yaml}` | 지도 사본 (시뮬 AMCL·Nav2 용) |
+| `worlds/follow_arena_slam1004_check.png` | 지도 위에 벽 상자(빨강), 로봇 시작(파랑), RC카(초록) |
+| `launch/follow_sim.launch.py` (수정) | **버그 수정**: 시뮬 라이다(`sim_rplidar.py`)가 고른 월드가 아니라 항상 기본 월드 벽으로 레이캐스트하던 것 |
+| `experiment.sh` (수정) | 로봇·RC카 시작 위치를 `RX RY CX CY` 로 바꿀 수 있게 (기본값은 그대로) |
+
+## 실행
+```bash
+bash run_sim.sh gui:=false world_file:=follow_arena_slam1004 x:=-0.125 y:=-0.003 yaw:=3.1224   # SLAM 시작 자세
+# 추종 시험 (방 안 빈 곳: 로봇 (-3.5,-1.55), RC카 1.2 m 앞, 1.5 m 정사각 코스)
+RX=-3.5 RY=-1.55 CX=-2.3 CY=-1.55 NODE=v3safe bash experiment.sh square 12 -p target_dist:=0.85
+# 다른 지도로 다시 만들기
+python3 scripts/make_slam_world.py <지도>.yaml --name <월드이름> --start X Y YAW_DEG
+```
+
+## 확인 결과 (WSL 가즈보, 10/4 22:10)
+| 확인 | 결과 |
+|---|---|
+| 시뮬 라이다 ↔ 실물 지도 벽 | 시작 자세에서 스캔 640 점 중 **99.7 % 가 지도 벽 10 cm 이내** (좌표·라이다 장착 방향이 지도와 맞음) |
+| 로봇 카메라 | RC카와 지도 벽이 보임 |
+| 추종 (yolo12n, 1안, square 60 s) | 차가 화면 안 100 %, 잠근 뒤 놓침 없음 (상태 전환 1 회), 충돌 0, 최소 전방 여유 0.32 m, 거리 오차 평균 0.15 m |
+
+그림: `docs/img_slam_world/` (scan_on_map = 시뮬 라이다(빨강)를 실물 지도 위에, overhead = 탑뷰, robot_cam = 로봇 카메라).
+
+## 한계
+- 벽 높이는 모두 0.5 m, 색은 기본 월드의 나무색. 실물 벽·물체의 높이·모양은 지도에 없다 (2D 지도). 방 안의 두 네모(실물 물체)도 같은 높이의 벽으로 들어감.
+- 지도에서 회색(미탐색) 부분은 비워 둠 — 방 아래쪽 통로 끝처럼 벽이 지도에 없는 곳으로는 로봇·차가 나갈 수 있다.
+- 시뮬 라이다는 같은 벽 상자로 레이캐스트하므로 99.7 % 일치는 "좌표가 맞다"는 확인이지 실물 라이다 잡음까지 재현한 것은 아니다.
+- 시뮬 RC카 치수(0.26 × 0.12 × 0.14 m)는 10/4 실측(0.25 × 0.08 × 0.085 m, `measurements/field_env.sh`)과 다르다 — 이번에는 바꾸지 않음.

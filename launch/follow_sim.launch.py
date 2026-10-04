@@ -87,7 +87,8 @@ def generate_launch_description():
     # 실행권한(+x)에 의존하지 않도록 python3 로 직접 실행 (Windows 쪽 편집 시 +x 가 빠짐)
     lidar = ExecuteProcess(output='screen', cmd=[
         'python3', str(ROOT / 'scripts' / 'sim_rplidar.py'), '--ros-args',
-        '-p', f"world:={ROOT / 'worlds' / f'{WORLD}.sdf'}", '-p', 'use_sim_time:=true'])
+        '-p', ['world:=', str(ROOT / 'worlds') + '/', LaunchConfiguration('world_file'), '.sdf'],   # 고른 월드의 벽으로 레이캐스트 (이전: 항상 기본 월드)
+        '-p', 'use_sim_time:=true'])
 
     adapter = ExecuteProcess(output='screen', cmd=[
         'python3', str(ROOT / 'scripts' / 'tb4_real_iface_adapter.py'), '--ros-args',

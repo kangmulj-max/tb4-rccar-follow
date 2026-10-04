@@ -28,7 +28,7 @@ car_stop() { ros2 topic pub -1 /rc_car/cmd_vel geometry_msgs/msg/Twist "{}" >/de
 # ---- 초기 배치 (로봇 x=-2.5 → +x 방향, RC카 1.2 m 앞, 도크/기둥/박스는 치움)
 car_stop
 SP robot1/standard_dock -3.6 -2.6 1.57; SP pillar 6 5; SP pole 6 -5; SP dummy_box 3.0 2.4 0.3
-SP robot1/turtlebot4 -2.5 0 0 0.01; SP rc_car -1.3 0 0
+SP robot1/turtlebot4 ${RX:--2.5} ${RY:-0} 0 0.01; SP rc_car ${CX:--1.3} ${CY:-0} 0   # RX RY CX CY 로 바꿀 수 있음 (SLAM 월드 등)
 PATTERN=square; SPEED=0.15; DUR=60
 case $SC in
   square)   ;;
