@@ -9,6 +9,8 @@ follow_object_node_v3.py 를 수정 없이 실기와 같은 토픽으로 돌리�
   {ns}/oakd/rgb/preview/camera_info       →  {ns}/oakd/rgb/camera_info, {ns}/oakd/stereo/camera_info
   {ns}/cmd_vel_unstamped           Twist  →  {ns}/cmd_vel                 TwistStamped  (실기 create3_repub 역할)
 """
+import math, time
+from collections import deque
 import numpy as np
 import rclpy
 from rclpy.node import Node
@@ -28,6 +30,13 @@ class Adapter(Node):
         self.declare_parameter('depth_valid', True)
         # 실기 드라이버가 best-effort 로 낼 경우를 재현하기 위한 옵션 (기본 reliable)
         q = self.declare_parameter('pub_qos', 'reliable').value
+        # 실기 지연 재현 (10/3 실측, docs/REAL_TRIAL_261003.md 5.3·5.5): 인지 지연 ~0.4 s, 명령→바퀴 0.2 s,
+        # Create3 제자리 회전 최소 ~0.26 rad/s. 기본 0 = 기존 동작. 영상 header.stamp 는 촬영 시각 그대로 두고 늦게 발행.
+        self.img_delay = self.declare_parameter('img_delay', 0.0).value
+        self.cmd_delay = self.declare_parameter('cmd_delay', 0.0).value
+        self.min_rot = self.declare_parameter('min_rot', 0.0).value
+        self.q = deque()
+        self.create_timer(0.005, self.flush)
         qos = QoSProfile(depth=5, reliability=ReliabilityPolicy.BEST_EFFORT if q == 'best_effort' else ReliabilityPolicy.RELIABLE)
         self.pub_rgb = self.create_publisher(Image, f'{ns}/oakd/rgb/image_raw', qos)
         self.pub_dep = self.create_publisher(Image, f'{ns}/oakd/stereo/image_raw', qos)
@@ -48,7 +57,7 @@ class Adapter(Node):
             a = a.reshape(m.height, m.width, 3)[:, :, ::-1]
             m.data = np.ascontiguousarray(a).tobytes(); m.encoding = 'bgr8'; m.step = m.width * 3
         m.header.frame_id = FRAME
-        self.pub_rgb.publish(m); self.n_rgb += 1
+        self.later(self.get_parameter('img_delay').value, self.pub_rgb, m); self.n_rgb += 1
 
     def cb_dep(self, m):
         if m.encoding == '32FC1':
@@ -60,7 +69,7 @@ class Adapter(Node):
             out.data = np.clip(mm, 0, 65535).astype(np.uint16).tobytes()
             m = out
         m.header.frame_id = FRAME
-        self.pub_dep.publish(m); self.n_dep += 1
+        self.later(self.get_parameter('img_delay').value, self.pub_dep, m); self.n_dep += 1
 
     def cb_ci(self, m):
         m.header.frame_id = FRAME
@@ -68,7 +77,18 @@ class Adapter(Node):
 
     def cb_cmd(self, t):
         s = TwistStamped(); s.header.stamp = self.get_clock().now().to_msg(); s.header.frame_id = 'base_link'
-        s.twist = t; self.pub_cmd.publish(s)
+        if 0.0 < abs(t.angular.z) < self.get_parameter('min_rot').value and abs(t.linear.x) < 0.02:   # 제자리 회전 최소 속도 (Create3)
+            t.angular.z = math.copysign(self.get_parameter('min_rot').value, t.angular.z)
+        s.twist = t; self.later(self.get_parameter('cmd_delay').value, self.pub_cmd, s)
+
+    def later(self, delay, pub, msg):
+        if delay <= 0: pub.publish(msg); return
+        self.q.append((time.monotonic() + delay, pub, msg))
+
+    def flush(self):
+        now = time.monotonic()
+        while self.q and self.q[0][0] <= now:
+            _, pub, msg = self.q.popleft(); pub.publish(msg)
 
     def report(self):
         self.get_logger().info(f'rgb {self.n_rgb / 5:.1f} Hz, depth {self.n_dep / 5:.1f} Hz')

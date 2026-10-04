@@ -17,59 +17,61 @@
 | H | 시험 뒤 | ✗ | 분석 | — |
 
 ## A. 전날 (로봇 없이)
-1. **마커 인쇄** — 인쇄 시트 v5, 배율 100 %, 각 장의 10 cm 자 확인
-   | 쪽 | 마커 | 용도 |
-   |---|---|---|
-   | 2 | ID 0 (10/8/6 cm 중 하나) | 로봇 윗판 — 윗변 = 로봇 정면 |
-   | 3~6 | ID 10~13 (10/8 cm 중 하나) | 바닥 기준 (웹캠 보정) |
-   | 8 | ID 1 10 cm | RC카 깃발 — **C0·C1 에만** |
-   | 11 | ID 2·3 8 cm | 장애물 상자 / 표시판(손잡이 판지) |
-   인쇄 후 **검은 테두리 한 변을 자로 재서 기록** (계산에 이 값을 씀).
+**인쇄할 마커** — 인쇄 시트 v5, 배율 100 %, 각 장의 10 cm 자 확인
+
+| 쪽 | 마커 | 용도 |
+|---|---|---|
+| 2 | ID 0 (10/8/6 cm 중 하나) | 로봇 윗판 — 윗변 = 로봇 정면 |
+| 3~6 | ID 10~13 (10/8 cm 중 하나) | 바닥 기준 (웹캠 보정) |
+| 8 | ID 1 10 cm | RC카 깃발 — **C0·C1 에만** |
+| 11 | ID 2·3 8 cm | 장애물 상자 / 표시판(손잡이 판지) |
+
+1. 위 마커를 인쇄하고 **검은 테두리 한 변을 자로 재서 기록** (계산에 이 값을 씀).
 2. **깃발**: 두꺼운 판지에 ID 1 을 붙이고 클립·양면테이프로 RC카 지붕에 떼었다 붙였다 할 수 있게. 붙일 위치를 지붕에 표시.
 3. **RC카 치수 실측** (길이·폭·높이, m) → 분석 때 `--car-dims` 에 넣음.
 4. **AMR PC**: 팀 저장소 `feature/real-trial-261003` 의 `tb4_follow_sim/` 최신 받기, `weights/yolo11n·12n_amr_best.pt` 확인, 로봇 네트워크 설정 source 해서 `ros2 topic list` 가 보이는지.
 5. **웹캠 PC**: 같은 폴더(최소 `real/webcam_rec.py`)를 복사. `python3 -c "import cv2; print(cv2.__version__)"` 가 4.7 이상인지 (ArUco 내장). 웹캠 동작:
-   ```bash
-   python3 real/webcam_rec.py --trial test --seconds 10 --show      # 화면이 뜨고 ~/webcam_logs/test/ 에 mp4·frames.csv
-   ```
-   웹캠 PC 에 ROS 2 가 있고 로봇과 같은 네트워크 설정이 가능하면 `--publish` 도 한 번 확인 (없으면 녹화만 — 그래도 분석 가능).
-   설치가 필요하면 **설치 전에 담당자에게 확인**. 로봇 Raspberry Pi 에는 아무것도 설치·변경하지 않는다.
+```bash
+python3 real/webcam_rec.py --trial test --seconds 10 --show      # 화면이 뜨고 ~/webcam_logs/test/ 에 mp4·frames.csv
+```
+    웹캠 PC 에 ROS 2 가 있고 로봇과 같은 네트워크 설정이 가능하면 `--publish` 도 한 번 확인 (없으면 녹화만 — 그래도 분석 가능).
+    설치가 필요하면 **설치 전에 담당자에게 확인**. 로봇 Raspberry Pi 에는 아무것도 설치·변경하지 않는다.
 6. **분석용 PC**(어느 쪽이든): ultralytics·scipy 가 있고 `weights/webcam_yolo26s_best.pt` 가 있는지.
 
 ## B. 당일, 로봇 켜기 전 (로봇 시간 아님)
 1. **바닥 테이프** (`2_깃발없이_하는_시험안` 2 절): 출발점 3 곳(정면·좌 20°·우 20°, 2 m), RC카 정지 위치, 장애물 위치, 1.5 m 정사각 추종 코스.
-   - 추종 코스는 **웹캠 화면 안**에 오게 깐다 (C4 에 정답이 생김).
+    - 추종 코스는 **웹캠 화면 안**에 오게 깐다 (C4 에 정답이 생김).
 2. **웹캠 고정** — 이후 움직이면 보정 다시. 해상도는 기본 1280×720 그대로.
 3. **W1 웹캠 보정 (마커 방식)**
-   1. ID 10~13 을 코스 둘레 바닥에 붙임. 웹캠 바로 아래 바닥점에서 1.0 m 이내 8 cm, 1.25 m 이내 10 cm. **윗변은 모두 같은 방향**.
-   2. 줄자로 중심 좌표를 재서 `calib/floor_markers.csv` 작성 (원점 = ID 10, x 축 = ID 10 → 11, y 축 = 그 왼쪽, size = 잰 한 변, yaw = 윗변 방향).
-   3. 웹캠 PC: `python3 real/webcam_rec.py --trial calib --seconds 10` (아무도 마커를 가리지 않게)
-   4. `python3 scripts/webcam_marker_calib.py ~/webcam_logs/calib/webcam_000.mp4 calib/floor_markers.csv`
-   - **통과**: 4 장 모두 찾음, `reproj_rms_px` ≤ 3, `loo_err_cm_max` ≤ 10, `_check.jpg` 의 0.5 m 격자가 바닥 테이프와 맞음.
-   - **실패하면**: csv 의 좌표·size·yaw 다시 확인 → 마커를 웹캠 쪽으로 옮김 → 그래도 안 되면 **웹캠 단계(W2·W3·C4 정답)를 빼고 진행**.
+    1. ID 10~13 을 코스 둘레 바닥에 붙임. 웹캠 바로 아래 바닥점에서 1.0 m 이내 8 cm, 1.25 m 이내 10 cm. **윗변은 모두 같은 방향**.
+    2. 줄자로 중심 좌표를 재서 `calib/floor_markers.csv` 작성 (원점 = ID 10, x 축 = ID 10 → 11, y 축 = 그 왼쪽, size = 잰 한 변, yaw = 윗변 방향).
+    3. 웹캠 PC: `python3 real/webcam_rec.py --trial calib --seconds 10` (아무도 마커를 가리지 않게)
+    4. `python3 scripts/webcam_marker_calib.py ~/webcam_logs/calib/webcam_000.mp4 calib/floor_markers.csv`
+    - **통과**: 4 장 모두 찾음, `reproj_rms_px` ≤ 3, `loo_err_cm_max` ≤ 10, `_check.jpg` 의 0.5 m 격자가 바닥 테이프와 맞음.
+    - **실패하면**: csv 의 좌표·size·yaw 다시 확인 → 마커를 웹캠 쪽으로 옮김 → 그래도 안 되면 **웹캠 단계(W2·W3·C4 정답)를 빼고 진행**.
 4. **시계 맞추기**: 두 PC 모두 NTP (Ubuntu `timedatectl` → synchronized yes / Windows 관리자 `w32tm /resync`).
 
 ## C. 0:00–0:30 로봇 켜기·점검
 1. 로봇이 도크 위면 카메라·라이다가 꺼져 있음 → 언도킹 후 30 초:
-   `ros2 action send_goal /robot1/undock irobot_create_msgs/action/Undock "{}"`
+    `ros2 action send_goal /robot1/undock irobot_create_msgs/action/Undock "{}"`
 2. **AMR PC**: `bash real/preflight.sh`
-   - 0 단계: `OK 도크에서 내려와 있음`, `camera_info: 704x704, fx=564.65`, 압축 RGB·depth 약 10 Hz
-   - 4 단계 라이다: 로봇 정면 0.5 m 에 상자 → 정면 값 ≈ 0.5
-   - 5 단계 YOLO: RC카 1 m 앞 → `detect_y11/12.jpg` 에 박스
-   - `!!` 가 나오면 시험 전에 해결 (특히 704x704 가 아니면 로봇 카메라 설정이 바뀐 것 — 담당자에게 알림)
+    - 0 단계: `OK 도크에서 내려와 있음`, `camera_info: 704x704, fx=564.65`, 압축 RGB·depth 약 10 Hz
+    - 4 단계 라이다: 로봇 정면 0.5 m 에 상자 → 정면 값 ≈ 0.5
+    - 5 단계 YOLO: RC카 1 m 앞 → `detect_y11/12.jpg` 에 박스
+    - `!!` 가 나오면 시험 전에 해결 (특히 704x704 가 아니면 로봇 카메라 설정이 바뀐 것 — 담당자에게 알림)
 3. **W2 웹캠 로봇 위치 확인 (5 분)**: 윗판에 ID 0 을 붙인 로봇을 바닥 테이프의 줄자 좌표 3 곳(코스 안쪽·가장자리)에 세우고 웹캠 녹화 `--trial w2 --seconds 20`.
-   분석: `python3 scripts/webcam_track_offline.py ~/webcam_logs/w2 --calib calib/webcam_calib_marker.yaml --stride 5`
-   → `webcam_track.csv` 의 `rob_x, rob_y` 가 줄자 값과 **10 cm 이내**면 OK. 윗판 높이가 0.351 m 와 다르면 `--robot-marker-z` 로 실측값.
+    분석: `python3 scripts/webcam_track_offline.py ~/webcam_logs/w2 --calib calib/webcam_calib_marker.yaml --stride 5`
+    → `webcam_track.csv` 의 `rob_x, rob_y` 가 줄자 값과 **10 cm 이내**면 OK. 윗판 높이가 0.351 m 와 다르면 `--robot-marker-z` 로 실측값.
 4. **W3 두 PC 연동 확인 (5 분)**:
-   - 웹캠 PC: `webcam_rec.py --trial w3 --publish` (ROS 가 있을 때) / AMR PC: `WEBCAM=1 bash real/record_real.sh w3 "연동 확인"`
-   - 표시판 ID 3 을 웹캠과 로봇 카메라에 **동시에 1 초**, 30 초 뒤 한 번 더 → 두 쪽 Ctrl+C
-   - AMR PC: `python3 scripts/webcam_clock_offset.py ~/tb4_real_logs/w3/bag` → 시계 차이 A 가 나오면 OK (NTP 를 맞췄다면 수십 ms 안쪽 기대)
-   - `--publish` 를 못 쓰면 이 단계는 표시판 사건만으로 (시험 뒤 확인).
+    - 웹캠 PC: `webcam_rec.py --trial w3 --publish` (ROS 가 있을 때) / AMR PC: `WEBCAM=1 bash real/record_real.sh w3 "연동 확인"`
+    - 표시판 ID 3 을 웹캠과 로봇 카메라에 **동시에 1 초**, 30 초 뒤 한 번 더 → 두 쪽 Ctrl+C
+    - AMR PC: `python3 scripts/webcam_clock_offset.py ~/tb4_real_logs/w3/bag` → 시계 차이 A 가 나오면 OK (NTP 를 맞췄다면 수십 ms 안쪽 기대)
+    - `--publish` 를 못 쓰면 이 단계는 표시판 사건만으로 (시험 뒤 확인).
 
 ## D. 0:30–0:55 깃발 시험 (ArUco)
 ### C0 깃발 영향 확인 (10 분) — 가장 먼저
 - RC카를 1.0 m·1.8 m 앞에 뒷모습. 각 위치에서 **깃발 있음 10 초 → 없음 10 초**: `record_real.sh C0-1.0m "깃발 있음/없음"`
-- 디버그 화면 car 점수 비교. 가즈보: 1 m 0.79 → 0.57, 1.8 m 0.81 → 0 (dummy 오인).
+- 디버그 화면 car 점수 비교. 가즈보(10/4 재측정): 1 m 0.79 → 0.38, 1.8 m 0.81 → 0.
 - **판정**: 깃발이 점수를 눈에 띄게 낮추면 → 이 순서 그대로 (깃발은 C1 까지만). 차이가 거의 없으면 → C2·C4 에도 깃발을 달아 정답 거리를 얻어도 됨.
 
 ### C1 fx·depth 확인 (15 분, 깃발 붙임)
