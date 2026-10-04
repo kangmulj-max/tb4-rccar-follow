@@ -25,6 +25,8 @@
 
 옵션: `NO_BAG=1` (bag 생략), `BAG_RAW=1` (원본 영상까지 bag — Wi-Fi 부하 큼), `NS=/robot2`.
 
+웹캠(별도 PC): `webcam_rec.py` 를 웹캠 PC 에서 같은 시도 ID 로 실행. 보정·분석·두 PC 절차는 `docs/WEBCAM_2PC_GUIDE.md`. `WEBCAM=1` 이면 웹캠 PC 가 `--publish` 로 보내는 미리보기도 bag 에 기록.
+
 ## 시뮬과 비교할 때
 - 시나리오 이름(line/square/random/stopgo/lost/pillar/lowbox/pole/approach)과 노드 상태 지표(놓침 횟수, TRACKING 비율)는 시뮬과 같은 정의.
 - 실기는 RC카 위치 ground truth 가 없으므로 "최대 이격·최소 거리"는 외부 영상/눈대중, depth 거리는 디버그 화면의 `d=` 값.

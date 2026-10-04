@@ -152,3 +152,54 @@ def localize_car(c, bbox, dims=CAR):
         if best is None or r.cost < best.cost: best = r
     x, y, yaw = best.x
     return x, y, yaw % math.pi, float(np.sqrt(np.mean(best.fun ** 2)))
+
+
+# ---------------------------------------------------------------- 원본 웹캠 영상 ↔ 모델 화면 (640 정사각)
+def crop_params(w, h):
+    """웹캠 원본 (w, h) → 640 정사각 화면: 가운데 정사각 잘라 640 으로 축소 (Roboflow 'Fill (with center crop)', 학습 데이터와 같은 전처리)."""
+    side = min(w, h)
+    return (w - side) / 2.0, (h - side) / 2.0, IMG_W / side
+
+
+def to_model_view(img):
+    import cv2
+    h, w = img.shape[:2]; x0, y0, _ = crop_params(w, h); side = min(w, h)
+    return cv2.resize(img[int(y0):int(y0) + side, int(x0):int(x0) + side], (IMG_W, IMG_H), interpolation=cv2.INTER_AREA)
+
+
+def full_to_model(uv, w, h):
+    """원본 픽셀 → 640 화면 좌표 (잘린 바깥은 0~640 밖 값 — 카메라 모델은 그대로 성립)."""
+    x0, y0, s = crop_params(w, h); uv = np.asarray(uv, float)
+    return np.c_[(uv[..., 0] - x0) * s, (uv[..., 1] - y0) * s] if uv.ndim == 2 else np.array([(uv[0] - x0) * s, (uv[1] - y0) * s])
+
+
+# ---------------------------------------------------------------- 보정 (마커 방식): 바닥 마커 모서리 ↔ 줄자 좌표
+def marker_corners_floor(x, y, size, yaw):
+    """바닥에 누운 ArUco 마커의 네 모서리 (OpenCV 순서: 왼위, 오위, 오아래, 왼아래).
+    yaw = 마커 윗변(인쇄물 위쪽)이 가리키는 바닥 방향 (rad, 바닥 x 축 기준). 위에서 보면 마커 오른쪽 = 윗방향의 시계 방향."""
+    up = np.array([math.cos(yaw), math.sin(yaw)]); right = np.array([math.sin(yaw), -math.cos(yaw)]); h = size / 2
+    return np.array([[x, y] + h * (su * up + sr * right) for su, sr in ((1, -1), (1, 1), (-1, 1), (-1, -1))])
+
+
+def calibrate_from_points(P, uv, c0=None, k1_sigma=0.1):
+    """바닥 점 P (N,2 또는 N,3) ↔ 640 화면 픽셀 uv (N,2) → 카메라 8 파라미터 (calibrate_from_robot 과 같은 모델·출력).
+    초기값은 바닥 호모그래피 분해 (Zhang 2000), 이후 재투영 오차 최소화 (k1 은 약한 사전값)."""
+    import cv2
+    P = np.asarray(P, float); P3 = np.c_[P[:, :2], P[:, 2] if P.shape[1] > 2 else np.zeros(len(P))]; uv = np.asarray(uv, float)
+    if c0 is None:
+        Hm2p, _ = cv2.findHomography(P3[:, :2], uv, 0)
+        c0 = init_from_homography(Hm2p)
+    lo = [-50, -50, 0.2, -2 * math.pi, 0.0, -0.5, 100, -0.6]; hi = [50, 50, 10, 2 * math.pi, 1.55, 0.5, 5000, 0.6]
+    res = lambda c: np.r_[(project(c, P3) - uv).ravel(), 10.0 * c[7] / k1_sigma]
+    r = least_squares(res, np.clip(np.asarray(c0, float), lo, hi), bounds=(lo, hi), loss='soft_l1', f_scale=2.0, x_scale='jac')
+    rms = float(np.sqrt(np.mean((project(r.x, P3) - uv) ** 2) * 2))
+    return r.x, rms
+
+
+def img_from_msg(m):
+    """sensor_msgs Image(bgr8/rgb8) 또는 CompressedImage → BGR 배열. 두 PC 구성에서는 웹캠 PC 가 압축 영상을 보냄."""
+    import cv2
+    if hasattr(m, 'format'):                                       # CompressedImage
+        return cv2.imdecode(np.frombuffer(m.data, np.uint8), cv2.IMREAD_COLOR)
+    img = np.frombuffer(m.data, np.uint8).reshape(m.height, m.width, -1)[:, :, :3]
+    return img[:, :, ::-1] if m.encoding.lower().startswith('rgb') else img

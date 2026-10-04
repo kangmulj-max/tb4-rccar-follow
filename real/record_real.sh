@@ -4,6 +4,7 @@
 #   Ctrl+C 로 종료 → video.mp4 변환, summary.json 출력. 이 ID 를 'TB4 추종 실험일지' 에 그대로 입력.
 # 실기 ROS 환경(ROS_DOMAIN_ID=1, 디스커버리 서버 등)을 먼저 source 한 터미널에서 실행. 시뮬 env.sh 는 쓰지 말 것.
 # 환경변수: NS(기본 /robot1)  NO_BAG=1(bag 생략)  BAG_RAW=1(원본 영상까지 bag, Wi-Fi 부하 큼)
+#           WEBCAM=1 (웹캠 PC 의 /webcam/image_raw/compressed 도 bag 에 — 원본 웹캠 영상은 웹캠 PC 에 따로 저장됨)
 set -u
 set -m   # job control: 백그라운드 프로세스가 SIGINT 를 무시하지 않도록 (bag 정상 종료)
 DIR0="$(cd "$(dirname "$0")" && pwd)"
@@ -26,6 +27,7 @@ TOPICS=( $NS/oakd/rgb/image_raw/compressed $NS/oakd/stereo/image_raw/compressedD
          $NS/tf $NS/tf_static $NS/cmd_vel $NS/cmd_vel_unstamped $NS/battery_state
          $NS/hazard_detection $NS/wheel_status $NS/dock_status $NS/follow/state /rosout )   # follow/state: 노드 d·vcar·block (S16)
 [ "${BAG_RAW:-0}" = 1 ] && TOPICS+=( $NS/oakd/rgb/image_raw $NS/oakd/stereo/image_raw )
+[ "${WEBCAM:-0}" = 1 ] && TOPICS+=( ${WEBCAM_TOPIC:-/webcam/image_raw/compressed} )   # 웹캠 PC 가 webcam_rec.py --publish 로 보내는 저속 미리보기
 
 PIDS=()
 if [ "${NO_BAG:-0}" != 1 ]; then

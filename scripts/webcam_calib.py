@@ -2,6 +2,8 @@
 """마커 없는 웹캠 → SLAM 맵 보정. 로봇(AMCL 위치)을 움직이는 기준물로 쓴다.
 
   1) 수집 (ROS):  python3 webcam_calib.py collect --ros-args -p image_topic:=/sim/webcam
+       실기 두 PC: 웹캠 PC 에서 webcam_rec.py --publish, AMR PC 에서 -p image_topic:=/webcam/image_raw/compressed
+       (AMR PC 에서 지도 + AMCL 이 돌고 있어야 함 — 좌표계 = SLAM 맵. 마커 방식은 webcam_marker_calib.py)
        - 시작 후 bg_s 초 동안 로봇·RC카가 화면 밖에 있어야 함 (배경 학습, Zivkovic 2004 MOG2)
        - 로봇을 화면 안 여러 곳(가장자리 포함)에 세우거나 천천히 몰면, 멈춰 있을 때마다
          (AMCL x, y, 로봇 전경 박스) 1 쌍 기록 → calib/webcam_robot_samples.csv
@@ -25,7 +27,7 @@ def collect():
     import cv2, rclpy
     from rclpy.node import Node
     from rclpy.qos import qos_profile_sensor_data
-    from sensor_msgs.msg import Image
+    from sensor_msgs.msg import Image, CompressedImage
     from geometry_msgs.msg import PoseWithCovarianceStamped
     from nav_msgs.msg import Odometry
 
@@ -43,7 +45,8 @@ def collect():
             new = not os.path.exists(CSV)
             self.out = open(CSV, 'a', newline='', encoding='utf-8'); self.w = csv.writer(self.out)
             if new: self.w.writerow(['t', 'x', 'y', 'u1', 'v1', 'u2', 'v2']); self.out.flush()
-            self.create_subscription(Image, g('image_topic'), self.cb_img, qos_profile_sensor_data)
+            t = g('image_topic')   # 두 PC 구성: 웹캠 PC 의 webcam_rec.py --publish → /webcam/image_raw/compressed
+            self.create_subscription(CompressedImage if t.endswith('/compressed') else Image, t, self.cb_img, qos_profile_sensor_data)
             self.create_subscription(PoseWithCovarianceStamped, g('pose_topic'), self.cb_pose, 10)
             self.create_subscription(Odometry, g('odom_topic'), self.cb_odom, 10)
             self.n = 0
@@ -57,7 +60,7 @@ def collect():
             self.still_since = (self.still_since or time.time()) if still else None
 
         def cb_img(self, m):
-            img = np.frombuffer(m.data, np.uint8).reshape(m.height, m.width, -1)[:, :, :3]
+            img = G.to_model_view(G.img_from_msg(m))                      # 640 정사각 (학습 데이터와 같은 화면)
             learning = time.time() - self.t0 < self.bg_s
             fg = self.bg.apply(img, learningRate=-1 if learning else 0)    # 학습 후 배경 고정
             if learning: return
@@ -67,7 +70,7 @@ def collect():
             c = max(cnts, key=cv2.contourArea)
             if cv2.contourArea(c) < self.min_area or time.time() - self.still_since < self.still_s: return
             u, v, w, h = cv2.boundingRect(c)
-            if u < 3 or v < 3 or u + w > m.width - 3 or v + h > m.height - 3: return       # 잘린 박스 제외
+            if u < 3 or v < 3 or u + w > G.IMG_W - 3 or v + h > G.IMG_H - 3: return       # 잘린 박스 제외
             if self.last_xy and math.dist(self.last_xy, self.pose) < self.min_move: return
             self.last_xy = self.pose; self.n += 1
             self.w.writerow([f'{time.time():.2f}', *(f'{p:.4f}' for p in self.pose), u, v, u + w, v + h]); self.out.flush()
