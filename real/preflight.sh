@@ -21,10 +21,10 @@ if ! echo "$CI" | grep -q "^width:"; then echo "!! rgb/camera_info 없음 (도�
 else
   W=$(echo "$CI" | awk '/^width:/{print $2}'); H=$(echo "$CI" | awk '/^height:/{print $2}')
   FXC=$(echo "$CI" | awk '/^k:/{getline; print $2}')
-  echo "camera_info: ${W}x${H}, fx=${FXC}  (기대 704x704, fx≈${FX:-909})"
+  echo "camera_info: ${W}x${H}, fx=${FXC}  (기대 704x704, fx 564.65 — 이 값은 실제와 안 맞아 노드는 실측 fx ${FX:-909} 로 덮어씀, S18)"
   [ "$W" = 704 ] && [ "$H" = 704 ] || echo "!! 해상도가 704x704 가 아님 → 로봇 oakd_pro.yaml 이 기본값으로 바뀌었을 수 있음 (depth 없으면 추종 불가). 시험 전에 확인"
-  python3 -c "import sys; f=float(sys.argv[1]); e=float(sys.argv[2]); sys.exit(0 if abs(f-e)/e<0.05 else 1)" "$FXC" "${FX:-909}" 2>/dev/null \
-    || echo "!! fx 가 기대값과 5 % 이상 다름 → run_real.sh 의 FX 를 이 값으로 (또는 C1 시험으로 확인)"
+  python3 -c "import sys; sys.exit(0 if abs(float(sys.argv[1]) - 564.65) < 1 else 1)" "$FXC" 2>/dev/null \
+    || echo "!! camera_info fx 가 10/3 값(564.65)과 다름 → 로봇 카메라 설정이 바뀌었을 수 있음. 실측 fx(${FX:-909})도 달라졌을 수 있으니 C1 시험으로 다시 확인"
 fi
 for t in oakd/rgb/image_raw/compressed oakd/stereo/image_raw/compressedDepth; do
   R=$(timeout 7 ros2 topic hz "$NS/$t" 2>/dev/null | awk '/average rate/{r=$3} END{print r}')
