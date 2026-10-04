@@ -1,0 +1,483 @@
+{
+ "name": "yolo8n_amr_best",
+ "path": "/home/kangm/tb4_follow_sim/weights/yolo8n_amr_best.pt",
+ "file_MB": 6.26,
+ "arch_yaml": null,
+ "layers": 23,
+ "params": 3011238,
+ "gflops": 8.19,
+ "ultralytics_trained": "8.4.171",
+ "trained_at": "2026-10-04T08:42:47.480384+09:00",
+ "train": {
+  "model": "yolov8n.pt",
+  "epochs": 100,
+  "patience": 20,
+  "batch": 32,
+  "imgsz": 640,
+  "optimizer": "auto",
+  "mosaic": 1.0,
+  "scale": 0.5
+ },
+ "val": {
+  "P": 0.983,
+  "R": 0.999,
+  "mAP50": 0.995,
+  "mAP50-95": 0.977,
+  "per_class_mAP50-95": {
+   "car": 0.965,
+   "dummy": 0.989
+  }
+ },
+ "test": {
+  "P": 0.99,
+  "R": 1.0,
+  "mAP50": 0.995,
+  "mAP50-95": 0.917,
+  "per_class_mAP50-95": {
+   "car": 0.911,
+   "dummy": 0.924
+  }
+ },
+ "latency_ms": {
+  "gpu_torch": 7.6,
+  "cpu_torch": 68.1
+ },
+ "sim_sweep": {
+  "bright": {
+   "light": "bright",
+   "poses": [
+    {
+     "dist": 0.8,
+     "yaw": 0,
+     "conf": 0.0,
+     "other_conf": 0.862
+    },
+    {
+     "dist": 0.8,
+     "yaw": 45,
+     "conf": 0.0,
+     "other_conf": 0.676
+    },
+    {
+     "dist": 0.8,
+     "yaw": 90,
+     "conf": 0.672,
+     "other_conf": 0.055
+    },
+    {
+     "dist": 0.8,
+     "yaw": 135,
+     "conf": 0.246,
+     "other_conf": 0.538
+    },
+    {
+     "dist": 0.8,
+     "yaw": 180,
+     "conf": 0.0,
+     "other_conf": 0.603
+    },
+    {
+     "dist": 0.8,
+     "yaw": 225,
+     "conf": 0.22,
+     "other_conf": 0.392
+    },
+    {
+     "dist": 0.8,
+     "yaw": 270,
+     "conf": 0.567,
+     "other_conf": 0.0
+    },
+    {
+     "dist": 0.8,
+     "yaw": 315,
+     "conf": 0.394,
+     "other_conf": 0.648
+    },
+    {
+     "dist": 1.2,
+     "yaw": 0,
+     "conf": 0.198,
+     "other_conf": 0.099
+    },
+    {
+     "dist": 1.2,
+     "yaw": 45,
+     "conf": 0.0,
+     "other_conf": 0.809
+    },
+    {
+     "dist": 1.2,
+     "yaw": 90,
+     "conf": 0.25,
+     "other_conf": 0.128
+    },
+    {
+     "dist": 1.2,
+     "yaw": 135,
+     "conf": 0.0,
+     "other_conf": 0.802
+    },
+    {
+     "dist": 1.2,
+     "yaw": 180,
+     "conf": 0.231,
+     "other_conf": 0.113
+    },
+    {
+     "dist": 1.2,
+     "yaw": 225,
+     "conf": 0.0,
+     "other_conf": 0.842
+    },
+    {
+     "dist": 1.2,
+     "yaw": 270,
+     "conf": 0.275,
+     "other_conf": 0.188
+    },
+    {
+     "dist": 1.2,
+     "yaw": 315,
+     "conf": 0.0,
+     "other_conf": 0.813
+    },
+    {
+     "dist": 1.8,
+     "yaw": 0,
+     "conf": 0.677,
+     "other_conf": 0.0
+    },
+    {
+     "dist": 1.8,
+     "yaw": 45,
+     "conf": 0.771,
+     "other_conf": 0.112
+    },
+    {
+     "dist": 1.8,
+     "yaw": 90,
+     "conf": 0.055,
+     "other_conf": 0.492
+    },
+    {
+     "dist": 1.8,
+     "yaw": 135,
+     "conf": 0.442,
+     "other_conf": 0.352
+    },
+    {
+     "dist": 1.8,
+     "yaw": 180,
+     "conf": 0.46,
+     "other_conf": 0.0
+    },
+    {
+     "dist": 1.8,
+     "yaw": 225,
+     "conf": 0.0,
+     "other_conf": 0.551
+    },
+    {
+     "dist": 1.8,
+     "yaw": 270,
+     "conf": 0.295,
+     "other_conf": 0.626
+    },
+    {
+     "dist": 1.8,
+     "yaw": 315,
+     "conf": 0.436,
+     "other_conf": 0.442
+    },
+    {
+     "dist": 2.5,
+     "yaw": 0,
+     "conf": 0.067,
+     "other_conf": 0.065
+    },
+    {
+     "dist": 2.5,
+     "yaw": 45,
+     "conf": 0.0,
+     "other_conf": 0.825
+    },
+    {
+     "dist": 2.5,
+     "yaw": 90,
+     "conf": 0.0,
+     "other_conf": 0.824
+    },
+    {
+     "dist": 2.5,
+     "yaw": 135,
+     "conf": 0.0,
+     "other_conf": 0.889
+    },
+    {
+     "dist": 2.5,
+     "yaw": 180,
+     "conf": 0.068,
+     "other_conf": 0.143
+    },
+    {
+     "dist": 2.5,
+     "yaw": 225,
+     "conf": 0.0,
+     "other_conf": 0.877
+    },
+    {
+     "dist": 2.5,
+     "yaw": 270,
+     "conf": 0.0,
+     "other_conf": 0.876
+    },
+    {
+     "dist": 2.5,
+     "yaw": 315,
+     "conf": 0.0,
+     "other_conf": 0.915
+    }
+   ],
+   "misclass_as_dummy@0.4": 56.2,
+   "mean_conf": 0.198,
+   "rate@0.25": 34.4,
+   "rate@0.4": 21.9,
+   "rate@0.5": 12.5,
+   "by_yaw@0.4": {
+    "0": 25,
+    "45": 25,
+    "90": 25,
+    "135": 25,
+    "180": 25,
+    "225": 0,
+    "270": 25,
+    "315": 25
+   },
+   "by_dist@0.4": {
+    "0.8": 25,
+    "1.2": 0,
+    "1.8": 62,
+    "2.5": 0
+   }
+  },
+  "dim": {
+   "light": "dim",
+   "poses": [
+    {
+     "dist": 0.8,
+     "yaw": 0,
+     "conf": 0.0,
+     "other_conf": 0.881
+    },
+    {
+     "dist": 0.8,
+     "yaw": 45,
+     "conf": 0.973,
+     "other_conf": 0.0
+    },
+    {
+     "dist": 0.8,
+     "yaw": 90,
+     "conf": 0.9,
+     "other_conf": 0.0
+    },
+    {
+     "dist": 0.8,
+     "yaw": 135,
+     "conf": 0.954,
+     "other_conf": 0.0
+    },
+    {
+     "dist": 0.8,
+     "yaw": 180,
+     "conf": 0.0,
+     "other_conf": 0.838
+    },
+    {
+     "dist": 0.8,
+     "yaw": 225,
+     "conf": 0.955,
+     "other_conf": 0.0
+    },
+    {
+     "dist": 0.8,
+     "yaw": 270,
+     "conf": 0.914,
+     "other_conf": 0.0
+    },
+    {
+     "dist": 0.8,
+     "yaw": 315,
+     "conf": 0.953,
+     "other_conf": 0.0
+    },
+    {
+     "dist": 1.2,
+     "yaw": 0,
+     "conf": 0.071,
+     "other_conf": 0.369
+    },
+    {
+     "dist": 1.2,
+     "yaw": 45,
+     "conf": 0.25,
+     "other_conf": 0.777
+    },
+    {
+     "dist": 1.2,
+     "yaw": 90,
+     "conf": 0.28,
+     "other_conf": 0.258
+    },
+    {
+     "dist": 1.2,
+     "yaw": 135,
+     "conf": 0.0,
+     "other_conf": 0.799
+    },
+    {
+     "dist": 1.2,
+     "yaw": 180,
+     "conf": 0.086,
+     "other_conf": 0.379
+    },
+    {
+     "dist": 1.2,
+     "yaw": 225,
+     "conf": 0.0,
+     "other_conf": 0.886
+    },
+    {
+     "dist": 1.2,
+     "yaw": 270,
+     "conf": 0.221,
+     "other_conf": 0.296
+    },
+    {
+     "dist": 1.2,
+     "yaw": 315,
+     "conf": 0.0,
+     "other_conf": 0.803
+    },
+    {
+     "dist": 1.8,
+     "yaw": 0,
+     "conf": 0.467,
+     "other_conf": 0.0
+    },
+    {
+     "dist": 1.8,
+     "yaw": 45,
+     "conf": 0.644,
+     "other_conf": 0.186
+    },
+    {
+     "dist": 1.8,
+     "yaw": 90,
+     "conf": 0.412,
+     "other_conf": 0.307
+    },
+    {
+     "dist": 1.8,
+     "yaw": 135,
+     "conf": 0.145,
+     "other_conf": 0.444
+    },
+    {
+     "dist": 1.8,
+     "yaw": 180,
+     "conf": 0.243,
+     "other_conf": 0.0
+    },
+    {
+     "dist": 1.8,
+     "yaw": 225,
+     "conf": 0.0,
+     "other_conf": 0.422
+    },
+    {
+     "dist": 1.8,
+     "yaw": 270,
+     "conf": 0.249,
+     "other_conf": 0.403
+    },
+    {
+     "dist": 1.8,
+     "yaw": 315,
+     "conf": 0.404,
+     "other_conf": 0.341
+    },
+    {
+     "dist": 2.5,
+     "yaw": 0,
+     "conf": 0.0,
+     "other_conf": 0.063
+    },
+    {
+     "dist": 2.5,
+     "yaw": 45,
+     "conf": 0.0,
+     "other_conf": 0.9
+    },
+    {
+     "dist": 2.5,
+     "yaw": 90,
+     "conf": 0.0,
+     "other_conf": 0.832
+    },
+    {
+     "dist": 2.5,
+     "yaw": 135,
+     "conf": 0.0,
+     "other_conf": 0.863
+    },
+    {
+     "dist": 2.5,
+     "yaw": 180,
+     "conf": 0.0,
+     "other_conf": 0.135
+    },
+    {
+     "dist": 2.5,
+     "yaw": 225,
+     "conf": 0.0,
+     "other_conf": 0.901
+    },
+    {
+     "dist": 2.5,
+     "yaw": 270,
+     "conf": 0.0,
+     "other_conf": 0.864
+    },
+    {
+     "dist": 2.5,
+     "yaw": 315,
+     "conf": 0.0,
+     "other_conf": 0.931
+    }
+   ],
+   "misclass_as_dummy@0.4": 46.9,
+   "mean_conf": 0.285,
+   "rate@0.25": 37.5,
+   "rate@0.4": 31.2,
+   "rate@0.5": 21.9,
+   "by_yaw@0.4": {
+    "0": 25,
+    "45": 50,
+    "90": 50,
+    "135": 25,
+    "180": 0,
+    "225": 25,
+    "270": 25,
+    "315": 50
+   },
+   "by_dist@0.4": {
+    "0.8": 75,
+    "1.2": 0,
+    "1.8": 50,
+    "2.5": 0
+   }
+  }
+ }
+}

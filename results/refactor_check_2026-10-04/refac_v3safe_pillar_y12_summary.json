@@ -1,0 +1,60 @@
+{
+ "tag": "refac_v3safe_pillar_y12",
+ "duration_s": 43.0,
+ "samples": 416,
+ "cam_car_mean": 1.36,
+ "cam_car_min": 1.098,
+ "cam_car_max": 1.854,
+ "abs_err_mean_tracking": 0.357,
+ "within_0.2m_pct_tracking": 18.4,
+ "gap_car_min": 0.867,
+ "clear_obs_min": 0.184,
+ "in_fov_pct": 100.0,
+ "state_time_s": {
+  "IDLE": 5.4,
+  "TRACKING": 33.2,
+  "REID": 3.0
+ },
+ "state_transitions": 3,
+ "reverse_distance_m": 0.0,
+ "bumper_hits": 0,
+ "max_cmd_lin": 0.143,
+ "min_cmd_lin": 0.0,
+ "max_cmd_ang": 0.0,
+ "control_rate_hz": 3.4,
+ "events": {
+  "FWD_NEAR_OBS": 3
+ },
+ "event_log": [
+  {
+   "t": 5.4,
+   "type": "STATE",
+   "detail": "IDLE -> TRACKING"
+  },
+  {
+   "t": 26.3,
+   "type": "FWD_NEAR_OBS",
+   "detail": "front=0.34 m lin=0.12"
+  },
+  {
+   "t": 28.8,
+   "type": "FWD_NEAR_OBS",
+   "detail": "front=0.22 m lin=0.06"
+  },
+  {
+   "t": 30.9,
+   "type": "FWD_NEAR_OBS",
+   "detail": "front=0.20 m lin=0.02"
+  },
+  {
+   "t": 37.1,
+   "type": "STATE",
+   "detail": "TRACKING -> REID"
+  },
+  {
+   "t": 40.1,
+   "type": "STATE",
+   "detail": "REID -> TRACKING"
+  }
+ ]
+}

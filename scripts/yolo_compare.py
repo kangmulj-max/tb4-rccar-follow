@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-yolo11n vs yolo12n 비교 (실물 데이터셋 amr_dataset.zip valid/test + 추론 속도).
+YOLO 모델 비교 — MODELS 환경변수 (기본 "11 12", 예: MODELS="8 11 12") (실물 데이터셋 amr_dataset.zip valid/test + 추론 속도).
   source ~/yolo_venv/bin/activate; python yolo_compare.py
 """
 import os, time, zipfile
@@ -14,7 +14,7 @@ yaml = f'{DS}/data_abs.yaml'
 open(yaml, 'w').write(f"path: {DS}\ntrain: train/images\nval: valid/images\ntest: test/images\nnc: 2\nnames: ['car', 'dummy']\n")
 
 img = np.random.randint(0, 255, (704, 704, 3), np.uint8)
-for v in ('11', '12'):
+for v in os.environ.get('MODELS', '11 12').split():
     m = YOLO(f'{ROOT}/weights/yolo{v}n_amr_best.pt')
     info = m.info(verbose=False)
     print(f'\n##### yolo{v}n  (layers, params, gradients, GFLOPs) = {info}')

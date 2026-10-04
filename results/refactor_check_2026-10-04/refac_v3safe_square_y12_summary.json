@@ -1,0 +1,125 @@
+{
+ "tag": "refac_v3safe_square_y12",
+ "duration_s": 69.3,
+ "samples": 648,
+ "cam_car_mean": 1.075,
+ "cam_car_min": 0.836,
+ "cam_car_max": 1.273,
+ "abs_err_mean_tracking": 0.117,
+ "within_0.2m_pct_tracking": 83.6,
+ "gap_car_min": 0.607,
+ "clear_obs_min": 1.315,
+ "in_fov_pct": 100.0,
+ "state_time_s": {
+  "IDLE": 3.5,
+  "TRACKING": 58.4,
+  "REID": 2.9
+ },
+ "state_transitions": 17,
+ "reverse_distance_m": 0.257,
+ "bumper_hits": 0,
+ "max_cmd_lin": 0.15,
+ "min_cmd_lin": -0.082,
+ "max_cmd_ang": 0.192,
+ "control_rate_hz": 3.6,
+ "events": {
+  "REVERSE": 2
+ },
+ "event_log": [
+  {
+   "t": 5.1,
+   "type": "STATE",
+   "detail": "IDLE -> TRACKING"
+  },
+  {
+   "t": 19.8,
+   "type": "STATE",
+   "detail": "TRACKING -> REID"
+  },
+  {
+   "t": 20.7,
+   "type": "STATE",
+   "detail": "REID -> TRACKING"
+  },
+  {
+   "t": 22.3,
+   "type": "STATE",
+   "detail": "TRACKING -> REID"
+  },
+  {
+   "t": 22.5,
+   "type": "STATE",
+   "detail": "REID -> TRACKING"
+  },
+  {
+   "t": 22.8,
+   "type": "STATE",
+   "detail": "TRACKING -> REID"
+  },
+  {
+   "t": 23.2,
+   "type": "STATE",
+   "detail": "REID -> TRACKING"
+  },
+  {
+   "t": 25.3,
+   "type": "STATE",
+   "detail": "TRACKING -> REID"
+  },
+  {
+   "t": 25.6,
+   "type": "STATE",
+   "detail": "REID -> TRACKING"
+  },
+  {
+   "t": 49.2,
+   "type": "REVERSE",
+   "detail": "lin=-0.07"
+  },
+  {
+   "t": 52.2,
+   "type": "STATE",
+   "detail": "TRACKING -> REID"
+  },
+  {
+   "t": 52.2,
+   "type": "STATE",
+   "detail": "REID -> TRACKING"
+  },
+  {
+   "t": 52.3,
+   "type": "STATE",
+   "detail": "TRACKING -> REID"
+  },
+  {
+   "t": 52.5,
+   "type": "STATE",
+   "detail": "REID -> TRACKING"
+  },
+  {
+   "t": 61.2,
+   "type": "REVERSE",
+   "detail": "lin=-0.07"
+  },
+  {
+   "t": 63.9,
+   "type": "STATE",
+   "detail": "TRACKING -> REID"
+  },
+  {
+   "t": 64.2,
+   "type": "STATE",
+   "detail": "REID -> TRACKING"
+  },
+  {
+   "t": 65.0,
+   "type": "STATE",
+   "detail": "TRACKING -> REID"
+  },
+  {
+   "t": 65.5,
+   "type": "STATE",
+   "detail": "REID -> TRACKING"
+  }
+ ]
+}

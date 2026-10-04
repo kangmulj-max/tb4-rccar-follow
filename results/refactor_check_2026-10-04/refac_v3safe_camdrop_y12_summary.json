@@ -1,0 +1,160 @@
+{
+ "tag": "refac_v3safe_camdrop_y12",
+ "duration_s": 68.1,
+ "samples": 652,
+ "cam_car_mean": 1.108,
+ "cam_car_min": 0.816,
+ "cam_car_max": 3.629,
+ "abs_err_mean_tracking": 0.133,
+ "within_0.2m_pct_tracking": 78.6,
+ "gap_car_min": 0.589,
+ "clear_obs_min": 1.315,
+ "in_fov_pct": 100.0,
+ "state_time_s": {
+  "IDLE": 5.1,
+  "TRACKING": 55.2,
+  "REID": 4.9
+ },
+ "state_transitions": 21,
+ "reverse_distance_m": 0.213,
+ "bumper_hits": 0,
+ "max_cmd_lin": 0.16,
+ "min_cmd_lin": 0.0,
+ "max_cmd_ang": 0.153,
+ "control_rate_hz": 3.0,
+ "events": {
+  "MOVE_WITHOUT_CAMERA": 5
+ },
+ "event_log": [
+  {
+   "t": 5.0,
+   "type": "STATE",
+   "detail": "IDLE -> TRACKING"
+  },
+  {
+   "t": 19.6,
+   "type": "STATE",
+   "detail": "TRACKING -> REID"
+  },
+  {
+   "t": 19.8,
+   "type": "STATE",
+   "detail": "REID -> TRACKING"
+  },
+  {
+   "t": 19.9,
+   "type": "STATE",
+   "detail": "TRACKING -> REID"
+  },
+  {
+   "t": 20.3,
+   "type": "STATE",
+   "detail": "REID -> TRACKING"
+  },
+  {
+   "t": 20.4,
+   "type": "STATE",
+   "detail": "TRACKING -> REID"
+  },
+  {
+   "t": 22.8,
+   "type": "STATE",
+   "detail": "REID -> TRACKING"
+  },
+  {
+   "t": 22.9,
+   "type": "STATE",
+   "detail": "TRACKING -> REID"
+  },
+  {
+   "t": 23.1,
+   "type": "STATE",
+   "detail": "REID -> TRACKING"
+  },
+  {
+   "t": 23.3,
+   "type": "STATE",
+   "detail": "TRACKING -> REID"
+  },
+  {
+   "t": 23.7,
+   "type": "STATE",
+   "detail": "REID -> TRACKING"
+  },
+  {
+   "t": 24.1,
+   "type": "STATE",
+   "detail": "TRACKING -> REID"
+  },
+  {
+   "t": 24.1,
+   "type": "STATE",
+   "detail": "REID -> TRACKING"
+  },
+  {
+   "t": 24.6,
+   "type": "STATE",
+   "detail": "TRACKING -> REID"
+  },
+  {
+   "t": 24.6,
+   "type": "STATE",
+   "detail": "REID -> TRACKING"
+  },
+  {
+   "t": 27.7,
+   "type": "MOVE_WITHOUT_CAMERA",
+   "detail": "img_age=0.6s v=0.08"
+  },
+  {
+   "t": 32.0,
+   "type": "MOVE_WITHOUT_CAMERA",
+   "detail": "img_age=0.5s v=0.22"
+  },
+  {
+   "t": 40.1,
+   "type": "MOVE_WITHOUT_CAMERA",
+   "detail": "img_age=0.6s v=0.08"
+  },
+  {
+   "t": 44.6,
+   "type": "MOVE_WITHOUT_CAMERA",
+   "detail": "img_age=0.6s v=0.11"
+  },
+  {
+   "t": 50.7,
+   "type": "STATE",
+   "detail": "TRACKING -> REID"
+  },
+  {
+   "t": 50.7,
+   "type": "STATE",
+   "detail": "REID -> TRACKING"
+  },
+  {
+   "t": 61.6,
+   "type": "STATE",
+   "detail": "TRACKING -> REID"
+  },
+  {
+   "t": 62.6,
+   "type": "STATE",
+   "detail": "REID -> TRACKING"
+  },
+  {
+   "t": 64.0,
+   "type": "MOVE_WITHOUT_CAMERA",
+   "detail": "img_age=0.5s v=-0.09"
+  },
+  {
+   "t": 65.3,
+   "type": "STATE",
+   "detail": "TRACKING -> REID"
+  },
+  {
+   "t": 66.0,
+   "type": "STATE",
+   "detail": "REID -> TRACKING"
+  }
+ ]
+}

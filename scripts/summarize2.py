@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""batch2 결과 → 비교표 (logs/compare.md).  v3 vs v3safe, yolo11n vs yolo12n"""
+"""batch 결과 → 비교표 (logs/compare.md).  v3 vs v3safe × 모델 (MODELS 환경변수, 기본 "11 12", 예: MODELS="8 11 12")"""
 import glob, json, os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from follow_metrics import metrics
@@ -36,9 +36,11 @@ def coll(s):
     return ('충돌' if n or s['bumper_hits'] else '없음')
 
 
-out = ['# 비교표 (v3 vs v3_safe × yolo11n vs yolo12n)', '',
+MODELS = os.environ.get('MODELS', '11 12').split()
+COLS = [(n, v) for n in ('v3', 'v3safe') for v in MODELS]
+out = ['# 비교표 (v3 vs v3_safe × ' + ' vs '.join(f'yolo{v}n' for v in MODELS) + ')', '',
        '## 핵심: 움직이는 RC카 추종 — 추종유지율[%] / 놓침 횟수 / 놓친 시간[s] / 최대 이격[m]', '']
-cols = [('v3', '11'), ('v3', '12'), ('v3safe', '11'), ('v3safe', '12')]
+cols = COLS
 out.append('| 시나리오 | ' + ' | '.join(f'{n} y{v}' for n, v in cols) + ' |')
 out.append('|---|' + '---|' * len(cols))
 fagg = {c: [] for c in cols}
@@ -57,7 +59,7 @@ for c in cols:
     if ms: out.append(f"| {c[0]} y{c[1]} | {sum(m['follow_pct'] for m in ms)/len(ms):.1f}% | {sum(m['lost_events'] for m in ms)} | {sum(m['lost_s'] for m in ms):.1f} |")
 out += ['', '## 안전',
        '안전: 충돌 여부 / 장애물 여유 min[m] / 차체(RC카) 여유 min[m] / 후진거리[m]', '']
-cols = [('v3', '11'), ('v3', '12'), ('v3safe', '11'), ('v3safe', '12')]
+cols = COLS
 out.append('| 시나리오 | ' + ' | '.join(f'{n} y{v}' for n, v in cols) + ' |')
 out.append('|---|' + '---|' * len(cols))
 for sc in SCS:

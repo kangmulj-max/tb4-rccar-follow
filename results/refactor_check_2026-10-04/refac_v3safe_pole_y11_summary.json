@@ -1,0 +1,44 @@
+{
+ "tag": "refac_v3safe_pole_y11",
+ "duration_s": 28.1,
+ "samples": 267,
+ "cam_car_mean": 1.355,
+ "cam_car_min": 1.334,
+ "cam_car_max": 1.429,
+ "abs_err_mean_tracking": 0.34,
+ "within_0.2m_pct_tracking": 0.0,
+ "gap_car_min": 1.103,
+ "clear_obs_min": 0.166,
+ "in_fov_pct": 100.0,
+ "state_time_s": {
+  "IDLE": 4.5,
+  "TRACKING": 22.2
+ },
+ "state_transitions": 1,
+ "reverse_distance_m": 0.0,
+ "bumper_hits": 0,
+ "max_cmd_lin": 0.182,
+ "min_cmd_lin": 0.0,
+ "max_cmd_ang": 0.0,
+ "control_rate_hz": 3.0,
+ "events": {
+  "FWD_NEAR_OBS": 2
+ },
+ "event_log": [
+  {
+   "t": 4.4,
+   "type": "STATE",
+   "detail": "IDLE -> TRACKING"
+  },
+  {
+   "t": 4.7,
+   "type": "FWD_NEAR_OBS",
+   "detail": "front=0.26 m lin=0.09"
+  },
+  {
+   "t": 10.8,
+   "type": "FWD_NEAR_OBS",
+   "detail": "front=0.18 m lin=0.05"
+  }
+ ]
+}

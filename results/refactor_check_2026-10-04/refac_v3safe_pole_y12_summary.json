@@ -1,0 +1,25 @@
+{
+ "tag": "refac_v3safe_pole_y12",
+ "duration_s": 28.0,
+ "samples": 265,
+ "cam_car_mean": 1.429,
+ "cam_car_min": 1.429,
+ "cam_car_max": 1.429,
+ "abs_err_mean_tracking": null,
+ "within_0.2m_pct_tracking": null,
+ "gap_car_min": 1.198,
+ "clear_obs_min": 0.259,
+ "in_fov_pct": 100.0,
+ "state_time_s": {
+  "IDLE": 26.5
+ },
+ "state_transitions": 0,
+ "reverse_distance_m": 0.0,
+ "bumper_hits": 0,
+ "max_cmd_lin": 0.0,
+ "min_cmd_lin": 0.0,
+ "max_cmd_ang": 0.0,
+ "control_rate_hz": 3.8,
+ "events": {},
+ "event_log": []
+}

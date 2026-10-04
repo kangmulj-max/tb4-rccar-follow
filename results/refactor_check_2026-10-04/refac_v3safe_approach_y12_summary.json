@@ -1,0 +1,189 @@
+{
+ "tag": "refac_v3safe_approach_y12",
+ "duration_s": 38.0,
+ "samples": 366,
+ "cam_car_mean": 0.618,
+ "cam_car_min": 0.233,
+ "cam_car_max": 3.629,
+ "abs_err_mean_tracking": 0.263,
+ "within_0.2m_pct_tracking": 41.9,
+ "gap_car_min": 0.002,
+ "clear_obs_min": -0.001,
+ "in_fov_pct": 100.0,
+ "state_time_s": {
+  "IDLE": 15.8,
+  "TRACKING": 12.4,
+  "REID": 3.8,
+  "SEARCH": 4.6
+ },
+ "state_transitions": 4,
+ "reverse_distance_m": 0.387,
+ "bumper_hits": 2894,
+ "max_cmd_lin": 0.0,
+ "min_cmd_lin": 0.0,
+ "max_cmd_ang": 0.0,
+ "control_rate_hz": 3.2,
+ "events": {
+  "MOVE_WITHOUT_CAMERA": 5,
+  "BUMPER": 12,
+  "COLLISION_CAR": 9,
+  "COLLISION_OBS": 1
+ },
+ "event_log": [
+  {
+   "t": 6.4,
+   "type": "STATE",
+   "detail": "IDLE -> TRACKING"
+  },
+  {
+   "t": 11.7,
+   "type": "MOVE_WITHOUT_CAMERA",
+   "detail": "img_age=0.6s v=-0.07"
+  },
+  {
+   "t": 18.8,
+   "type": "STATE",
+   "detail": "TRACKING -> REID"
+  },
+  {
+   "t": 20.2,
+   "type": "BUMPER",
+   "detail": "bump_front_center"
+  },
+  {
+   "t": 20.2,
+   "type": "COLLISION_CAR",
+   "detail": "gap=0.006"
+  },
+  {
+   "t": 20.3,
+   "type": "MOVE_WITHOUT_CAMERA",
+   "detail": "img_age=0.8s v=-0.03"
+  },
+  {
+   "t": 21.2,
+   "type": "BUMPER",
+   "detail": "bump_front_center"
+  },
+  {
+   "t": 22.2,
+   "type": "COLLISION_CAR",
+   "detail": "gap=0.006"
+  },
+  {
+   "t": 22.5,
+   "type": "STATE",
+   "detail": "REID -> SEARCH"
+  },
+  {
+   "t": 24.8,
+   "type": "COLLISION_CAR",
+   "detail": "gap=0.006"
+  },
+  {
+   "t": 25.2,
+   "type": "BUMPER",
+   "detail": "bump_front_center"
+  },
+  {
+   "t": 25.5,
+   "type": "MOVE_WITHOUT_CAMERA",
+   "detail": "img_age=0.6s v=-0.06"
+  },
+  {
+   "t": 26.2,
+   "type": "BUMPER",
+   "detail": "bump_front_center"
+  },
+  {
+   "t": 26.9,
+   "type": "COLLISION_CAR",
+   "detail": "gap=0.003"
+  },
+  {
+   "t": 27.2,
+   "type": "BUMPER",
+   "detail": "bump_front_center"
+  },
+  {
+   "t": 27.9,
+   "type": "MOVE_WITHOUT_CAMERA",
+   "detail": "img_age=0.5s v=-0.04"
+  },
+  {
+   "t": 28.2,
+   "type": "BUMPER",
+   "detail": "bump_front_center"
+  },
+  {
+   "t": 28.6,
+   "type": "STATE",
+   "detail": "SEARCH -> IDLE"
+  },
+  {
+   "t": 28.9,
+   "type": "COLLISION_CAR",
+   "detail": "gap=0.005"
+  },
+  {
+   "t": 29.2,
+   "type": "BUMPER",
+   "detail": "bump_front_center"
+  },
+  {
+   "t": 30.9,
+   "type": "COLLISION_CAR",
+   "detail": "gap=0.006"
+  },
+  {
+   "t": 33.0,
+   "type": "COLLISION_CAR",
+   "detail": "gap=0.006"
+  },
+  {
+   "t": 33.2,
+   "type": "BUMPER",
+   "detail": "bump_front_center"
+  },
+  {
+   "t": 33.9,
+   "type": "MOVE_WITHOUT_CAMERA",
+   "detail": "img_age=0.5s v=-0.04"
+  },
+  {
+   "t": 34.2,
+   "type": "BUMPER",
+   "detail": "bump_front_center"
+  },
+  {
+   "t": 35.1,
+   "type": "COLLISION_CAR",
+   "detail": "gap=0.004"
+  },
+  {
+   "t": 35.2,
+   "type": "BUMPER",
+   "detail": "bump_front_center"
+  },
+  {
+   "t": 36.2,
+   "type": "BUMPER",
+   "detail": "bump_front_center"
+  },
+  {
+   "t": 36.6,
+   "type": "COLLISION_OBS",
+   "detail": "pillar clear=0.009"
+  },
+  {
+   "t": 37.2,
+   "type": "COLLISION_CAR",
+   "detail": "gap=0.003"
+  },
+  {
+   "t": 37.2,
+   "type": "BUMPER",
+   "detail": "bump_front_center"
+  }
+ ]
+}

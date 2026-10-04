@@ -7,4 +7,4 @@ __pycache__/
 *.onnx
 *_raw.mp4
 # 가중치는 팀 내부 공유 여부를 정한 뒤 포함 (각 5.5 MB). 기본은 제외
-weights/
+weights/*.onnx

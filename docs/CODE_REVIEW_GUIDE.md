@@ -1,7 +1,9 @@
 # 코드 리뷰 가이드 — TurtleBot4 RC카 추종 (v3 / v3_safe) + 가즈보 실험 환경
 
 이 문서 하나로 팀원이 기초부터 리뷰할 수 있게 정리했다. 읽는 순서: 1 → 2 → 3 → 코드 → 5 체크리스트.
-코드 주석본: `scripts/follow_object_node_v3_annotated.py` (원본과 코드 동일, 주석만), `scripts/follow_object_node_v3_safe.py` (수정본, 한 줄씩 주석).
+코드 주석본: `scripts/follow_object_node_v3_annotated.py` (원본과 코드 동일, 주석만), `scripts/follow_object_node_v3_safe_annotated.py` (수정본, 한 줄씩 주석 — **리뷰는 이 파일로**).
+실행본: `scripts/follow_object_node_v3_safe.py` (주석본에서 주석만 뺀 자동 생성 파일, 2026-10-04 R1). 수정은 주석본에서 하고 `python3 scripts/make_lean.py` 로 다시 생성,
+`python3 scripts/check_annotated_identical.py --ignore-docstrings scripts/follow_object_node_v3_safe.py scripts/follow_object_node_v3_safe_annotated.py` 로 코드 동일 확인.
 동작 원리 요약·참고문헌: `docs/FOLLOW_NODE_EXPLAINED.md`.
 
 ---
@@ -52,7 +54,10 @@ IDLE(대기) → TRACKING(추종) → REID(잠깐 놓침, 재식별 시도) → 
 |---|---|---|
 | `scripts/follow_object_node_v3.py` | 원본 노드 (수정 금지) | ✓ |
 | `scripts/follow_object_node_v3_annotated.py` | 원본 + 리뷰 주석 (코드 동일, `check_annotated_identical.py` 로 검증) | 읽기용 |
-| `scripts/follow_object_node_v3_safe.py` | 안전 수정본 S1~S11, 한 줄씩 주석 | ✓ |
+| `scripts/follow_object_node_v3_safe.py` | 안전 수정본 S1~S12 + R1 **실행본** (주석 없음, 자동 생성) | ✓ |
+| `scripts/follow_object_node_v3_safe_annotated.py` | 같은 코드의 **주석본** (리뷰·수정은 여기서) | 읽기용 |
+| `scripts/make_lean.py` | 주석본 → 실행본 생성 (주석 제거, docstring 첫 줄만) | 둘 다 |
+| `scripts/collect_runs.py` | 모든 실험 회차를 `results/all_runs.csv` 한 표로 모음 | 시뮬 |
 | `real/preflight.sh`, `real/run_real.sh` | 실기 출발 전 점검, 실기 노드 실행 | ✓ |
 | `real/record_real.sh`, `real/real_recorder.py` | 실기 시도 기록 (bag + 영상 + 텔레메트리) | ✓ |
 | `scripts/check_iface.py`, `lidar_check.py`, `detect_test.py` | 토픽·라이다 방향·YOLO 1프레임 점검 | ✓ |
@@ -88,6 +93,18 @@ IDLE(대기) → TRACKING(추종) → REID(잠깐 놓침, 재식별 시도) → 
 | B12 | 라이다 평면(0.193 m)보다 낮은 물체 미검출 (RC카 자체 포함) | 실기 TF 높이, 시뮬 lowbox | S4 (depth 장애물) |
 | B13 | 비례 제어라 이동 타깃을 `v/0.6` 만큼 뒤처져 따라감, 0.3 m/s 초과 타깃은 추종 불가 | 식 | 미수정 (설계 선택 — 6장 제안) |
 | B14 | 센서 구독이 reliable·큐 10 (기본값): 로봇이 best-effort 로 내면 영상 0 개, 노트북이 느리면 최대 ~1 s 묵은 프레임 | QoS 규칙, 시뮬 `scripts/test_qos.sh` | S12 (best-effort, 영상 큐 2) |
+| B15 | (v3_safe 자체) 센서 장착 TF 를 첫 메시지에서 못 읽으면 기본값을 **영구 캐시** → 나중에 TF 가 와도 무시. 기본값이 실기와 같아 지금까지는 영향 없었음 | 코드 검토 (2026-10-04) | R1 (TF 성공 시에만 캐시) |
+
+### 3-1-1. R1 정리 (2026-10-04) — 뼈대·동작 유지, 중복 제거
+| 정리 | 내용 |
+|---|---|
+| `_tf()` | TF 조회 `try/except` 3 곳 → 공통 함수 (실패 시 None) |
+| `sensor_T(key, frame, fallback)` | 라이다·카메라 장착값 읽기 통일 + B15 수정 |
+| `backproject()`, `corridor()`, `stop_dist(v)` | 역투영·통로 폭·정지거리 식 중복 제거 |
+| 재식별 | 후보마다 점수를 한 번만 계산 (전에는 최고점 후보를 한 번 더 계산) |
+| `watchdog` / `stop(n)` / `publish_state` | 분기·정지·JSON 변환 단순화 |
+| 표시 | 거리가 0.0 일 때 `d=n/a` 로 찍히던 것 수정 |
+| 파일 | 주석본(585 줄) / 실행본(468 줄, 원래 579 줄) 분리. 순수 코드 404 → 397 줄 |
 
 ### 3-2. v3_safe 자체의 한계·남은 위험
 - S4 depth 장애물: 시뮬 depth 는 잡음이 없다. **실기에서 바닥 반사·잡음으로 헛정지 가능** → `obs_min_h`, `obs_min_pts` 실측 튜닝.

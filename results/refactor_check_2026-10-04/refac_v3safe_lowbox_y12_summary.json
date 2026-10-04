@@ -1,0 +1,56 @@
+{
+ "tag": "refac_v3safe_lowbox_y12",
+ "duration_s": 43.1,
+ "samples": 415,
+ "cam_car_mean": 1.197,
+ "cam_car_min": 1.094,
+ "cam_car_max": 1.272,
+ "abs_err_mean_tracking": 0.209,
+ "within_0.2m_pct_tracking": 29.1,
+ "gap_car_min": 0.863,
+ "clear_obs_min": 0.192,
+ "in_fov_pct": 100.0,
+ "state_time_s": {
+  "IDLE": 6.2,
+  "TRACKING": 30.2,
+  "REID": 5.1
+ },
+ "state_transitions": 2,
+ "reverse_distance_m": 0.0,
+ "bumper_hits": 0,
+ "max_cmd_lin": 0.149,
+ "min_cmd_lin": 0.0,
+ "max_cmd_ang": 0.0,
+ "control_rate_hz": 2.0,
+ "events": {
+  "MOVE_WITHOUT_CAMERA": 1,
+  "FWD_NEAR_OBS": 2
+ },
+ "event_log": [
+  {
+   "t": 6.3,
+   "type": "STATE",
+   "detail": "IDLE -> TRACKING"
+  },
+  {
+   "t": 15.9,
+   "type": "MOVE_WITHOUT_CAMERA",
+   "detail": "img_age=1.7s v=0.17"
+  },
+  {
+   "t": 31.8,
+   "type": "FWD_NEAR_OBS",
+   "detail": "front=0.34 m lin=0.12"
+  },
+  {
+   "t": 33.9,
+   "type": "FWD_NEAR_OBS",
+   "detail": "front=0.22 m lin=0.12"
+  },
+  {
+   "t": 38.0,
+   "type": "STATE",
+   "detail": "TRACKING -> REID"
+  }
+ ]
+}

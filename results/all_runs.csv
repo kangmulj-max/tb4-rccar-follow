@@ -1,0 +1,166 @@
+﻿run,date,tag,node,model,scenario,follow_pct,lost_events,lost_s,collision,clear_obs_min_m,gap_car_min_m,reverse_m,abs_err_tracking_m,tracking_s,duration_s,control_hz,max_cmd_lin,events,note
+run1_v3,2026-10-03 03:05,approach_y12,v3,yolo12n,approach,48.2,1,1.4,Y,-0.007,0.006,0.478,0.401,7.7,30.0,7.4,0.0,BUMPER=8;COLLISION_CAR=7;COLLISION_OBS=13;REVERSE=4,"1차: 원본 v3 만. 카메라 위치 가정 오류(M1)로 카메라↔RC카 거리 약 0.18 m 작게 기록, 상태시간 일부 누락(M2)"
+run1_v3,2026-10-03 03:06,camdrop_y12,v3,yolo12n,camdrop,80.2,1,5.8,N,1.428,0.545,0.147,0.146,40.0,60.1,6.8,0.225,MOVE_WITHOUT_CAMERA=11;REVERSE=2,"1차: 원본 v3 만. 카메라 위치 가정 오류(M1)로 카메라↔RC카 거리 약 0.18 m 작게 기록, 상태시간 일부 누락(M2)"
+run1_v3,2026-10-03 03:16,depthloss_y12,v3,yolo12n,depthloss,100.0,0,0.0,N,1.315,0.566,0.289,0.145,32.6,38.1,4.7,0.275,,"1차: 원본 v3 만. 카메라 위치 가정 오류(M1)로 카메라↔RC카 거리 약 0.18 m 작게 기록, 상태시간 일부 누락(M2)"
+run1_v3,2026-10-03 03:22,depthstop_y12,v3,yolo12n,depthstop,,0,0,N,1.315,0.536,1.266,0.452,20.1,28.0,4.4,0.3,REVERSE=4,"1차: 원본 v3 만. 카메라 위치 가정 오류(M1)로 카메라↔RC카 거리 약 0.18 m 작게 기록, 상태시간 일부 누락(M2)"
+run1_v3,2026-10-03 02:56,lost_y11,v3,yolo11n,lost,62.0,1,0.0,N,1.414,0.448,0.248,0.2,30.3,45.0,8.4,0.166,REVERSE=2,"1차: 원본 v3 만. 카메라 위치 가정 오류(M1)로 카메라↔RC카 거리 약 0.18 m 작게 기록, 상태시간 일부 누락(M2)"
+run1_v3,2026-10-03 03:01,lost_y12,v3,yolo12n,lost,73.3,2,2.9,N,1.291,0.461,0.447,0.232,29.6,45.0,7.0,0.202,MOVE_WITHOUT_CAMERA=3;REVERSE=4,"1차: 원본 v3 만. 카메라 위치 가정 오류(M1)로 카메라↔RC카 거리 약 0.18 m 작게 기록, 상태시간 일부 누락(M2)"
+run1_v3,2026-10-03 03:04,lowbox_y12,v3,yolo12n,lowbox,100.0,0,0.0,Y,0.0,0.776,0.719,0.504,2.2,35.1,6.4,0.3,BUMPER=7;COLLISION_OBS=6;FWD_NEAR_OBS=6;MOVE_WITHOUT_CAMERA=13,"1차: 원본 v3 만. 카메라 위치 가정 오류(M1)로 카메라↔RC카 거리 약 0.18 m 작게 기록, 상태시간 일부 누락(M2)"
+run1_v3,2026-10-03 03:03,pillar_y12_offset-90,v3,yolo12n,pillar,87.4,0,0.0,Y,0.001,0.839,0.769,0.24,28.6,35.1,7.8,0.3,BUMPER=7;COLLISION_OBS=7;FWD_NEAR_OBS=6;MOVE_WITHOUT_CAMERA=10,"1차: 원본 v3 만. 카메라 위치 가정 오류(M1)로 카메라↔RC카 거리 약 0.18 m 작게 기록, 상태시간 일부 누락(M2)"
+run1_v3,2026-10-03 03:02,pillar_y12_offset0,v3,yolo12n,pillar,41.5,0,0.0,Y,0.005,0.851,0.49,0.689,12.3,35.0,7.5,0.3,BUMPER=5;COLLISION_OBS=4;FWD_NEAR_OBS=6;MOVE_WITHOUT_CAMERA=7,"1차: 원본 v3 만. 카메라 위치 가정 오류(M1)로 카메라↔RC카 거리 약 0.18 m 작게 기록, 상태시간 일부 누락(M2)"
+run1_v3,2026-10-03 03:27,pole_y11_offset-90,v3,yolo11n,pole,,0,0,Y,0.004,0.932,0.099,0.085,22.1,28.1,4.1,0.245,BUMPER=1;COLLISION_OBS=1;FWD_NEAR_OBS=1,"1차: 원본 v3 만. 카메라 위치 가정 오류(M1)로 카메라↔RC카 거리 약 0.18 m 작게 기록, 상태시간 일부 누락(M2)"
+run1_v3,2026-10-03 03:26,pole_y11_offset0,v3,yolo11n,pole,,0,0,Y,0.004,0.932,0.778,0.042,22.8,28.1,4.2,0.245,BUMPER=12;COLLISION_OBS=8;FWD_NEAR_OBS=11,"1차: 원본 v3 만. 카메라 위치 가정 오류(M1)로 카메라↔RC카 거리 약 0.18 m 작게 기록, 상태시간 일부 누락(M2)"
+run1_v3,2026-10-03 03:25,pole_y12_offset-90,v3,yolo12n,pole,,0,0,N,0.259,1.198,0.0,,0,28.1,8.3,0.0,,"1차: 원본 v3 만. 카메라 위치 가정 오류(M1)로 카메라↔RC카 거리 약 0.18 m 작게 기록, 상태시간 일부 누락(M2)"
+run1_v3,2026-10-03 03:24,pole_y12_offset0,v3,yolo12n,pole,,0,0,N,0.259,1.198,0.0,,0,28.0,8.4,0.0,,"1차: 원본 v3 만. 카메라 위치 가정 오류(M1)로 카메라↔RC카 거리 약 0.18 m 작게 기록, 상태시간 일부 누락(M2)"
+run1_v3,2026-10-03 02:53,random_y11,v3,yolo11n,random,83.5,2,1.5,N,1.306,0.167,0.874,0.159,47.1,60.1,7.2,0.208,REVERSE=5,"1차: 원본 v3 만. 카메라 위치 가정 오류(M1)로 카메라↔RC카 거리 약 0.18 m 작게 기록, 상태시간 일부 누락(M2)"
+run1_v3,2026-10-03 02:59,random_y12,v3,yolo12n,random,99.3,0,0.0,N,0.964,0.421,0.534,0.12,57.3,60.1,6.7,0.212,MOVE_WITHOUT_CAMERA=14;REVERSE=2,"1차: 원본 v3 만. 카메라 위치 가정 오류(M1)로 카메라↔RC카 거리 약 0.18 m 작게 기록, 상태시간 일부 누락(M2)"
+run1_v3,2026-10-03 03:17,shutdown_y12,v3,yolo12n,shutdown,98.5,0,0.0,N,1.315,0.768,0.0,0.196,27.9,33.0,2.4,0.239,,"1차: 원본 v3 만. 카메라 위치 가정 오류(M1)로 카메라↔RC카 거리 약 0.18 m 작게 기록, 상태시간 일부 누락(M2)"
+run1_v3,2026-10-03 02:52,square_y11,v3,yolo11n,square,58.7,1,15.3,N,1.437,0.62,0.128,0.12,28.0,60.1,7.0,0.229,REVERSE=1,"1차: 원본 v3 만. 카메라 위치 가정 오류(M1)로 카메라↔RC카 거리 약 0.18 m 작게 기록, 상태시간 일부 누락(M2)"
+run1_v3,2026-10-03 02:57,square_y12,v3,yolo12n,square,96.0,0,0.0,N,1.428,0.546,0.58,0.142,46.4,60.1,6.7,0.23,MOVE_WITHOUT_CAMERA=8;REVERSE=4,"1차: 원본 v3 만. 카메라 위치 가정 오류(M1)로 카메라↔RC카 거리 약 0.18 m 작게 기록, 상태시간 일부 누락(M2)"
+run1_v3,2026-10-03 02:54,stopgo_y11,v3,yolo11n,stopgo,99.5,0,0.0,N,1.425,0.758,0.0,0.115,36.1,40.0,5.4,0.3,,"1차: 원본 v3 만. 카메라 위치 가정 오류(M1)로 카메라↔RC카 거리 약 0.18 m 작게 기록, 상태시간 일부 누락(M2)"
+run1_v3,2026-10-03 03:00,stopgo_y12,v3,yolo12n,stopgo,42.2,1,0.0,N,1.424,0.791,0.675,0.671,17.2,40.0,6.8,0.3,MOVE_WITHOUT_CAMERA=9,"1차: 원본 v3 만. 카메라 위치 가정 오류(M1)로 카메라↔RC카 거리 약 0.18 m 작게 기록, 상태시간 일부 누락(M2)"
+run2_matrix,2026-10-03 10:32,v3_approach_y11,v3,yolo11n,approach,80.0,1,1.8,Y,-0.007,0.006,0.467,0.19,15.5,38.0,6.0,0.065,BUMPER=10;COLLISION_CAR=6;COLLISION_OBS=11;REVERSE=4,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:33,v3_approach_y12,v3,yolo12n,approach,80.1,1,0.9,Y,-0.007,0.006,0.478,0.224,19.9,38.1,5.7,0.0,BUMPER=6;COLLISION_CAR=6;COLLISION_OBS=12;REVERSE=5,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:36,v3_camdrop_y11,v3,yolo11n,camdrop,67.9,1,13.0,N,1.412,0.55,0.003,0.164,42.0,68.1,5.9,0.29,MOVE_WITHOUT_CAMERA=1;REVERSE=1,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:38,v3_camdrop_y12,v3,yolo12n,camdrop,98.9,0,0.0,N,1.315,0.58,0.576,0.138,62.0,68.0,5.0,0.25,MOVE_WITHOUT_CAMERA=4;REVERSE=4,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:45,v3_depthloss_y11,v3,yolo11n,depthloss,52.0,0,0.0,N,1.315,0.793,0.0,0.679,30.6,38.1,5.3,0.227,MOVE_WITHOUT_CAMERA=4,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:46,v3_depthloss_y12,v3,yolo12n,depthloss,91.2,1,0.4,Y,1.315,0.004,0.09,0.236,29.7,38.0,5.2,0.266,BUMPER=1;COLLISION_CAR=1;MOVE_WITHOUT_CAMERA=6,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:41,v3_depthstop_y11,v3,yolo11n,depthstop,0.0,1,0.0,Y,1.315,0.0,0.106,0.774,11.4,28.1,5.3,0.3,BUMPER=1;COLLISION_CAR=1;MOVE_WITHOUT_CAMERA=4,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:42,v3_depthstop_y12,v3,yolo12n,depthstop,,0,0,N,1.315,2.298,0.0,,0,28.1,6.5,0.0,,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:15,v3_lost_y11,v3,yolo11n,lost,81.7,1,0.0,N,1.315,0.466,0.181,0.077,36.9,53.1,6.0,0.143,MOVE_WITHOUT_CAMERA=4;REVERSE=1,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:16,v3_lost_y12,v3,yolo12n,lost,72.7,1,2.5,N,1.315,0.58,0.308,0.111,30.9,53.1,5.2,0.163,MOVE_WITHOUT_CAMERA=5;REVERSE=4,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:24,v3_lowbox_y11,v3,yolo11n,lowbox,99.6,0,0.0,Y,-0.001,0.545,0.649,0.278,31.6,43.0,6.9,0.3,BUMPER=7;COLLISION_OBS=7;FWD_NEAR_OBS=6;MOVE_WITHOUT_CAMERA=12;REVERSE=1,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:25,v3_lowbox_y12,v3,yolo12n,lowbox,100.0,0,0.0,Y,0.003,0.792,0.709,0.482,6.4,43.0,5.6,0.3,BUMPER=8;COLLISION_OBS=7;FWD_NEAR_OBS=7;MOVE_WITHOUT_CAMERA=10,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:20,v3_pillar_y11,v3,yolo11n,pillar,100.0,0,0.0,Y,0.006,0.793,0.469,0.272,35.1,43.1,5.1,0.3,BUMPER=4;COLLISION_OBS=3;FWD_NEAR_OBS=6;MOVE_WITHOUT_CAMERA=9,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:21,v3_pillar_y12,v3,yolo12n,pillar,100.0,0,0.0,Y,0.005,0.603,0.449,0.244,36.5,43.1,5.2,0.3,BUMPER=4;COLLISION_OBS=4;FWD_NEAR_OBS=6;MOVE_WITHOUT_CAMERA=10,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:52,v3_pole_y11_offset0,v3,yolo11n,pole,,0,0,Y,0.003,0.931,0.829,0.209,23.4,28.0,5.2,0.245,BUMPER=12;COLLISION_OBS=8;FWD_NEAR_OBS=12;MOVE_WITHOUT_CAMERA=9,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:28,v3_pole_y11,v3,yolo11n,pole,,0,0,Y,0.005,0.933,0.096,0.264,22.8,28.1,4.2,0.245,BUMPER=1;COLLISION_OBS=1;FWD_NEAR_OBS=1,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:29,v3_pole_y12,v3,yolo12n,pole,,0,0,N,0.259,1.198,0.0,,0,28.1,7.3,0.0,,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:05,v3_random_y11,v3,yolo11n,random,38.2,5,15.2,Y,1.315,0.006,0.846,0.247,31.8,68.0,7.4,0.3,BUMPER=2;COLLISION_CAR=2;REVERSE=4,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:06,v3_random_y12,v3,yolo12n,random,25.5,1,25.2,Y,1.315,-0.006,0.0,0.162,15.3,68.1,7.4,0.201,BUMPER=29;COLLISION_CAR=15,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:49,v3_shutdown_y11,v3,yolo11n,shutdown,95.3,0,0.0,N,1.315,0.755,0.0,0.22,25.4,33.0,2.9,0.215,MOVE_WITHOUT_CAMERA=5,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:50,v3_shutdown_y12,v3,yolo12n,shutdown,47.3,0,0.0,N,1.315,0.788,0.0,0.18,15.8,33.1,4.0,0.176,MOVE_WITHOUT_CAMERA=4,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 09:59,v3_square_y11,v3,yolo11n,square,66.5,1,13.8,N,1.315,0.61,0.11,0.139,43.4,68.1,6.1,0.238,REVERSE=1,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:00,v3_square_y12,v3,yolo12n,square,97.4,0,0.0,N,1.315,0.504,0.659,0.128,61.6,68.1,5.4,0.235,REVERSE=5,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:10,v3_stopgo_y11,v3,yolo11n,stopgo,59.7,1,0.0,N,1.315,0.781,0.721,0.618,35.2,48.1,6.2,0.3,MOVE_WITHOUT_CAMERA=10,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:11,v3_stopgo_y12,v3,yolo12n,stopgo,60.6,1,0.3,N,1.315,0.823,0.518,0.365,32.9,48.1,6.0,0.3,MOVE_WITHOUT_CAMERA=12,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:34,v3safe_approach_y11,v3safe,yolo11n,approach,,0,0,Y,0.239,0.004,0.286,,0,38.1,7.2,0.0,BUMPER=13;COLLISION_CAR=9;MOVE_WITHOUT_CAMERA=1,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:35,v3safe_approach_y12,v3safe,yolo12n,approach,43.2,1,6.3,Y,-0.001,0.002,0.477,0.33,10.7,38.1,6.9,0.114,BUMPER=13;COLLISION_CAR=10;COLLISION_OBS=3;REVERSE=1,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:39,v3safe_camdrop_y11,v3safe,yolo11n,camdrop,56.7,1,15.2,N,1.315,0.59,0.212,0.159,38.3,68.1,6.2,0.3,MOVE_WITHOUT_CAMERA=1;REVERSE=2,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:40,v3safe_camdrop_y12,v3safe,yolo12n,camdrop,78.7,0,0.0,N,1.315,0.58,0.369,0.15,28.2,68.1,5.8,0.214,MOVE_WITHOUT_CAMERA=8;REVERSE=4,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:47,v3safe_depthloss_y11,v3safe,yolo11n,depthloss,57.0,0,0.0,N,1.315,0.79,0.0,0.129,0.2,38.1,5.4,0.277,MOVE_WITHOUT_CAMERA=4,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:48,v3safe_depthloss_y12,v3safe,yolo12n,depthloss,,0,0,N,1.315,0.805,0.0,,0,38.1,6.0,0.28,MOVE_WITHOUT_CAMERA=4,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:43,v3safe_depthstop_y11,v3safe,yolo11n,depthstop,,0,0,N,1.315,0.885,0.0,0.683,8.5,28.1,5.4,0.3,MOVE_WITHOUT_CAMERA=3,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:44,v3safe_depthstop_y12,v3safe,yolo12n,depthstop,,0,0,N,1.315,2.298,0.0,,0,28.1,6.4,0.0,,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:18,v3safe_lost_y11,v3safe,yolo11n,lost,73.0,2,0.4,N,1.297,0.53,0.189,0.094,11.3,53.1,6.4,0.131,MOVE_WITHOUT_CAMERA=4;REVERSE=3,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:19,v3safe_lost_y12,v3safe,yolo12n,lost,79.1,1,2.8,N,1.315,0.567,0.182,0.113,24.6,53.0,4.7,0.209,MOVE_WITHOUT_CAMERA=5;REVERSE=3,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:26,v3safe_lowbox_y11,v3safe,yolo11n,lowbox,79.0,1,0.0,N,0.149,0.898,0.0,0.334,8.8,43.1,6.7,0.136,FWD_NEAR_OBS=3;MOVE_WITHOUT_CAMERA=6,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:27,v3safe_lowbox_y12,v3safe,yolo12n,lowbox,85.0,1,0.0,N,0.077,0.793,0.0,0.384,34.9,43.0,5.1,0.187,FWD_NEAR_OBS=2;MOVE_WITHOUT_CAMERA=1,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:22,v3safe_pillar_y11,v3safe,yolo11n,pillar,82.1,1,0.0,N,0.17,0.784,0.0,0.241,11.1,43.0,5.6,0.173,FWD_NEAR_OBS=3;MOVE_WITHOUT_CAMERA=6,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:23,v3safe_pillar_y12,v3safe,yolo12n,pillar,77.8,0,0.0,N,0.169,0.787,0.0,0.408,32.9,43.0,5.5,0.183,FWD_NEAR_OBS=2;MOVE_WITHOUT_CAMERA=6,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:30,v3safe_pole_y11,v3safe,yolo11n,pole,,0,0,N,0.148,1.085,0.0,0.336,23.4,28.1,4.6,0.107,FWD_NEAR_OBS=5,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:31,v3safe_pole_y12,v3safe,yolo12n,pole,,0,0,N,0.259,1.198,0.0,,0,28.0,7.3,0.0,,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:08,v3safe_random_y11,v3safe,yolo11n,random,81.6,1,3.4,N,1.315,0.582,0.508,0.152,50.6,68.1,7.4,0.238,REVERSE=4,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:09,v3safe_random_y12,v3safe,yolo12n,random,86.9,0,0.0,N,1.315,0.636,0.184,0.191,47.9,68.0,6.1,0.283,MOVE_WITHOUT_CAMERA=1;REVERSE=1,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:51,v3safe_shutdown_y11,v3safe,yolo11n,shutdown,92.8,0,0.0,N,1.315,0.783,0.0,0.015,0.1,33.0,3.1,0.208,MOVE_WITHOUT_CAMERA=4,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:51,v3safe_shutdown_y12,v3safe,yolo12n,shutdown,94.6,0,0.0,N,1.315,0.754,0.0,0.181,8.7,33.0,2.8,0.217,MOVE_WITHOUT_CAMERA=4,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:02,v3safe_square_y11,v3safe,yolo11n,square,75.7,2,3.2,N,1.315,0.627,0.058,0.11,46.8,68.1,6.8,0.22,REVERSE=1,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:03,v3safe_square_y12,v3safe,yolo12n,square,97.4,0,0.0,N,1.315,0.532,0.69,0.132,60.0,68.0,5.1,0.223,REVERSE=5,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:13,v3safe_stopgo_y11,v3safe,yolo11n,stopgo,55.6,1,1.1,N,1.315,0.793,0.478,0.522,17.3,48.1,5.4,0.3,MOVE_WITHOUT_CAMERA=11,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run2_matrix,2026-10-03 10:14,v3safe_stopgo_y12,v3safe,yolo12n,stopgo,56.4,1,0.1,N,1.315,0.79,0.534,0.771,10.8,48.1,5.7,0.3,MOVE_WITHOUT_CAMERA=12,2차 매트릭스 (v3/v3_safe × 11n/12n). v3_safe 추종률은 재집계값(M3)
+run3_matrix,2026-10-03 11:52,v3_approach_y11,v3,yolo11n,approach,76.5,2,0.2,Y,-0.007,0.006,0.459,0.169,16.8,38.0,5.2,0.065,BUMPER=5;COLLISION_CAR=4;COLLISION_OBS=10;MOVE_WITHOUT_CAMERA=1;REVERSE=4,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:53,v3_approach_y12,v3,yolo12n,approach,81.1,1,0.3,Y,-0.007,0.006,0.481,0.225,19.8,38.1,5.8,0.0,BUMPER=7;COLLISION_CAR=6;COLLISION_OBS=12;REVERSE=5,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:56,v3_camdrop_y11,v3,yolo11n,camdrop,68.2,1,3.1,N,1.363,0.703,0.0,0.157,45.3,68.0,5.2,0.292,MOVE_WITHOUT_CAMERA=12,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:57,v3_camdrop_y12,v3,yolo12n,camdrop,90.4,1,0.3,N,1.315,0.721,0.0,0.135,58.0,68.0,5.7,0.232,MOVE_WITHOUT_CAMERA=14,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 12:06,v3_depthloss_y11,v3,yolo11n,depthloss,100.0,0,0.0,N,1.315,0.796,0.215,0.22,32.6,38.0,4.7,0.257,MOVE_WITHOUT_CAMERA=1,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 12:06,v3_depthloss_y12,v3,yolo12n,depthloss,100.0,0,0.0,N,1.315,0.785,0.096,0.209,30.3,38.1,3.9,0.259,,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 12:02,v3_depthstop_y11,v3,yolo11n,depthstop,0.0,1,0.0,Y,1.315,0.003,0.083,0.662,9.6,28.1,5.1,0.3,BUMPER=1;COLLISION_CAR=1;MOVE_WITHOUT_CAMERA=5,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 12:03,v3_depthstop_y12,v3,yolo12n,depthstop,,0,0,N,1.315,2.298,0.0,,0,28.0,6.2,0.0,,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:35,v3_lost_y11,v3,yolo11n,lost,79.1,3,0.7,N,1.175,0.501,0.308,0.083,38.1,53.1,6.0,0.126,REVERSE=2,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:37,v3_lost_y12,v3,yolo12n,lost,80.7,2,2.4,N,1.315,0.546,0.378,0.093,38.4,53.1,6.5,0.138,REVERSE=2,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:45,v3_lowbox_y11,v3,yolo11n,lowbox,97.0,0,0.0,Y,0.001,0.898,0.499,0.298,28.0,43.0,5.7,0.3,BUMPER=6;COLLISION_OBS=5;FWD_NEAR_OBS=6;MOVE_WITHOUT_CAMERA=10,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:46,v3_lowbox_y12,v3,yolo12n,lowbox,98.4,0,0.0,Y,-0.005,0.796,0.563,0.298,35.6,43.1,5.5,0.3,BUMPER=6;COLLISION_OBS=6;FWD_NEAR_OBS=6;MOVE_WITHOUT_CAMERA=12,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:40,v3_pillar_y11,v3,yolo11n,pillar,99.6,0,0.0,Y,0.006,0.675,0.424,0.254,36.3,43.1,5.3,0.3,BUMPER=4;COLLISION_OBS=5;FWD_NEAR_OBS=7;MOVE_WITHOUT_CAMERA=10,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:41,v3_pillar_y12,v3,yolo12n,pillar,96.6,0,0.0,Y,0.005,0.786,0.432,0.243,35.4,43.1,5.0,0.267,BUMPER=5;COLLISION_OBS=4;FWD_NEAR_OBS=8;MOVE_WITHOUT_CAMERA=11,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 12:13,v3_pole_y11_offset0,v3,yolo11n,pole,,0,0,Y,0.003,0.931,0.783,0.209,22.2,28.1,4.4,0.245,BUMPER=11;COLLISION_OBS=8;FWD_NEAR_OBS=11;MOVE_WITHOUT_CAMERA=7,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:49,v3_pole_y11,v3,yolo11n,pole,,0,0,Y,0.005,0.933,0.079,0.249,21.3,28.1,4.1,0.245,BUMPER=1;COLLISION_OBS=1;FWD_NEAR_OBS=1,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:50,v3_pole_y12,v3,yolo12n,pole,,0,0,N,0.259,1.198,0.0,,0,28.1,7.6,0.0,,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:24,v3_random_y11,v3,yolo11n,random,56.7,2,8.7,Y,1.315,-0.007,0.516,0.157,37.3,68.1,5.8,0.181,BUMPER=5;COLLISION_CAR=6;MOVE_WITHOUT_CAMERA=11;REVERSE=3,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:26,v3_random_y12,v3,yolo12n,random,68.5,1,0.5,N,1.315,0.406,1.178,0.302,49.7,68.1,5.8,0.3,MOVE_WITHOUT_CAMERA=17;REVERSE=3,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 12:09,v3_shutdown_y11,v3,yolo11n,shutdown,96.5,0,0.0,N,1.315,0.756,0.0,0.255,27.3,33.1,2.7,0.227,MOVE_WITHOUT_CAMERA=4,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 12:10,v3_shutdown_y12,v3,yolo12n,shutdown,93.6,0,0.0,N,1.315,0.746,0.0,0.284,29.0,33.1,2.6,0.217,MOVE_WITHOUT_CAMERA=5,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:18,v3_square_y11,v3,yolo11n,square,81.4,1,1.6,N,1.315,0.741,0.0,0.133,47.7,68.1,6.0,0.23,,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:20,v3_square_y12,v3,yolo12n,square,98.9,0,0.0,N,1.315,0.548,0.583,0.14,59.9,68.0,4.5,0.229,REVERSE=3,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:31,v3_stopgo_y11,v3,yolo11n,stopgo,57.7,1,1.3,N,1.315,0.781,0.767,0.599,34.4,48.0,5.3,0.3,MOVE_WITHOUT_CAMERA=14,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:32,v3_stopgo_y12,v3,yolo12n,stopgo,48.2,1,3.3,N,1.315,0.784,0.547,0.471,27.4,48.1,6.0,0.3,MOVE_WITHOUT_CAMERA=6,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:54,v3safe_approach_y11,v3safe,yolo11n,approach,48.1,1,5.2,Y,-0.001,0.002,0.454,0.259,13.5,38.1,5.3,0.0,BUMPER=17;COLLISION_CAR=10;COLLISION_OBS=2;MOVE_WITHOUT_CAMERA=2;REVERSE=1,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:55,v3safe_approach_y12,v3safe,yolo12n,approach,43.9,1,5.6,Y,-0.001,0.002,0.438,0.205,14.3,38.1,5.5,0.0,BUMPER=13;COLLISION_CAR=6;COLLISION_OBS=1;MOVE_WITHOUT_CAMERA=5;REVERSE=1,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:59,v3safe_camdrop_y11,v3safe,yolo11n,camdrop,54.9,2,4.4,N,1.315,0.657,0.041,0.178,37.1,68.1,5.2,0.3,MOVE_WITHOUT_CAMERA=11;REVERSE=1,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 12:00,v3safe_camdrop_y12,v3safe,yolo12n,camdrop,97.7,0,0.0,N,1.315,0.634,0.205,0.137,60.1,68.1,5.0,0.3,MOVE_WITHOUT_CAMERA=15;REVERSE=3,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 12:07,v3safe_depthloss_y11,v3safe,yolo11n,depthloss,54.9,0,0.0,N,1.315,0.806,0.0,0.697,32.8,38.1,5.9,0.271,,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 12:08,v3safe_depthloss_y12,v3safe,yolo12n,depthloss,56.5,0,0.0,N,1.315,0.794,0.0,0.638,31.9,38.1,5.5,0.249,MOVE_WITHOUT_CAMERA=1,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 12:04,v3safe_depthstop_y11,v3safe,yolo11n,depthstop,,0,0,N,1.315,0.964,0.0,0.416,23.8,28.2,6.0,0.3,,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 12:05,v3safe_depthstop_y12,v3safe,yolo12n,depthstop,,0,0,N,1.315,2.298,0.0,,0,28.1,5.4,0.0,,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:38,v3safe_lost_y11,v3safe,yolo11n,lost,90.3,0,0.0,N,1.315,0.451,0.309,0.103,41.9,53.1,6.2,0.155,MOVE_WITHOUT_CAMERA=1;REVERSE=3,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:39,v3safe_lost_y12,v3safe,yolo12n,lost,77.4,1,1.5,N,1.315,0.34,0.309,0.109,35.1,53.1,5.5,0.2,MOVE_WITHOUT_CAMERA=4;REVERSE=3,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:47,v3safe_lowbox_y11,v3safe,yolo11n,lowbox,81.4,1,0.0,N,0.138,0.898,0.0,0.409,30.5,43.1,5.7,0.143,FWD_NEAR_OBS=2;MOVE_WITHOUT_CAMERA=8,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:48,v3safe_lowbox_y12,v3safe,yolo12n,lowbox,93.4,0,0.0,N,0.091,0.792,0.0,0.332,35.4,43.1,4.3,0.183,FWD_NEAR_OBS=2;MOVE_WITHOUT_CAMERA=1,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:43,v3safe_pillar_y11,v3safe,yolo11n,pillar,75.4,0,0.0,N,0.177,0.779,0.0,0.426,33.0,43.1,5.3,0.177,FWD_NEAR_OBS=4;MOVE_WITHOUT_CAMERA=7,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:44,v3safe_pillar_y12,v3safe,yolo12n,pillar,80.4,1,0.0,N,0.167,0.797,0.0,0.422,39.4,43.2,5.4,0.185,FWD_NEAR_OBS=2;MOVE_WITHOUT_CAMERA=5,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:50,v3safe_pole_y11,v3safe,yolo11n,pole,,0,0,N,0.149,1.086,0.0,0.329,23.5,28.1,4.1,0.181,FWD_NEAR_OBS=2,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:51,v3safe_pole_y12,v3safe,yolo12n,pole,,0,0,N,0.259,1.198,0.0,,0,28.1,7.3,0.0,,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:28,v3safe_random_y11,v3safe,yolo11n,random,49.8,4,7.4,N,1.315,0.777,0.0,0.226,33.8,68.0,5.7,0.3,MOVE_WITHOUT_CAMERA=13,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:29,v3safe_random_y12,v3safe,yolo12n,random,92.7,1,0.4,N,0.975,0.542,0.31,0.159,57.9,68.1,5.6,0.174,MOVE_WITHOUT_CAMERA=19;REVERSE=2,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 12:11,v3safe_shutdown_y11,v3safe,yolo11n,shutdown,94.8,0,0.0,N,1.315,0.767,0.0,0.268,27.4,33.0,2.9,0.211,MOVE_WITHOUT_CAMERA=5,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 12:12,v3safe_shutdown_y12,v3safe,yolo12n,shutdown,97.9,0,0.0,N,1.315,0.786,0.0,0.254,26.9,33.0,2.8,0.214,MOVE_WITHOUT_CAMERA=4,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:22,v3safe_square_y11,v3safe,yolo11n,square,80.8,1,6.0,N,1.315,0.628,0.0,0.136,52.4,68.1,5.8,0.215,MOVE_WITHOUT_CAMERA=1,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:23,v3safe_square_y12,v3safe,yolo12n,square,97.6,0,0.0,N,1.315,0.587,0.433,0.115,61.8,68.1,5.6,0.223,MOVE_WITHOUT_CAMERA=11;REVERSE=3,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:33,v3safe_stopgo_y11,v3safe,yolo11n,stopgo,63.4,1,0.8,N,1.315,0.794,0.349,0.493,38.8,48.0,5.1,0.3,,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run3_matrix,2026-10-03 11:34,v3safe_stopgo_y12,v3safe,yolo12n,stopgo,61.7,2,0.8,N,1.315,0.791,0.42,0.387,34.6,48.1,5.1,0.3,MOVE_WITHOUT_CAMERA=1,"3차 매트릭스 (2026-10-03, 최종 보고서 기준)"
+run4_3models,2026-10-04 09:38,v3_lost_y11,v3,yolo11n,lost,85.7,1,1.1,N,1.315,0.61,0.056,0.095,29.9,53.0,4.9,0.128,MOVE_WITHOUT_CAMERA=4;REVERSE=1,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:39,v3_lost_y12,v3,yolo12n,lost,66.9,0,0.0,N,1.243,0.445,0.272,0.095,36.3,53.1,5.5,0.101,MOVE_WITHOUT_CAMERA=5;REVERSE=2,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:36,v3_lost_y8,v3,yolo8n,lost,9.0,4,13.1,N,1.315,0.792,0.0,0.126,5.1,53.0,5.5,0.082,MOVE_WITHOUT_CAMERA=1,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:52,v3_lowbox_y11,v3,yolo11n,lowbox,82.1,0,0.0,Y,0.001,0.898,0.319,0.24,24.2,43.1,6.4,0.218,BUMPER=5;COLLISION_OBS=4;FWD_NEAR_OBS=7,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:53,v3_lowbox_y12,v3,yolo12n,lowbox,99.5,0,0.0,Y,0.003,0.788,0.33,0.201,34.8,43.1,4.0,0.224,BUMPER=5;COLLISION_OBS=4;FWD_NEAR_OBS=7,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:50,v3_lowbox_y8,v3,yolo8n,lowbox,,0,0,N,1.315,0.898,0.0,,0,43.1,6.6,0.0,,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:45,v3_pillar_y11,v3,yolo11n,pillar,97.8,0,0.0,Y,0.006,0.768,0.524,0.284,36.4,43.1,5.0,0.3,BUMPER=4;COLLISION_OBS=4;FWD_NEAR_OBS=7;MOVE_WITHOUT_CAMERA=11,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:46,v3_pillar_y12,v3,yolo12n,pillar,99.6,0,0.0,Y,0.004,0.79,0.568,0.284,34.1,43.1,5.1,0.3,BUMPER=6;COLLISION_OBS=6;FWD_NEAR_OBS=6;MOVE_WITHOUT_CAMERA=12,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:44,v3_pillar_y8,v3,yolo8n,pillar,1.1,1,22.5,N,1.315,0.787,0.0,0.074,3.3,43.0,6.1,0.065,MOVE_WITHOUT_CAMERA=1,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:22,v3_random_y11,v3,yolo11n,random,63.4,3,7.3,N,1.315,0.28,1.349,0.184,40.8,68.1,5.8,0.257,MOVE_WITHOUT_CAMERA=11;REVERSE=7,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:23,v3_random_y12,v3,yolo12n,random,78.8,1,1.7,N,1.315,0.374,0.827,0.145,50.7,68.1,5.6,0.201,MOVE_WITHOUT_CAMERA=13;REVERSE=4,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:20,v3_random_y8,v3,yolo8n,random,29.9,6,5.1,N,1.315,0.439,0.437,0.244,22.3,68.1,6.2,0.3,MOVE_WITHOUT_CAMERA=10;REVERSE=3,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:13,v3_square_y11,v3,yolo11n,square,73.2,2,2.2,N,1.315,0.697,0.009,0.144,45.2,68.1,5.7,0.224,REVERSE=1,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:14,v3_square_y12,v3,yolo12n,square,94.9,0,0.0,N,1.315,0.71,0.0,0.128,57.6,68.0,4.6,0.233,,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:11,v3_square_y8,v3,yolo8n,square,0.6,2,44.6,N,1.315,0.785,0.0,0.076,3.3,68.1,7.4,0.065,,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:30,v3_stopgo_y11,v3,yolo11n,stopgo,64.5,0,0.0,N,1.315,0.777,0.242,0.544,41.1,48.1,4.3,0.3,MOVE_WITHOUT_CAMERA=2,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:32,v3_stopgo_y12,v3,yolo12n,stopgo,68.1,1,0.1,N,1.315,0.79,0.525,0.514,36.7,48.1,4.5,0.3,MOVE_WITHOUT_CAMERA=2,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:29,v3_stopgo_y8,v3,yolo8n,stopgo,17.6,4,9.2,N,1.315,0.82,0.172,0.512,12.6,48.0,7.1,0.3,MOVE_WITHOUT_CAMERA=1,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:41,v3safe_lost_y11,v3safe,yolo11n,lost,71.3,1,2.6,N,1.315,0.492,0.104,0.079,32.0,53.1,3.1,0.142,MOVE_WITHOUT_CAMERA=3;REVERSE=2,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:42,v3safe_lost_y12,v3safe,yolo12n,lost,71.0,1,3.2,N,1.251,0.571,0.125,0.078,32.8,53.1,3.1,0.114,MOVE_WITHOUT_CAMERA=3;REVERSE=2,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:40,v3safe_lost_y8,v3safe,yolo8n,lost,23.0,3,1.1,N,1.315,0.525,0.04,0.1,11.8,53.1,2.9,0.163,MOVE_WITHOUT_CAMERA=2;REVERSE=1,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:54,v3safe_lowbox_y8,v3safe,yolo8n,lowbox,,0,0,N,1.315,0.898,0.0,,0,43.0,2.8,0.0,,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:48,v3safe_pillar_y11,v3safe,yolo11n,pillar,74.0,0,0.0,N,0.188,0.84,0.0,0.442,34.3,43.1,3.6,0.152,FWD_NEAR_OBS=3;MOVE_WITHOUT_CAMERA=3,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:49,v3safe_pillar_y12,v3safe,yolo12n,pillar,76.9,0,0.0,N,0.183,0.848,0.0,0.429,36.7,43.1,4.1,0.147,FWD_NEAR_OBS=3,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:47,v3safe_pillar_y8,v3safe,yolo8n,pillar,4.1,1,21.4,N,1.315,0.855,0.0,0.111,4.1,43.1,3.2,0.065,MOVE_WITHOUT_CAMERA=1,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:26,v3safe_random_y11,v3safe,yolo11n,random,80.0,0,0.0,N,1.292,0.586,0.071,0.178,49.5,68.1,3.1,0.3,MOVE_WITHOUT_CAMERA=17;REVERSE=1,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:28,v3safe_random_y12,v3safe,yolo12n,random,86.6,1,0.7,N,1.089,0.545,0.48,0.132,54.3,68.0,3.7,0.157,MOVE_WITHOUT_CAMERA=6;REVERSE=3,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:25,v3safe_random_y8,v3safe,yolo8n,random,1.3,5,34.3,N,1.315,0.854,0.0,0.323,6.8,68.1,3.5,0.294,MOVE_WITHOUT_CAMERA=3,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:17,v3safe_square_y11,v3safe,yolo11n,square,45.9,2,13.6,N,1.315,0.643,0.0,0.163,30.7,68.1,3.2,0.3,MOVE_WITHOUT_CAMERA=8,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:19,v3safe_square_y12,v3safe,yolo12n,square,90.8,0,0.0,N,1.315,0.684,0.04,0.131,56.9,68.1,3.1,0.175,MOVE_WITHOUT_CAMERA=11;REVERSE=1,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:16,v3safe_square_y8,v3safe,yolo8n,square,3.0,1,37.8,N,1.315,0.845,0.0,0.122,4.4,68.1,4.1,0.075,,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:34,v3safe_stopgo_y11,v3safe,yolo11n,stopgo,58.8,2,2.2,N,1.315,0.848,0.457,0.379,27.7,48.0,4.1,0.3,MOVE_WITHOUT_CAMERA=1,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:35,v3safe_stopgo_y12,v3safe,yolo12n,stopgo,63.9,1,3.4,N,1.315,0.847,0.347,0.339,33.2,48.1,4.1,0.3,MOVE_WITHOUT_CAMERA=3,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+run4_3models,2026-10-04 09:33,v3safe_stopgo_y8,v3safe,yolo8n,stopgo,11.9,2,6.4,N,1.315,0.847,0.113,0.468,14.6,48.0,4.1,0.3,MOVE_WITHOUT_CAMERA=1,"4차 (2026-10-04, 8n/11n/12n 같은 회차). 34 회에서 중단 — 미실행 조합은 없음"
+qos_test,2026-10-03 12:36,qos_be_v3,v3,yolo11n,qos_be_v3,,0,0,N,1.315,0.898,0.0,,0,68.1,0.0,0.0,,S12 QoS 시험 (best-effort / reliable 발행)
+qos_test,2026-10-03 12:35,qos_be_v3safe,v3safe,yolo11n,qos_be_v3safe,92.5,0,0.0,N,1.315,0.614,0.154,0.115,58.5,68.0,4.2,0.155,MOVE_WITHOUT_CAMERA=19;REVERSE=2,S12 QoS 시험 (best-effort / reliable 발행)
+qos_test,2026-10-03 12:33,qos_rel_v3safe,v3safe,yolo11n,qos_rel_v3safe,91.3,0,0.0,N,1.315,0.692,0.0,0.107,58.9,68.1,4.0,0.15,,S12 QoS 시험 (best-effort / reliable 발행)
+refactor_check,2026-10-04 10:06,refac_v3safe_approach_y12,v3safe,yolo12n,approach,41.8,1,5.6,Y,-0.001,0.002,0.387,0.263,12.4,38.0,3.2,0.0,BUMPER=12;COLLISION_CAR=9;COLLISION_OBS=1;MOVE_WITHOUT_CAMERA=5,리팩터(R1) 실행본 검증 (2026-10-04)
+refactor_check,2026-10-04 10:05,refac_v3safe_camdrop_y12,v3safe,yolo12n,camdrop,90.9,0,0.0,N,1.315,0.589,0.213,0.133,55.2,68.1,3.0,0.16,MOVE_WITHOUT_CAMERA=5,리팩터(R1) 실행본 검증 (2026-10-04)
+refactor_check,2026-10-04 10:10,refac_v3safe_depthstop_y11,v3safe,yolo11n,depthstop,,0,0,N,1.315,1.271,0.0,0.648,22.8,28.0,3.3,0.3,,리팩터(R1) 실행본 검증 (2026-10-04)
+refactor_check,2026-10-04 10:04,refac_v3safe_depthstop_y12,v3safe,yolo12n,depthstop,,0,0,N,1.315,2.298,0.0,,0,28.0,3.3,0.0,,리팩터(R1) 실행본 검증 (2026-10-04)
+refactor_check,2026-10-04 10:02,refac_v3safe_lowbox_y12,v3safe,yolo12n,lowbox,91.2,0,0.0,N,0.192,0.863,0.0,0.209,30.2,43.1,2.0,0.149,FWD_NEAR_OBS=2;MOVE_WITHOUT_CAMERA=1,리팩터(R1) 실행본 검증 (2026-10-04)
+refactor_check,2026-10-04 10:01,refac_v3safe_pillar_y12,v3safe,yolo12n,pillar,85.2,0,0.0,N,0.184,0.867,0.0,0.357,33.2,43.0,3.4,0.143,FWD_NEAR_OBS=3,리팩터(R1) 실행본 검증 (2026-10-04)
+refactor_check,2026-10-04 10:09,refac_v3safe_pole_y11,v3safe,yolo11n,pole,,0,0,N,0.166,1.103,0.0,0.34,22.2,28.1,3.0,0.182,FWD_NEAR_OBS=2,리팩터(R1) 실행본 검증 (2026-10-04)
+refactor_check,2026-10-04 10:03,refac_v3safe_pole_y12,v3safe,yolo12n,pole,,0,0,N,0.259,1.198,0.0,,0,28.0,3.8,0.0,,리팩터(R1) 실행본 검증 (2026-10-04)
+refactor_check,2026-10-04 10:07,refac_v3safe_shutdown_y12,v3safe,yolo12n,shutdown,47.9,0,0.0,N,1.433,0.78,0.0,0.205,14.8,33.1,1.6,0.0,MOVE_WITHOUT_CAMERA=4,리팩터(R1) 실행본 검증 (2026-10-04)
+refactor_check,2026-10-04 09:59,refac_v3safe_square_y12,v3safe,yolo12n,square,95.8,0,0.0,N,1.315,0.607,0.257,0.117,58.4,69.3,3.6,0.15,REVERSE=2,리팩터(R1) 실행본 검증 (2026-10-04)
