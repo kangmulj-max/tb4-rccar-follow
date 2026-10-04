@@ -81,7 +81,8 @@ world = world.replace('<world name="follow_arena">', f'<!-- {a.name}: make_slam_
 wd = os.path.dirname(os.path.abspath(a.base)); out = os.path.join(wd, a.name + '.sdf')
 open(out, 'w', encoding='utf-8').write(world)
 md = os.path.join(wd, 'maps'); os.makedirs(md, exist_ok=True)
-shutil.copy(pgm, md); shutil.copy(a.map_yaml, md)
+for f in (pgm, a.map_yaml):
+    if os.path.abspath(os.path.dirname(f)) != os.path.abspath(md): shutil.copy(f, md)
 print(f'월드: {out}\n지도 사본: {md}/{os.path.basename(pgm)}')
 
 # ---- 확인 그림: 지도(회색) 위에 상자(빨강 테두리), 시작 자세

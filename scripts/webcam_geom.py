@@ -11,8 +11,8 @@ import numpy as np
 from scipy.optimize import least_squares
 
 IMG_W = IMG_H = 640
-ROBOT = dict(r=0.170, h=0.351)           # TurtleBot4 standard 341.8 x 339.1 x 351.2 mm (Clearpath 사양) 를 원기둥으로 근사
-CAR = (0.28, 0.14, 0.14)                 # 시뮬 RC카 (L, W, H) — 실측으로 바꿀 것
+ROBOT = dict(r=0.170, h=0.355)           # TurtleBot4 10/4 실측 (가로 약 34 cm, 높이 35.5 cm, measurements/field_env.sh) 를 원기둥으로 근사
+CAR = (0.25, 0.08, 0.085)                # RC카 (L, W, H) 10/4 실측 (밑면 25 × 8 cm, 높이 8.5 cm, measurements/field_env.sh)
 
 
 def rot(yaw, pitch, roll):

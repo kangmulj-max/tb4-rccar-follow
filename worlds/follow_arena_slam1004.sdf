@@ -563,104 +563,105 @@
     </model>
 
     <!-- 타깃: 검은색 RC카 (길이 0.26 m, 폭 0.12 m, 높이 0.14 m) -->
+        <!-- rc_car: 실측 치수 적용 (apply_real_specs.py) -->
     <model name="rc_car">
       <pose>-1.325 0.020 0 0 0 3.1224</pose>
       <link name="body">
         <inertial>
-          <pose>0 0 0.06 0 0 0</pose>
+          <pose>0.0000 0.0000 0.0367 0 0 0</pose>
           <mass>1.5</mass>
           <inertia><ixx>0.004</ixx><iyy>0.01</iyy><izz>0.01</izz><ixy>0</ixy><ixz>0</ixz><iyz>0</iyz></inertia>
         </inertial>
         <!-- 충돌체는 단일 박스, 마찰 0 → VelocityControl로 미끄러지듯 이동 -->
         <collision name="c">
-          <pose>0 0 0.07 0 0 0</pose>
-          <geometry><box><size>0.26 0.12 0.12</size></box></geometry>
+          <pose>0.0000 0.0000 0.0428 0 0 0</pose>
+          <geometry><box><size>0.2317 0.0653 0.0734</size></box></geometry>
           <surface><friction><ode><mu>0</mu><mu2>0</mu2></ode></friction></surface>
         </collision>
 
         <!-- 하부 차체 -->
         <visual name="lower">
-          <pose>0 0 0.058 0 0 0</pose>
-          <geometry><box><size>0.25 0.118 0.05</size></box></geometry>
+          <pose>0.0000 0.0000 0.0355 0 0 0</pose>
+          <geometry><box><size>0.2228 0.0642 0.0306</size></box></geometry>
           <material><ambient>0.03 0.03 0.03 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse><specular>0.35 0.35 0.35 1</specular></material>
         </visual>
         <!-- 캐빈 (박스형) -->
         <visual name="cabin">
-          <pose>-0.02 0 0.108 0 0 0</pose>
-          <geometry><box><size>0.18 0.112 0.052</size></box></geometry>
+          <pose>-0.0178 0.0000 0.0660 0 0 0</pose>
+          <geometry><box><size>0.1604 0.0610 0.0318</size></box></geometry>
           <material><ambient>0.03 0.03 0.03 1</ambient><diffuse>0.05 0.05 0.05 1</diffuse><specular>0.35 0.35 0.35 1</specular></material>
         </visual>
         <!-- 지붕 -->
         <visual name="roof">
-          <pose>-0.02 0 0.136 0 0 0</pose>
-          <geometry><box><size>0.17 0.106 0.006</size></box></geometry>
+          <pose>-0.0178 0.0000 0.0832 0 0 0</pose>
+          <geometry><box><size>0.1515 0.0577 0.0037</size></box></geometry>
           <material><ambient>0.05 0.05 0.05 1</ambient><diffuse>0.08 0.08 0.08 1</diffuse><specular>0.4 0.4 0.4 1</specular></material>
         </visual>
         <!-- 유리창 (짙은 회색 광택) -->
         <visual name="win_side">
-          <pose>-0.02 0 0.112 0 0 0</pose>
-          <geometry><box><size>0.15 0.114 0.026</size></box></geometry>
+          <pose>-0.0178 0.0000 0.0685 0 0 0</pose>
+          <geometry><box><size>0.1337 0.0620 0.0159</size></box></geometry>
           <material><ambient>0.08 0.09 0.1 1</ambient><diffuse>0.12 0.13 0.15 1</diffuse><specular>0.8 0.8 0.8 1</specular></material>
         </visual>
         <visual name="win_front">
-          <pose>0.071 0 0.112 0 0 0</pose>
-          <geometry><box><size>0.004 0.096 0.03</size></box></geometry>
+          <pose>0.0633 0.0000 0.0685 0 0 0</pose>
+          <geometry><box><size>0.0036 0.0522 0.0183</size></box></geometry>
           <material><ambient>0.08 0.09 0.1 1</ambient><diffuse>0.12 0.13 0.15 1</diffuse><specular>0.8 0.8 0.8 1</specular></material>
         </visual>
         <visual name="win_rear">
-          <pose>-0.111 0 0.112 0 0 0</pose>
-          <geometry><box><size>0.004 0.096 0.03</size></box></geometry>
+          <pose>-0.0989 0.0000 0.0685 0 0 0</pose>
+          <geometry><box><size>0.0036 0.0522 0.0183</size></box></geometry>
           <material><ambient>0.08 0.09 0.1 1</ambient><diffuse>0.12 0.13 0.15 1</diffuse><specular>0.8 0.8 0.8 1</specular></material>
         </visual>
         <!-- 보닛 -->
         <visual name="hood">
-          <pose>0.1 0 0.085 0 0 0</pose>
-          <geometry><box><size>0.06 0.112 0.006</size></box></geometry>
+          <pose>0.0891 0.0000 0.0520 0 0 0</pose>
+          <geometry><box><size>0.0535 0.0610 0.0037</size></box></geometry>
           <material><ambient>0.04 0.04 0.04 1</ambient><diffuse>0.06 0.06 0.06 1</diffuse><specular>0.4 0.4 0.4 1</specular></material>
         </visual>
         <!-- 펜더 -->
-        <visual name="fender_fl"><pose>0.085 0.062 0.07 0 0 0</pose><geometry><box><size>0.06 0.012 0.022</size></box></geometry>
+        <visual name="fender_fl"><pose>0.0758 0.0337 0.0428 0 0 0</pose><geometry><box><size>0.0535 0.0065 0.0135</size></box></geometry>
           <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.03 0.03 0.03 1</diffuse></material></visual>
-        <visual name="fender_fr"><pose>0.085 -0.062 0.07 0 0 0</pose><geometry><box><size>0.06 0.012 0.022</size></box></geometry>
+        <visual name="fender_fr"><pose>0.0758 -0.0337 0.0428 0 0 0</pose><geometry><box><size>0.0535 0.0065 0.0135</size></box></geometry>
           <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.03 0.03 0.03 1</diffuse></material></visual>
-        <visual name="fender_rl"><pose>-0.085 0.062 0.07 0 0 0</pose><geometry><box><size>0.06 0.012 0.022</size></box></geometry>
+        <visual name="fender_rl"><pose>-0.0758 0.0337 0.0428 0 0 0</pose><geometry><box><size>0.0535 0.0065 0.0135</size></box></geometry>
           <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.03 0.03 0.03 1</diffuse></material></visual>
-        <visual name="fender_rr"><pose>-0.085 -0.062 0.07 0 0 0</pose><geometry><box><size>0.06 0.012 0.022</size></box></geometry>
+        <visual name="fender_rr"><pose>-0.0758 -0.0337 0.0428 0 0 0</pose><geometry><box><size>0.0535 0.0065 0.0135</size></box></geometry>
           <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.03 0.03 0.03 1</diffuse></material></visual>
         <!-- 바퀴 4개 -->
-        <visual name="wheel_fl"><pose>0.085 0.058 0.033 1.5708 0 0</pose><geometry><cylinder><radius>0.033</radius><length>0.026</length></cylinder></geometry>
+        <visual name="wheel_fl"><pose>0.0758 0.0316 0.0202 1.5708 0 0</pose><geometry><cylinder><radius>0.0202</radius><length>0.0141</length></cylinder></geometry>
           <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.03 0.03 0.03 1</diffuse><specular>0.05 0.05 0.05 1</specular></material></visual>
-        <visual name="wheel_fr"><pose>0.085 -0.058 0.033 1.5708 0 0</pose><geometry><cylinder><radius>0.033</radius><length>0.026</length></cylinder></geometry>
+        <visual name="wheel_fr"><pose>0.0758 -0.0316 0.0202 1.5708 0 0</pose><geometry><cylinder><radius>0.0202</radius><length>0.0141</length></cylinder></geometry>
           <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.03 0.03 0.03 1</diffuse><specular>0.05 0.05 0.05 1</specular></material></visual>
-        <visual name="wheel_rl"><pose>-0.085 0.058 0.033 1.5708 0 0</pose><geometry><cylinder><radius>0.033</radius><length>0.026</length></cylinder></geometry>
+        <visual name="wheel_rl"><pose>-0.0758 0.0316 0.0202 1.5708 0 0</pose><geometry><cylinder><radius>0.0202</radius><length>0.0141</length></cylinder></geometry>
           <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.03 0.03 0.03 1</diffuse><specular>0.05 0.05 0.05 1</specular></material></visual>
-        <visual name="wheel_rr"><pose>-0.085 -0.058 0.033 1.5708 0 0</pose><geometry><cylinder><radius>0.033</radius><length>0.026</length></cylinder></geometry>
+        <visual name="wheel_rr"><pose>-0.0758 -0.0316 0.0202 1.5708 0 0</pose><geometry><cylinder><radius>0.0202</radius><length>0.0141</length></cylinder></geometry>
           <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.03 0.03 0.03 1</diffuse><specular>0.05 0.05 0.05 1</specular></material></visual>
         <!-- 휠 허브 (짙은 은색) -->
-        <visual name="hub_fl"><pose>0.085 0.072 0.033 1.5708 0 0</pose><geometry><cylinder><radius>0.017</radius><length>0.003</length></cylinder></geometry>
+        <visual name="hub_fl"><pose>0.0758 0.0392 0.0202 1.5708 0 0</pose><geometry><cylinder><radius>0.0104</radius><length>0.0016</length></cylinder></geometry>
           <material><ambient>0.2 0.2 0.2 1</ambient><diffuse>0.25 0.25 0.25 1</diffuse><specular>0.6 0.6 0.6 1</specular></material></visual>
-        <visual name="hub_fr"><pose>0.085 -0.072 0.033 1.5708 0 0</pose><geometry><cylinder><radius>0.017</radius><length>0.003</length></cylinder></geometry>
+        <visual name="hub_fr"><pose>0.0758 -0.0392 0.0202 1.5708 0 0</pose><geometry><cylinder><radius>0.0104</radius><length>0.0016</length></cylinder></geometry>
           <material><ambient>0.2 0.2 0.2 1</ambient><diffuse>0.25 0.25 0.25 1</diffuse><specular>0.6 0.6 0.6 1</specular></material></visual>
-        <visual name="hub_rl"><pose>-0.085 0.072 0.033 1.5708 0 0</pose><geometry><cylinder><radius>0.017</radius><length>0.003</length></cylinder></geometry>
+        <visual name="hub_rl"><pose>-0.0758 0.0392 0.0202 1.5708 0 0</pose><geometry><cylinder><radius>0.0104</radius><length>0.0016</length></cylinder></geometry>
           <material><ambient>0.2 0.2 0.2 1</ambient><diffuse>0.25 0.25 0.25 1</diffuse><specular>0.6 0.6 0.6 1</specular></material></visual>
-        <visual name="hub_rr"><pose>-0.085 -0.072 0.033 1.5708 0 0</pose><geometry><cylinder><radius>0.017</radius><length>0.003</length></cylinder></geometry>
+        <visual name="hub_rr"><pose>-0.0758 -0.0392 0.0202 1.5708 0 0</pose><geometry><cylinder><radius>0.0104</radius><length>0.0016</length></cylinder></geometry>
           <material><ambient>0.2 0.2 0.2 1</ambient><diffuse>0.25 0.25 0.25 1</diffuse><specular>0.6 0.6 0.6 1</specular></material></visual>
         <!-- 뒤 스페어타이어 + 은색 커버 링 -->
-        <visual name="spare"><pose>-0.137 0 0.085 0 1.5708 0</pose><geometry><cylinder><radius>0.03</radius><length>0.022</length></cylinder></geometry>
+        <visual name="spare"><pose>-0.1221 0.0000 0.0520 0 1.5708 0</pose><geometry><cylinder><radius>0.0163</radius><length>0.0196</length></cylinder></geometry>
           <material><ambient>0.02 0.02 0.02 1</ambient><diffuse>0.03 0.03 0.03 1</diffuse></material></visual>
-        <visual name="spare_cover"><pose>-0.149 0 0.085 0 1.5708 0</pose><geometry><cylinder><radius>0.022</radius><length>0.003</length></cylinder></geometry>
+        <visual name="spare_cover"><pose>-0.1328 0.0000 0.0520 0 1.5708 0</pose><geometry><cylinder><radius>0.0120</radius><length>0.0027</length></cylinder></geometry>
           <material><ambient>0.45 0.45 0.47 1</ambient><diffuse>0.55 0.55 0.57 1</diffuse><specular>0.8 0.8 0.8 1</specular></material></visual>
         <!-- 앞 그릴(은색) + 헤드램프 -->
-        <visual name="grille"><pose>0.127 0 0.063 0 0 0</pose><geometry><box><size>0.003 0.06 0.022</size></box></geometry>
+        <visual name="grille"><pose>0.1132 0.0000 0.0385 0 0 0</pose><geometry><box><size>0.0027 0.0327 0.0135</size></box></geometry>
           <material><ambient>0.4 0.4 0.42 1</ambient><diffuse>0.5 0.5 0.52 1</diffuse><specular>0.9 0.9 0.9 1</specular></material></visual>
-        <visual name="lamp_l"><pose>0.127 0.044 0.066 0 1.5708 0</pose><geometry><cylinder><radius>0.009</radius><length>0.003</length></cylinder></geometry>
+        <visual name="lamp_l"><pose>0.1132 0.0239 0.0404 0 1.5708 0</pose><geometry><cylinder><radius>0.0049</radius><length>0.0027</length></cylinder></geometry>
           <material><ambient>0.9 0.9 0.9 1</ambient><diffuse>0.95 0.95 0.95 1</diffuse><emissive>0.4 0.4 0.4 1</emissive></material></visual>
-        <visual name="lamp_r"><pose>0.127 -0.044 0.066 0 1.5708 0</pose><geometry><cylinder><radius>0.009</radius><length>0.003</length></cylinder></geometry>
+        <visual name="lamp_r"><pose>0.1132 -0.0239 0.0404 0 1.5708 0</pose><geometry><cylinder><radius>0.0049</radius><length>0.0027</length></cylinder></geometry>
           <material><ambient>0.9 0.9 0.9 1</ambient><diffuse>0.95 0.95 0.95 1</diffuse><emissive>0.4 0.4 0.4 1</emissive></material></visual>
         <!-- 후미등 -->
-        <visual name="tail_l"><pose>-0.127 0.05 0.065 0 0 0</pose><geometry><box><size>0.003 0.012 0.018</size></box></geometry>
+        <visual name="tail_l"><pose>-0.1132 0.0272 0.0397 0 0 0</pose><geometry><box><size>0.0027 0.0065 0.0110</size></box></geometry>
           <material><ambient>0.5 0.05 0.05 1</ambient><diffuse>0.6 0.05 0.05 1</diffuse></material></visual>
-        <visual name="tail_r"><pose>-0.127 -0.05 0.065 0 0 0</pose><geometry><box><size>0.003 0.012 0.018</size></box></geometry>
+        <visual name="tail_r"><pose>-0.1132 -0.0272 0.0397 0 0 0</pose><geometry><box><size>0.0027 0.0065 0.0110</size></box></geometry>
           <material><ambient>0.5 0.05 0.05 1</ambient><diffuse>0.6 0.05 0.05 1</diffuse></material></visual>
       </link>
       <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">

@@ -48,7 +48,7 @@ esac
 sleep 1.5; echo "[exp] placed (pattern=$PATTERN speed=$SPEED dur=$DUR)"
 
 # ---- 모니터 먼저 (노드의 첫 상태 전환까지 기록)
-python3 scripts/experiment_monitor.py --ros-args -p tag:="$TAG" -p duration:="$((DUR + 8)).0" > logs/${TAG}_monitor.log 2>&1 &
+python3 scripts/experiment_monitor.py --ros-args -p tag:="$TAG" -p duration:="$((DUR + 8)).0" -p world:="$TB4SIM/worlds/${WORLD:-follow_arena}.sdf" > logs/${TAG}_monitor.log 2>&1 &
 MON=$!; REC=
 [ "${RECORD:-1}" = 1 ] && { python3 scripts/recorder.py --ros-args -p tag:="$TAG" -p duration:="$((DUR + 8)).0"     -p label:="$NODE | yolo${V}n | $SC ${EXTRA[*]}" > logs/${TAG}_rec.log 2>&1 & REC=$!; }
 sleep 2

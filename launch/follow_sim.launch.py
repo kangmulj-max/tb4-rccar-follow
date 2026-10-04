@@ -32,6 +32,8 @@ def generate_launch_description():
                               description='worlds/ 안의 파일 이름(확장자 제외). 내부 world name 은 follow_arena 여야 함'),
         DeclareLaunchArgument('pub_qos', default_value='reliable', choices=['reliable', 'best_effort'],
                               description='어댑터 영상 발행 QoS (실기 best-effort 재현용)'),
+        DeclareLaunchArgument('ideal', default_value='false', choices=['true', 'false'],
+                              description='true: 실측 지연·depth 오차·최소 회전 재현을 끔 (이전 시뮬과 같은 이상적인 조건)'),
         DeclareLaunchArgument('x', default_value='0.0'),
         DeclareLaunchArgument('y', default_value='0.0'),
         DeclareLaunchArgument('yaw', default_value='0.0'),
@@ -93,6 +95,6 @@ def generate_launch_description():
     adapter = ExecuteProcess(output='screen', cmd=[
         'python3', str(ROOT / 'scripts' / 'tb4_real_iface_adapter.py'), '--ros-args',
         '-r', '__node:=tb4_real_iface_adapter', '-p', f'ns:=/{NS}', '-p', 'use_sim_time:=true',
-        '-p', ['pub_qos:=', LaunchConfiguration('pub_qos')]])
+        '-p', ['pub_qos:=', LaunchConfiguration('pub_qos')], '-p', ['ideal:=', LaunchConfiguration('ideal')]])
 
     return LaunchDescription(args + env + [gz_gui, gz_headless, clock_bridge, robot, car_bridge, lidar, adapter])

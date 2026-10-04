@@ -5,7 +5,7 @@ WSL(d3d12)에서 gz gpu_lidar 가 ogre1 로는 전 방향 range_min 만, ogre2 �
 월드 SDF 충돌 박스 + ground-truth 포즈로 2D 레이캐스트해 실기와 같은 형식의 /robot1/scan 을 만든다.
 
 실기 사양(스냅샷/URDF): 640 샘플, -π..π, 0.164~12 m, frame rplidar_link, base 대비 +90° 회전 장착.
-라이다 스캔 평면 높이(z_l)를 지나는 물체만 보인다 → 낮은 물체(RC카 0.14 m, dummy 0.1 m)는 실기처럼 안 보임.
+라이다 스캔 평면 높이(z_l)를 지나는 물체만 보인다 → 낮은 물체(RC카 0.085 m 실측, dummy 0.1 m)는 실기처럼 안 보임.
 """
 import math, os, xml.etree.ElementTree as ET
 import numpy as np

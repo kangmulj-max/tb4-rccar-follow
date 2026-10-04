@@ -30,7 +30,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from sim_rplidar import load_world, yaw_q   # noqa: E402
 
 STATES = ('IDLE', 'TRACKING', 'REID', 'SEARCH')
-R_ROBOT = 0.171; CAM_FWD = -0.06; HFOV = 1.1152   # 카메라 광학중심: base_link 기준 x=-0.06 (실기 tf_static)
+R_ROBOT = 0.170; CAM_FWD = -0.06; HFOV = 0.7403   # 10/4 실측 반경, 실측 fx 909 화각. 카메라 광학중심 base_link x=-0.06 (실기 tf_static, 줄자로 범퍼 뒤 0.231 m 확인)
 try:
     from irobot_create_msgs.msg import HazardDetectionVector
 except ImportError:
@@ -49,7 +49,7 @@ class Monitor(Node):
         p = self.declare_parameter
         self.tag = p('tag', 'run').value; self.duration = p('duration', 0.0).value
         self.target = p('target_dist', 1.0).value
-        self.models = load_world(os.path.expanduser('~/tb4_follow_sim/worlds/follow_arena.sdf'))
+        self.models = load_world(self.declare_parameter('world', os.path.join(os.environ.get('TB4SIM', os.path.expanduser('~/tb4_follow_sim')), 'worlds', 'follow_arena.sdf')).value)   # experiment.sh 가 WORLD 로 넘김
         d = os.path.expanduser('~/tb4_follow_sim/logs'); os.makedirs(d, exist_ok=True)
         self.base = f'{d}/{self.tag}'
         self.f = open(self.base + '.csv', 'w', newline=''); self.w = csv.writer(self.f)

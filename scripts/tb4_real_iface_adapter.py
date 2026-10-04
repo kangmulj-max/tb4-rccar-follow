@@ -30,11 +30,20 @@ class Adapter(Node):
         self.declare_parameter('depth_valid', True)
         # 실기 드라이버가 best-effort 로 낼 경우를 재현하기 위한 옵션 (기본 reliable)
         q = self.declare_parameter('pub_qos', 'reliable').value
-        # 실기 지연 재현 (10/3 실측, docs/REAL_TRIAL_261003.md 5.3·5.5): 인지 지연 ~0.4 s, 명령→바퀴 0.2 s,
-        # Create3 제자리 회전 최소 ~0.26 rad/s. 기본 0 = 기존 동작. 영상 header.stamp 는 촬영 시각 그대로 두고 늦게 발행.
-        self.img_delay = self.declare_parameter('img_delay', 0.0).value
-        self.cmd_delay = self.declare_parameter('cmd_delay', 0.0).value
-        self.min_rot = self.declare_parameter('min_rot', 0.0).value
+        # 실측값 재현 (기본 켬). ideal:=true 면 전부 끔 (이전 시뮬과 같은 이상적인 센서·구동)
+        #  - 영상 지연 0.4 s (인지), 명령→바퀴 0.2 s, Create3 제자리 회전 최소 0.26 rad/s : 10/3 실측 (docs/REAL_TRIAL_261003.md 5.3·5.5)
+        #    영상 header.stamp 는 촬영 시각 그대로 두고 늦게 발행
+        #  - depth 거리 오차: 실측 0.9/1.0/2.1/3.76 m → 0.861/1.000/2.248/4.542 m (10/2 1차 실험, ROI 평균)
+        #    → 오차 ≈ depth_k·(d² − 1) (최소제곱, k 0.0595), 칸마다 잡음 σ = depth_noise·d (반복 측정 표준편차 근사)
+        ideal = self.declare_parameter('ideal', False).value
+        self.img_delay = self.declare_parameter('img_delay', 0.0 if ideal else 0.4).value
+        self.cmd_delay = self.declare_parameter('cmd_delay', 0.0 if ideal else 0.2).value
+        self.min_rot = self.declare_parameter('min_rot', 0.0 if ideal else 0.26).value
+        self.declare_parameter('depth_k', 0.0 if ideal else 0.0595)
+        self.declare_parameter('depth_noise', 0.0 if ideal else 0.008)
+        self.rng = np.random.default_rng()
+        self.get_logger().info(f'실측 재현 {"끔 (ideal)" if ideal else "켬"}: 영상 지연 {self.img_delay} s, 명령 지연 {self.cmd_delay} s, '
+                               f'최소 회전 {self.min_rot} rad/s, depth k {self.get_parameter("depth_k").value}, 잡음 {self.get_parameter("depth_noise").value}·d')
         self.q = deque()
         self.create_timer(0.005, self.flush)
         qos = QoSProfile(depth=5, reliability=ReliabilityPolicy.BEST_EFFORT if q == 'best_effort' else ReliabilityPolicy.RELIABLE)
@@ -62,6 +71,10 @@ class Adapter(Node):
     def cb_dep(self, m):
         if m.encoding == '32FC1':
             a = np.frombuffer(m.data, np.float32).reshape(m.height, m.width)
+            k, sn = self.get_parameter('depth_k').value, self.get_parameter('depth_noise').value
+            if k or sn:                                                    # 실측 depth 오차 (거리 제곱에 비례하는 치우침 + 잡음)
+                ok = np.isfinite(a) & (a > 0)
+                a = np.where(ok, a + k * (a * a - 1.0) + self.rng.normal(0.0, 1.0, a.shape) * sn * a, a)
             mm = np.where(np.isfinite(a) & (a > 0), a * 1000.0, 0.0)
             if not self.get_parameter('depth_valid').value: mm[:] = 0.0
             out = Image(header=m.header, height=m.height, width=m.width, encoding='16UC1',
