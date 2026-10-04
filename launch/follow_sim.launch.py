@@ -74,13 +74,15 @@ def generate_launch_description():
                    '/model/dummy_box/pose@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
                    '/model/pillar/pose@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
                    '/model/pole/pose@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
-                   '/overhead/image@sensor_msgs/msg/Image[gz.msgs.Image'],
+                   '/overhead/image@sensor_msgs/msg/Image[gz.msgs.Image',
+                   '/webcam/image@sensor_msgs/msg/Image[gz.msgs.Image'],
         remappings=[('/model/rc_car/cmd_vel', '/rc_car/cmd_vel'),
                     ('/model/rc_car/pose', '/rc_car/pose'),
                     ('/model/dummy_box/pose', '/dummy_box/pose'),
                     ('/model/pillar/pose', '/pillar/pose'),
                     ('/model/pole/pose', '/pole/pose'),
-                    ('/overhead/image', '/sim/overhead')])
+                    ('/overhead/image', '/sim/overhead'),
+                    ('/webcam/image', '/sim/webcam')])
 
     # 실행권한(+x)에 의존하지 않도록 python3 로 직접 실행 (Windows 쪽 편집 시 +x 가 빠짐)
     lidar = ExecuteProcess(output='screen', cmd=[

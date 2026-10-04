@@ -218,6 +218,27 @@
       </link>
     </model>
 
+    <!-- 실습장 웹캠 재현 (웹캠 YOLO my_best.pt 시험용). gz 토픽 /webcam/image -> ROS /sim/webcam
+         자세는 데이터셋(rokey_mp4_a1 v2) valid/test 라벨 박스 101 개로 역추정:
+         높이 1.29 m, 아래로 48.1 deg, 640x640 정사각(center crop) 에서 f ~750 px -> HFOV 0.805 rad.
+         부트스트랩 범위 h 1.32+-0.09, pitch 45.6+-2.0, f 671+-60. 카메라 x,y 는 실측값이 없어 임의 배치. -->
+    <model name="webcam_cam">
+      <static>true</static>
+      <pose>-0.5 0 1.29 0 0.8395 0</pose>
+      <link name="link">
+        <sensor name="webcam" type="camera">
+          <camera>
+            <horizontal_fov>0.805</horizontal_fov>
+            <image><width>640</width><height>640</height></image>
+            <clip><near>0.1</near><far>20</far></clip>
+          </camera>
+          <always_on>1</always_on>
+          <update_rate>10</update_rate>
+          <topic>webcam/image</topic>
+        </sensor>
+      </link>
+    </model>
+
     <!-- 안전 시험용 가는 폴 (5 cm, 높이 0.6 m): 정면 정중앙 장애물 — RC카를 가리지 않음 -->
     <model name="pole">
       <pose>6.0 -5.0 0 0 0 0</pose>
