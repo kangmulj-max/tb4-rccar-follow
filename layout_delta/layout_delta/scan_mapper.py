@@ -6,7 +6,7 @@ Services   : ~/save (std_srvs/Trigger)              — write round map (pgm+yam
 Params     : ref_map (yaml), out_dir, map_frame='map', max_range=6.0, min_scans_per_save=20,
              tf_timeout=0.1, max_tf_age=0.3 (fallback to latest TF), stride=1 (use every n-th scan),
              only_when_still=True, still_settle_s=0.5 (stop-and-observe; subscribes odom),
-             max_pose_std_m=0.25 (skip scans while AMCL covariance is large; subscribes amcl_pose)
+             max_pose_std_m=0.35 (larger per-axis AMCL std; skip scans while AMCL covariance is large; subscribes amcl_pose)
 On shutdown the grid is saved once more (no data loss when the mission is interrupted).
 """
 import json
@@ -49,7 +49,7 @@ class ScanMapper(Node):
         self.still_since = None; self.odom_t = 0.0; self.n_moving = 0
         self.create_subscription(Odometry, 'odom', self.cb_odom, qos_profile_sensor_data)
         # localization quality gate: a lost robot must not write into the round map (0 = off)
-        self.max_pose_std = P('max_pose_std_m', 0.25).value
+        self.max_pose_std = P('max_pose_std_m', 0.35).value
         self.pose_std = 0.0; self.n_badpose = 0
         self.create_subscription(PoseWithCovarianceStamped, 'amcl_pose', self.cb_pose, 10)
         self.acc = ScanAccumulator(self.ref, max_range=P('max_range', 6.0).value)
@@ -68,7 +68,9 @@ class ScanMapper(Node):
 
     def cb_pose(self, m: PoseWithCovarianceStamped):
         c = m.pose.covariance
-        self.pose_std = math.sqrt(max(0.0, c[0] + c[7]))
+        # larger per-axis std. AMCL covariance is particle spread, not calibrated error: in an open 20 x 14 m
+        # factory it sits near 0.23 m per axis while the true error is < 0.1 m — the gate only catches a scattered filter
+        self.pose_std = math.sqrt(max(0.0, c[0], c[7]))
 
     def is_still(self):
         now = time.time()

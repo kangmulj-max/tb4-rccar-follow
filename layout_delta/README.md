@@ -28,14 +28,14 @@ ros2 run layout_delta detect --ref site01/round00/map.yaml --cur site01/round01/
 ## Nodes
 | Node | Subscribes | Provides | Key parameters |
 |---|---|---|---|
-| `scan_mapper` | `scan`, `odom`, TF `map → <scan frame>` | `~/save` (std_srvs/Trigger) → `map.yaml/pgm`, `map_stats.json`; saves again on shutdown | `ref_map`, `out_dir`, `max_range` 6.0, `only_when_still` true, `still_settle_s` 0.5, `max_tf_age` 0.3, `max_pose_std_m` 0.25 |
+| `scan_mapper` | `scan`, `odom`, TF `map → <scan frame>` | `~/save` (std_srvs/Trigger) → `map.yaml/pgm`, `map_stats.json`; saves again on shutdown | `ref_map`, `out_dir`, `max_range` 6.0, `only_when_still` true, `still_settle_s` 0.5, `max_tf_age` 0.3, `max_pose_std_m` 0.35 (per-axis) |
 | `patrol` | `amcl_pose` | Nav2 goals; `mission.json` | `waypoints`, `initial_pose`, `localization_tol_m` 0.3, `localization_timeout_s` 60, `dwell_s` 4.0, `goal_timeout_s` 90, `retries` 1 |
 | `detect` (CLI) | — | `report.md`, `changes.png`, `changes.json` (+ `eval.json` with `--truth`) | `--roi-waypoints` + `--roi-radius` 3.0 m, `--shift-margin` 0.15 m, `--min-area` 0.04 m² or `--min-extent` 0.45 m, `--wall-margin` 0.15 m |
 
 ## Behaviour that matters in the field
 - **Localization gate**: the robot does not move until AMCL agrees with `initial_pose` within 0.3 m; otherwise the round is aborted and flagged (`mission.json: aborted`). Driving on a wrong pose makes recovery behaviours push the robot into walls.
 - **Stop-and-observe**: only scans taken while the robot stands still (≥ 0.5 s) are integrated — moving scans carry pose error and timing skew.
-- **Localization quality gate in the mapper**: scans are dropped while AMCL's position std exceeds 0.25 m, so a robot that got stuck and lost does not write a shifted copy of the room into the round map.
+- **Localization quality gate in the mapper**: scans are dropped while AMCL's larger per-axis position std exceeds 0.35 m (AMCL covariance is particle spread, not calibrated error), so a robot that got stuck and lost does not write a shifted copy of the room into the round map.
 - **Misalignment is not change**: an added cell next to structure of the other round (≤ 0.15 m) is treated as a shifted wall, not an object. Objects touching walls are therefore missed (known limitation).
 - **No change from unobserved cells**: a cell is compared only if both rounds observed it, so partial coverage does not create false "removed" objects.
 - **Partial rounds are valid**: a failed waypoint is retried, then skipped and recorded.

@@ -1,0 +1,26 @@
+{
+ "title": "가공 공장",
+ "W": 18.0,
+ "H": 12.0,
+ "floor_m2": 216.0,
+ "free_m2_lidar": 189.9,
+ "start": [
+  -0.8,
+  0.0,
+  -156
+ ],
+ "forklift": null,
+ "n_waypoints": 11,
+ "blocked_waypoints": {
+  "m0": [],
+  "m1": [],
+  "m2": [],
+  "m3": []
+ },
+ "objects_per_month": [
+  14,
+  15,
+  16,
+  15
+ ]
+}

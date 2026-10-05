@@ -1,0 +1,64 @@
+[
+ {
+  "kind": "added",
+  "x": 6.0,
+  "y": 4.6,
+  "obj": "A5",
+  "type": "rack_l",
+  "visible": true,
+  "legs_only": false,
+  "near_structure": true
+ },
+ {
+  "kind": "moved",
+  "x": 3.2,
+  "y": 0.0,
+  "from_x": 3.1999999999999993,
+  "from_y": 0.0,
+  "obj": "B4",
+  "type": "rack_e",
+  "visible": true,
+  "legs_only": false,
+  "near_structure": true
+ },
+ {
+  "kind": "removed",
+  "x": 7.0,
+  "y": -1.5,
+  "obj": "S3",
+  "type": "pload",
+  "visible": true,
+  "legs_only": false,
+  "near_structure": false
+ },
+ {
+  "kind": "added",
+  "x": 7.0,
+  "y": -3.0,
+  "obj": "S6",
+  "type": "pallet",
+  "visible": false,
+  "legs_only": false,
+  "near_structure": false
+ },
+ {
+  "kind": "removed",
+  "x": -3.4,
+  "y": -2.6,
+  "obj": "T1",
+  "type": "pload",
+  "visible": true,
+  "legs_only": false,
+  "near_structure": true
+ },
+ {
+  "kind": "removed",
+  "x": -2.2,
+  "y": -2.6,
+  "obj": "T2",
+  "type": "pload",
+  "visible": true,
+  "legs_only": false,
+  "near_structure": true
+ }
+]

@@ -1,0 +1,55 @@
+[
+ {
+  "kind": "added",
+  "x": 2.2,
+  "y": -1.0,
+  "obj": "C3",
+  "type": "cart",
+  "visible": true,
+  "legs_only": false,
+  "near_structure": false
+ },
+ {
+  "kind": "removed",
+  "x": 4.4,
+  "y": -5.4,
+  "obj": "P2",
+  "type": "pallet",
+  "visible": false,
+  "legs_only": false,
+  "near_structure": false
+ },
+ {
+  "kind": "changed",
+  "x": 8.2,
+  "y": -2.1,
+  "prev_type": "rack_e",
+  "obj": "R3",
+  "type": "rack_l",
+  "visible": true,
+  "legs_only": false,
+  "near_structure": false
+ },
+ {
+  "kind": "moved",
+  "x": -6.8,
+  "y": 2.9,
+  "from_x": -5.0,
+  "from_y": 2.9,
+  "obj": "WS1",
+  "type": "bench",
+  "visible": true,
+  "legs_only": true,
+  "near_structure": false
+ },
+ {
+  "kind": "removed",
+  "x": -1.5,
+  "y": 2.9,
+  "obj": "WS2",
+  "type": "bench",
+  "visible": true,
+  "legs_only": true,
+  "near_structure": false
+ }
+]

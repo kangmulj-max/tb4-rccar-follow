@@ -1,0 +1,44 @@
+[
+ {
+  "kind": "removed",
+  "x": -0.9,
+  "y": -1.4,
+  "obj": "BN2",
+  "type": "bin",
+  "visible": true,
+  "legs_only": false,
+  "near_structure": false
+ },
+ {
+  "kind": "moved",
+  "x": 8.65,
+  "y": -0.8,
+  "from_x": 8.65,
+  "from_y": 3.0,
+  "obj": "K2",
+  "type": "cabinet",
+  "visible": true,
+  "legs_only": false,
+  "near_structure": true
+ },
+ {
+  "kind": "removed",
+  "x": -6.0,
+  "y": -3.4,
+  "obj": "N4",
+  "type": "cnc",
+  "visible": true,
+  "legs_only": false,
+  "near_structure": false
+ },
+ {
+  "kind": "added",
+  "x": 6.4,
+  "y": 4.2,
+  "obj": "PL2",
+  "type": "pallet",
+  "visible": false,
+  "legs_only": false,
+  "near_structure": false
+ }
+]

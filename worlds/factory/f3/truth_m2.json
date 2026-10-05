@@ -1,0 +1,48 @@
+[
+ {
+  "kind": "moved",
+  "x": -4.3,
+  "y": -1.4,
+  "from_x": -4.3,
+  "from_y": 1.4,
+  "obj": "BN1",
+  "type": "bin",
+  "visible": true,
+  "legs_only": false,
+  "near_structure": false
+ },
+ {
+  "kind": "added",
+  "x": -0.8,
+  "y": 1.6,
+  "obj": "CB2",
+  "type": "cable",
+  "visible": false,
+  "legs_only": false,
+  "near_structure": false
+ },
+ {
+  "kind": "moved",
+  "x": 4.6,
+  "y": 2.0,
+  "from_x": 3.4,
+  "from_y": 2.0,
+  "obj": "FN1",
+  "type": "fence",
+  "visible": true,
+  "legs_only": false,
+  "near_structure": false
+ },
+ {
+  "kind": "moved",
+  "x": -2.0,
+  "y": 3.6,
+  "from_x": -2.6,
+  "from_y": 3.4,
+  "obj": "N2",
+  "type": "cnc",
+  "visible": true,
+  "legs_only": false,
+  "near_structure": false
+ }
+]

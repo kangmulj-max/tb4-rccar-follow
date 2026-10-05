@@ -1,0 +1,54 @@
+[
+ {
+  "kind": "removed",
+  "x": 4.6,
+  "y": 0.9,
+  "obj": "C1",
+  "type": "cart",
+  "visible": true,
+  "legs_only": false,
+  "near_structure": false
+ },
+ {
+  "kind": "removed",
+  "x": 2.2,
+  "y": -1.0,
+  "obj": "C3",
+  "type": "cart",
+  "visible": true,
+  "legs_only": false,
+  "near_structure": false
+ },
+ {
+  "kind": "moved",
+  "x": -4.0,
+  "y": 4.2,
+  "from_x": -2.5,
+  "from_y": 4.2,
+  "obj": "L1",
+  "type": "conveyor",
+  "visible": true,
+  "legs_only": false,
+  "near_structure": false
+ },
+ {
+  "kind": "added",
+  "x": 3.0,
+  "y": 4.6,
+  "obj": "MX",
+  "type": "machine",
+  "visible": true,
+  "legs_only": false,
+  "near_structure": false
+ },
+ {
+  "kind": "added",
+  "x": -7.6,
+  "y": -5.6,
+  "obj": "P4",
+  "type": "pallet",
+  "visible": false,
+  "legs_only": false,
+  "near_structure": false
+ }
+]

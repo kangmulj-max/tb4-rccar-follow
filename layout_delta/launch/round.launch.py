@@ -14,13 +14,14 @@ from launch_ros.actions import Node
 def generate_launch_description():
     args = [DeclareLaunchArgument(n, default_value=d) for n, d in (
         ('namespace', '/robot1'), ('ref_map', ''), ('waypoints', ''), ('out_dir', 'round'),
-        ('initial_pose', '[0.0]'), ('use_sim_time', 'false'), ('dwell_s', '4.0'))]
+        ('initial_pose', '[0.0]'), ('use_sim_time', 'false'), ('dwell_s', '4.0'), ('undock_backup_m', '0.0'))]
     remap = [('/tf', 'tf'), ('/tf_static', 'tf_static')]
     common = {'use_sim_time': LC('use_sim_time')}
     mapper = Node(package='layout_delta', executable='scan_mapper', namespace=LC('namespace'), output='screen',
                   parameters=[common, {'ref_map': LC('ref_map'), 'out_dir': LC('out_dir')}], remappings=remap)
     patrol = Node(package='layout_delta', executable='patrol', namespace=LC('namespace'), output='screen',
                   parameters=[common, {'waypoints': LC('waypoints'), 'out_dir': LC('out_dir'),
-                                       'initial_pose': LC('initial_pose'), 'dwell_s': LC('dwell_s')}],
+                                       'initial_pose': LC('initial_pose'), 'dwell_s': LC('dwell_s'),
+                                       'undock_backup_m': LC('undock_backup_m')}],
                   remappings=remap)
     return LaunchDescription(args + [mapper, patrol])

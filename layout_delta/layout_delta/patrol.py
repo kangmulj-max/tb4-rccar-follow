@@ -63,6 +63,14 @@ def main():
                 json.dump(log | dict(round_s=0, reached=0, total=len(wps)), f, indent=1, ensure_ascii=False)
             nav.destroy_node(); rclpy.try_shutdown(); return
         time.sleep(1.0)
+    # undock: a TurtleBot 4 starts on its dock, facing it. The dock is below the lidar plane (not in the costmap),
+    # so driving forward pushes into it. Back off first (0 = off).
+    undock_m = P('undock_backup_m', 0.0).value
+    if undock_m > 0:
+        nav.backup(backup_dist=undock_m, backup_speed=0.1, time_allowance=15)
+        while not nav.isTaskComplete():
+            time.sleep(0.1)
+        log['undock'] = str(nav.getResult())
     t_round = time.time()
     for i, w in enumerate(wps):
         rec = dict(id=w.get('id', i), x=w['x'], y=w['y'], result='skipped', tries=0, t_s=None)

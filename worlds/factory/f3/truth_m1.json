@@ -1,0 +1,32 @@
+[
+ {
+  "kind": "added",
+  "x": 2.3,
+  "y": -1.6,
+  "obj": "BN3",
+  "type": "bin",
+  "visible": true,
+  "legs_only": false,
+  "near_structure": false
+ },
+ {
+  "kind": "added",
+  "x": 0.8,
+  "y": -3.4,
+  "obj": "N6",
+  "type": "cnc",
+  "visible": true,
+  "legs_only": false,
+  "near_structure": false
+ },
+ {
+  "kind": "removed",
+  "x": 6.6,
+  "y": -4.6,
+  "obj": "PL1",
+  "type": "pallet",
+  "visible": false,
+  "legs_only": false,
+  "near_structure": false
+ }
+]

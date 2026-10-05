@@ -1,0 +1,26 @@
+{
+ "title": "조립 공장",
+ "W": 20.0,
+ "H": 14.0,
+ "floor_m2": 280.0,
+ "free_m2_lidar": 250.3,
+ "start": [
+  0.0,
+  0.0,
+  -174
+ ],
+ "forklift": null,
+ "n_waypoints": 20,
+ "blocked_waypoints": {
+  "m0": [],
+  "m1": [],
+  "m2": [],
+  "m3": []
+ },
+ "objects_per_month": [
+  14,
+  17,
+  16,
+  16
+ ]
+}
